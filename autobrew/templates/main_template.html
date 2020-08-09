@@ -1,0 +1,16 @@
+<!doctype html>
+<head>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<title>Kegmeister Breweries: Live status</title>
+<body>
+<div align="center">
+    <img src="{{ url_for('static', filename='logo.gif') }}">
+    {% if brew_temp %}
+    <h3>Live Brew Temperature is {{ brew_temp }}</h3>
+    {% endif %}
+    {% if room_temp %}
+    <h3>Live Brewery Temperature is {{ room_temp }}</h3>
+    {% endif %}
+</div>
+</body>

@@ -7,11 +7,13 @@ Will work for x number of attached probes (you can attach them to the same pins)
 A good tutorial on how to hook up a single on and install is here: pimylifeup.com/raspberry-pi-temperature-sensor/
 '''
 
-
-def get_temp_sources() -> []:
+def initialise_probes():
     os.system('modprobe w1-gpio')
     os.system('modprobe w1-therm')
-     
+
+
+def get_temp_sources() -> []:
+    initialise_probes()
     base_dir = '/sys/bus/w1/devices/'
     device_folders = glob.glob(base_dir + '28*')
     device_files = []
@@ -19,11 +21,13 @@ def get_temp_sources() -> []:
         device_files.append(device_folder + '/w1_slave')
     return device_files
 
+
 def read_temp_raw(file):
     f = open(file, 'r')
     lines = f.readlines()
     f.close()
     return lines
+
 
 def read_temp(file):
     lines = read_temp_raw(file)
