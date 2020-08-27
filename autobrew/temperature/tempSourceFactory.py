@@ -7,4 +7,3 @@ def get_temp_source(name: str) -> TempSource:
     for file in files:
         if name in file:
             return TempSource(file)
-

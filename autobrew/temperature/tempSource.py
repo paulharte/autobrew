@@ -12,4 +12,5 @@ class TempSource(object):
     def get_temperature(self) -> float:
         return read_temp(self.device_file)
 
-
+    def set_nickname(self, name: str):
+        self.nickname = name
