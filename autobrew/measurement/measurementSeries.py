@@ -8,5 +8,11 @@ class MeasurementSeries(object):
     nickname: str = None
 
     def __init__(self, name: str):
-        self.name = name.replace(self.SUFFIX, "")
+        self.name = name
         self.measurements = []
+
+    def append(self, measurement: Measurement):
+        self.measurements.append(measurement)
+
+    def get_name(self):
+        return self.nickname if self.nickname else self.name

@@ -1,13 +1,16 @@
-import os
 from typing import List
 
+from autobrew.measurement.measurement import Measurement
 from autobrew.measurement.measurementSeries import MeasurementSeries
-from autobrew.measurement.storage import MeasurementStorage
+from autobrew.measurement.measurementStorage import MeasurementStorage, get_storage_files
 
 
 class MeasurementService(object):
+    def save_measurement(self, measurement: Measurement):
+        MeasurementStorage(measurement.source_name).add_measurement(measurement)
+
     def get_all_series(self) -> List[MeasurementSeries]:
-        filenames = self._get_files()
+        filenames = get_storage_files()
         measurements = []
         for filename in filenames:
             measurements.append(MeasurementStorage(filename).read())
@@ -20,12 +23,8 @@ class MeasurementService(object):
                 self.save_series(series)
                 return series
 
-    def _get_files(self) -> List[str]:
-        files = os.listdir()
-        return filter(lambda x: x.endswith(MeasurementStorage.SUFFIX), files)
-
     def save_series(self, series: MeasurementSeries) -> MeasurementSeries:
-        filenames = self._get_files()
+        filenames = get_storage_files()
         for filename in filenames:
             storage = MeasurementStorage(filename)
             if storage.name == series.name:

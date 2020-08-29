@@ -1,9 +1,35 @@
+from typing import List
+
+from autobrew.temperature.probeTempApi import (
+    get_temp_sources,
+    initialise_probes,
+    read_temp,
+)
 from autobrew.temperature.tempSource import TempSource
-from autobrew.utils.temperature_probe_tester import get_temp_sources
+
+from abc import ABC, abstractmethod
 
 
-def get_temp_source(name: str) -> TempSource:
-    files = get_temp_sources()
-    for file in files:
-        if name in file:
-            return TempSource(file)
+class TempSourceFactory(ABC):
+    @abstractmethod
+    def get_temp_source(self, name: str) -> TempSource:
+        pass
+
+    @abstractmethod
+    def get_all_temp_sources(self) -> List[TempSource]:
+        pass
+
+
+class ProbeTempSourceFactory(TempSourceFactory):
+    def get_temp_source(self, name: str) -> TempSource:
+        sources = self.get_all_temp_sources()
+        for source in sources:
+            if name in source.device_file:
+                return source
+
+    def get_all_temp_sources(self) -> List[TempSource]:
+        files = get_temp_sources()
+        out = []
+        for file in files:
+            out.append(TempSource(file))
+        return out

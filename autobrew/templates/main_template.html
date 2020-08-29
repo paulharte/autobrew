@@ -1,16 +1,19 @@
 <!doctype html>
+<html lang="en">
 <head>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <title>Kegmeister Breweries: AutoBrew Live status</title>
+    {{ charts_init }}
 </head>
-<title>Kegmeister Breweries: Live status</title>
 <body>
 <div align="center">
     <img src="{{ url_for('static', filename='logo.gif') }}">
-    {% if brew_temp %}
-    <h3>Live Brew Temperature is {{ brew_temp }}</h3>
-    {% endif %}
-    {% if room_temp %}
-    <h3>Live Brewery Temperature is {{ room_temp }}</h3>
-    {% endif %}
+    {% for source in temp_sources %}
+    <h3>Live {{ source.get_name() }} temperature is {{ source._get_temperature() }}</h3>
+    {% endfor %}
+    {{ charts.brew }}
 </div>
 </body>
