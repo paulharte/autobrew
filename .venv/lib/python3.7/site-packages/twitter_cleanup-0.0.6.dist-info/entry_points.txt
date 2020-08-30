@@ -1,0 +1,2 @@
+[console_scripts]
+twitter-cleanup=twitter_cleanup.__main__:cli

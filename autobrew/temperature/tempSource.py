@@ -26,10 +26,13 @@ class TempSource(object):
             return self._get_just_filename()
 
     def _get_just_filename(self):
-        index = self.device_file.rstrip("/").rfind("/")
-        if index < 0:
+        last_slash_index = self.device_file.rstrip("/").rfind("/")
+        if last_slash_index < 0:
             return self.device_file
-        return self.device_file[index:].strip("/")
+        second_last_slash_index = self.device_file[:last_slash_index].rstrip("/").rfind("/")
+        if second_last_slash_index < 0:
+            return self.device_file[last_slash_index:].strip("/")
+        return self.device_file[second_last_slash_index:last_slash_index].strip("/")
 
     def _get_temperature(self):
         return read_temp(self.device_file)

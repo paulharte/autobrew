@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: Flask-GoogleCharts
+Version: 0.1.0
+Summary: Google Charts API support for Flask
+Home-page: http://github.com/wikkiewikkie/flask-googlecharts/
+Author: Kevin Schellenberg
+Author-email: wikkiewikkie@gmail.com
+License: MIT
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Flask
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: JavaScript
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: Flask (>=0.10.1)
+
+
+Flask-GoogleCharts
+==================
+
+Adds Google Charts API support to Flask.
+
+Links
+=====
+
+* `Source Code <https://github.com/wikkiewikkie/flask-googlecharts>`_
+* `Issues <https://github.com/wikkiewikkie/flask-googlecharts/issues>`_
+
+
+

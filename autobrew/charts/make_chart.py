@@ -3,7 +3,7 @@ from flask_googlecharts import LineChart
 
 
 def make_chart(series: MeasurementSeries):
-    chart = LineChart(series.get_name())
+    chart = LineChart('Temperature_' + series.get_name())
     chart.add_column("datetime", "Time")
     chart.add_column("number", "Temperature")
 
