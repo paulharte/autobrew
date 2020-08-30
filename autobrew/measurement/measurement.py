@@ -13,4 +13,4 @@ class Measurement(object):
         self.measurement_amt = measurement_amt
 
     def __str__(self):
-        return '%s - %s - %s' % (self.source_name, self.time, self.measurement_amt)
+        return "%s - %s - %s" % (self.source_name, self.time, self.measurement_amt)

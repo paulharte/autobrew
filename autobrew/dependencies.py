@@ -9,6 +9,7 @@ import logging
 
 logger = logging.getLogger("autobrew")
 
+
 def configure(binder):
     binder.bind(TempSourceFactory, to=getTempSourceFactoryClass(), scope=singleton)
 

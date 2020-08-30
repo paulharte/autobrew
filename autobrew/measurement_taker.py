@@ -6,6 +6,7 @@ from autobrew.measurement.measurementService import MeasurementService
 SAMPLE_INTERVAL_SECONDS = 300
 logger = logging.getLogger("autobrew")
 
+
 def run_measurements(**kwargs):
     delay = kwargs.get("INTERVAL") or SAMPLE_INTERVAL_SECONDS
     measurement_service = MeasurementService()
@@ -16,6 +17,3 @@ def run_measurements(**kwargs):
             measurement_service.save_measurement(measurement)
             logger.info("Temperature measurement taken: " + str(measurement))
         time.sleep(delay)
-
-
-

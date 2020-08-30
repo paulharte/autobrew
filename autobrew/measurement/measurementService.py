@@ -2,7 +2,10 @@ from typing import List
 
 from autobrew.measurement.measurement import Measurement
 from autobrew.measurement.measurementSeries import MeasurementSeries
-from autobrew.measurement.measurementStorage import MeasurementStorage, get_storage_files
+from autobrew.measurement.measurementStorage import (
+    MeasurementStorage,
+    get_storage_files,
+)
 
 
 class MeasurementService(object):
