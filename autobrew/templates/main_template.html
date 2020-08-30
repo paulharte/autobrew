@@ -13,7 +13,7 @@
     <img src="{{ url_for('static', filename='logo.gif') }}">
     {% for source in temp_sources %}
     <h3>Live {{ source.get_name() }} temperature is {{ source._get_temperature() }}</h3>
+    {{ charts[source.get_name()] }}
     {% endfor %}
-    {{ charts.brew }}
 </div>
 </body>

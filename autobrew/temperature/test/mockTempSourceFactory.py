@@ -1,4 +1,5 @@
 import datetime
+import random
 from typing import List
 
 from autobrew.temperature.tempSource import TempSource
@@ -18,5 +19,4 @@ class MockTempSourceFactory(TempSourceFactory):
 class MockTempSource(TempSource):
     def _get_temperature(self) -> float:
         ## Generates random 20 degree temp for testing
-        seconds = datetime.datetime.now().second
-        return 20.0 + (seconds / 100.0)
+        return 20.0 + (float(random.randint(0, 9))/10)

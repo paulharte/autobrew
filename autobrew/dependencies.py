@@ -5,7 +5,9 @@ from autobrew.temperature.tempSourceFactory import (
 from autobrew.temperature.test.mockTempSourceFactory import MockTempSourceFactory
 from injector import singleton
 import platform
+import logging
 
+logger = logging.getLogger("autobrew")
 
 def configure(binder):
     binder.bind(TempSourceFactory, to=getTempSourceFactoryClass(), scope=singleton)
@@ -14,8 +16,8 @@ def configure(binder):
 def getTempSourceFactoryClass():
     """ We want to mock out the temperature probes on windows"""
     if platform.system() == "Windows":
-        print("Running on Windows, using mock temperature sources")
+        logger.info("Running on Windows, using mock temperature sources")
         return MockTempSourceFactory
     else:
-        print("Not Running on Windows")
+        logger.debug("Not Running on Windows")
         return ProbeTempSourceFactory

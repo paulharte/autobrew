@@ -12,6 +12,5 @@ def make_chart(series: MeasurementSeries):
         rows.append([measurement.time, measurement.measurement_amt])
 
     chart.add_rows(rows)
-    print(rows)
 
     return chart
