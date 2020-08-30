@@ -20,7 +20,16 @@ class TempSource(object):
         self.nickname = name
 
     def get_name(self):
-        return self.nickname if self.nickname else self.device_file
+        if self.nickname:
+            return self.nickname
+        else:
+            return self._get_just_filename()
+
+    def _get_just_filename(self):
+        index = self.device_file.rstrip("/").rfind("/")
+        if index < 0:
+            return self.device_file
+        return self.device_file[index:].strip("/")
 
     def _get_temperature(self):
         return read_temp(self.device_file)
