@@ -14,7 +14,7 @@ class TempSource(object):
     def get_temperature_measurement(self) -> Measurement:
         temp = self._get_temperature()
         time = datetime.datetime.now()
-        return Measurement(self.device_file, time, temp)
+        return Measurement(self.get_name(), time, temp)
 
     def set_nickname(self, name: str):
         self.nickname = name
