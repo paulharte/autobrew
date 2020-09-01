@@ -17,6 +17,7 @@ class MockTempSourceFactory(TempSourceFactory):
 
 
 class MockTempSource(TempSource):
+
     def _get_temperature(self) -> float:
         ## Generates random 20 degree temp for testing
         return 20.0 + (float(random.randint(0, 9)) / 10)

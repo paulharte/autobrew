@@ -20,11 +20,12 @@ logger = logging.getLogger("autobrew")
 @inject
 def brew_monitor(temperature_sources: TempSourceFactory):
     current_temp_sources = temperature_sources.get_all_temp_sources()
-
+    active_source_names = [source.get_name() for source in current_temp_sources]
     """## Pull historical and turn into chart"""
     historical_service = MeasurementService()
     for series in historical_service.get_all_series():
-        charts.register(make_chart(series))
+        if series.get_name() in active_source_names:
+            charts.register(make_chart(series))
 
     return render_template("main_template.html", temp_sources=current_temp_sources)
 
