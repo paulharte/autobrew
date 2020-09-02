@@ -2,3 +2,4 @@
 /venv
 /autobrew/storage/*
 /.venv
+/.idea
