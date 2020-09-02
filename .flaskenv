@@ -1,0 +1,2 @@
+FLASK_APP=autobrew/webserver.py
+FLASK_ENV=development

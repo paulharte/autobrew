@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <title>Kegmeister Breweries: AutoBrew Live status</title>
+    {{ charts_init }}
+</head>
+<body>
+<div align="center">
+    <img src="{{ url_for('static', filename='logo.gif') }}">
+    {% for source in temp_sources %}
+    <h3>Live {{ source.get_name() }} temperature is {{ source._get_temperature() }}</h3>
+    {{ charts[source.get_name()] }}
+    {% endfor %}
+</div>
+</body>
