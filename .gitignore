@@ -1,8 +1,0 @@
-# created by virtualenv automatically
-/venv
-/autobrew/storage/*
-/.venv
-/.venv/*
-/.idea
-*__pycache__*
-*.pyc
