@@ -49,7 +49,7 @@ def run_webserver(debug=False):
     logger.info("Starting webserver")
     if debug:
         logger.info("Webserver debug set to on")
-    app.run(debug=debug, use_reloader=debug, host='0.0.0.0', port=7070)
+    app.run(debug=debug, use_reloader=debug, host="0.0.0.0", port=7070)
 
 
 if __name__ == "__main__":

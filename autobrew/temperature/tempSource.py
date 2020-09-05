@@ -23,13 +23,15 @@ class TempSource(object):
         if self.nickname:
             return self.nickname
         else:
-            return 'Probe_' + self._get_just_filename()
+            return "Probe_" + self._get_just_filename()
 
     def _get_just_filename(self):
         last_slash_index = self.device_file.rstrip("/").rfind("/")
         if last_slash_index < 0:
             return self.device_file
-        second_last_slash_index = self.device_file[:last_slash_index].rstrip("/").rfind("/")
+        second_last_slash_index = (
+            self.device_file[:last_slash_index].rstrip("/").rfind("/")
+        )
         if second_last_slash_index < 0:
             return self.device_file[last_slash_index:].strip("/")
         return self.device_file[second_last_slash_index:last_slash_index].strip("/")

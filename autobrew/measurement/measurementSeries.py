@@ -16,3 +16,7 @@ class MeasurementSeries(object):
 
     def get_name(self):
         return self.nickname if self.nickname else self.source_name
+
+    def get_measurements(self) -> List[Measurement]:
+        self.measurements.sort(key=lambda x: x.time)
+        return self.measurements
