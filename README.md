@@ -43,5 +43,12 @@ https://www.circuitbasics.com/raspberry-pi-ds18b20-temperature-sensor-tutorial/
 
 ![MQ-3 wiring](/images/mq3-connection.png)
 
+1. Enable SPI
+"sudo raspi-config"
+select interfacing options
+select SPI
+
+2. Check to see if SPI is activated
+"lsmod" -> should see something like spi_2835
 
 **More to come
