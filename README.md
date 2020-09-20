@@ -2,6 +2,7 @@
 <h3>Automated beer brewing system for Rasberry Pi</h3>
 
 <h4>Features</h4>
+
 - Temperature control to optimize your brew performance
 - Alcohol level estimation
 - Pi hosted website to monitor your brew as it progresses

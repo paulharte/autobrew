@@ -3,6 +3,8 @@ import datetime
 from autobrew.measurement.measurement import Measurement
 from autobrew.temperature.probeTempApi import read_temp
 
+PROBE_PREFIX = "Probe_"
+
 
 class TempSource(object):
     nickname = None
@@ -23,7 +25,7 @@ class TempSource(object):
         if self.nickname:
             return self.nickname
         else:
-            return "Probe_" + self._get_just_filename()
+            return PROBE_PREFIX + self._get_just_filename()
 
     def _get_just_filename(self):
         last_slash_index = self.device_file.rstrip("/").rfind("/")
