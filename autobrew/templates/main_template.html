@@ -15,5 +15,10 @@
     <h3>Live {{ source.get_name() }} temperature is {{ source._get_temperature() }}</h3>
     {{ charts[source.get_name()] }}
     {% endfor %}
+
+    {% for smell_source in smell_sources %}
+    <h3>Live {{ smell_source.get_name() }} alcohol level is {{ smell_source.get_alcohol_level() }}</h3>
+    {{ charts[smell_source.get_name()] }}
+    {% endfor %}
 </div>
 </body>
