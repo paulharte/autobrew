@@ -22,4 +22,3 @@ def run_measurements(**kwargs):
         measurement_service.save_measurement(smell_measurement)
         logger.info("Alcohol measurement taken: " + str(smell_measurement))
         time.sleep(delay)
-

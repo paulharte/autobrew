@@ -11,7 +11,7 @@ from autobrew.measurement.measurement import Measurement
 
 class Smelloscope(object):
 
-    NAME = 'Alcohol_Smelloscope'
+    NAME = "Alcohol_Smelloscope"
 
     def __init__(self):
         # create the spi bus

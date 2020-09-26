@@ -19,18 +19,24 @@ logger = logging.getLogger("autobrew")
 
 @app.route("/")
 @inject
-def brew_monitor(temperature_sources: TempSourceFactory, smelloscope : Smelloscope):
+def brew_monitor(temperature_sources: TempSourceFactory, smelloscope: Smelloscope):
     current_temp_sources = temperature_sources.get_all_temp_sources()
 
-    #TODO: make robust to smelloscope initialisation exceptions
-    active_source_names = [source.get_name() for source in current_temp_sources] + [smelloscope.get_name()]
+    # TODO: make robust to smelloscope initialisation exceptions
+    active_source_names = [source.get_name() for source in current_temp_sources] + [
+        smelloscope.get_name()
+    ]
     """## Pull historical and turn into chart"""
     historical_service = MeasurementService()
     for series in historical_service.get_all_series():
         if series.get_name() in active_source_names:
             charts.register(make_chart(series))
 
-    return render_template("main_template.html", temp_sources=current_temp_sources, smell_sources=[smelloscope])
+    return render_template(
+        "main_template.html",
+        temp_sources=current_temp_sources,
+        smell_sources=[smelloscope],
+    )
 
 
 @app.route("/todo/api/v1.0/tasks", methods=["PUT"])

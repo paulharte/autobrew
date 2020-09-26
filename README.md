@@ -51,4 +51,15 @@ select SPI
 2. Check to see if SPI is activated
 "lsmod" -> should see something like spi_2835
 
+
+Heat Control
+
+1. Install libusb and uhubctl to your Raspberry pi
+Commands:
+sudo apt-get install libusb-1.0-0-dev
+git clone https://github.com/mvp/uhubctl.git
+cd uhubctl
+make
+sudo cp uhubctl /usr/bin/uhubctl
+
 **More to come
