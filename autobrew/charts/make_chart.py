@@ -20,6 +20,9 @@ def make_chart(series: MeasurementSeries):
 
 
 def _make_options(series: MeasurementSeries) -> dict:
+    min_amt = series.get_min_amount() or 0.0
+    max_amt = series.get_max_amount() or 0.0
+    vertical_padding = 3.0
     return {
         "title": series.get_name(),
         "legend": {"position": "none"},
@@ -27,7 +30,10 @@ def _make_options(series: MeasurementSeries) -> dict:
         "height": 500,
         "chartArea": {"width": "85%",},
         "vAxis": {
-            "viewWindow": {"min": 0.0, "max": 40.0},
+            "viewWindow": {
+                "min": min_amt - vertical_padding,
+                "max": max_amt + vertical_padding,
+            },
             "gridlines": {
                 "count": -1,
                 "units": {

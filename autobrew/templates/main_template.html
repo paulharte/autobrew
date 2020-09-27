@@ -13,6 +13,7 @@
     <img src="{{ url_for('static', filename='logo.gif') }}">
     {% for source in temp_sources %}
     <h3>Live {{ source.get_name() }} temperature is {{ source._get_temperature() }}</h3>
+    {% if source.is_primary %} PRIMARY {% else %} Make Primary {% endif %}
     {{ charts[source.get_name()] }}
     {% endfor %}
 

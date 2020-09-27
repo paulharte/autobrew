@@ -3,11 +3,12 @@ import logging
 from flask import Flask, render_template, request, jsonify
 from flask_googlecharts import GoogleCharts
 from flask_injector import FlaskInjector
-from injector import inject
+from injector import Injector, inject
 from werkzeug.exceptions import abort
 
 from autobrew.charts.make_chart import make_chart
-from autobrew.dependencies import configure
+from autobrew.dependencies import configure, autobrew_injector
+from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscope import Smelloscope
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
@@ -39,19 +40,39 @@ def brew_monitor(temperature_sources: TempSourceFactory, smelloscope: Smelloscop
     )
 
 
-@app.route("/todo/api/v1.0/tasks", methods=["PUT"])
-def set_nickname():
+@app.route("/nickname", methods=["PUT"])
+def set_nickname(measurement_service: MeasurementService):
     if not request.json or not "name" in request.json:
         abort(400)
 
-    measurement = MeasurementService().set_measurement_nickname(
+    measurement = measurement_service.set_measurement_nickname(
         request.json["name"], request.json.get("nickname")
     )
     return jsonify(measurement), 201
 
 
+@app.route("/heat_status", methods=["GET"])
+def get_heat_status(heater: HeatControl):
+    status = "ON" if heater.is_power_on() else "OFF"
+    return jsonify(status), 201
+
+
+@app.route("/set_primary", methods=["PUT"])
+def set_primary(source_factory: TempSourceFactory):
+    if not request.json or not "name" in request.json:
+        abort(400)
+    name = request.json.get("name")
+    for source in source_factory.get_all_temp_sources():
+        if source.get_name() == name:
+            source.set_primary(True)
+        else:
+            source.set_primary(False)
+    return jsonify(name), 201
+
+
 # Setup Flask Injector, this has to happen AFTER routes are added
-FlaskInjector(app=app, modules=[configure])
+
+FlaskInjector(app=app, injector=autobrew_injector)
 
 
 def run_webserver(debug=False):

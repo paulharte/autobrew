@@ -20,3 +20,21 @@ class MeasurementSeries(object):
     def get_measurements(self) -> List[Measurement]:
         self.measurements.sort(key=lambda x: x.time)
         return self.measurements
+
+    def get_max_amount(self) -> float:
+        best_measurement_amt = None
+        for measurement in self.measurements:
+            if (best_measurement_amt is None) or (
+                measurement.measurement_amt > best_measurement_amt
+            ):
+                best_measurement_amt = measurement.measurement_amt
+        return best_measurement_amt
+
+    def get_min_amount(self) -> float:
+        best_measurement_amt = None
+        for measurement in self.measurements:
+            if (best_measurement_amt is None) or (
+                measurement.measurement_amt < best_measurement_amt
+            ):
+                best_measurement_amt = measurement.measurement_amt
+        return best_measurement_amt

@@ -2,7 +2,8 @@ import sys
 import threading
 import logging
 
-from autobrew.measurement_taker import run_measurements
+from autobrew.dependencies import autobrew_injector
+from autobrew.measurement_taker import MeasurementTaker
 from autobrew.webserver import run_webserver
 
 
@@ -19,4 +20,4 @@ if __name__ == "__main__":
     set_logging()
     x = threading.Thread(target=run_webserver, args=(False,), daemon=True)
     x.start()
-    run_measurements()
+    autobrew_injector.get(MeasurementTaker).run_measurements()
