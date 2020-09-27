@@ -44,7 +44,7 @@ https://www.circuitbasics.com/raspberry-pi-ds18b20-temperature-sensor-tutorial/
 ![MQ-3 wiring](/images/mq3-connection.png)
 
 1. Enable SPI
-"sudo raspi-config"
+run command "sudo raspi-config"
 select interfacing options
 select SPI
 
@@ -52,14 +52,19 @@ select SPI
 "lsmod" -> should see something like spi_2835
 
 
-Heat Control
+<h4>Enable USB power on/off for Heat Control</h4>
+Steps
 
-1. Install libusb and uhubctl to your Raspberry pi
+Install [libusb](https://libusb.info/) to your Raspberry pi
 Commands:
-sudo apt-get install libusb-1.0-0-dev
-git clone https://github.com/mvp/uhubctl.git
-cd uhubctl
-make
-sudo cp uhubctl /usr/bin/uhubctl
+- sudo apt-get install libusb-1.0-0-dev
 
-**More to come
+Install [uhubctl](https://github.com/mvp/uhubctl#linux-usb-permissions) to your Raspberry pi
+Commands:
+- git clone https://github.com/mvp/uhubctl.git
+- cd uhubctl
+- make
+- sudo cp uhubctl /usr/bin/uhubctl
+
+Permission uhubctl to run without need for sudo
+- [Follow these steps] (https://github.com/mvp/uhubctl#linux-usb-permissions)

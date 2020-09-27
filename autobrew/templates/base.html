@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="UTF-8">
+    <title>Kegmeister Breweries: {% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<div align="center">
+    <img src="{{ url_for('static', filename='logo.gif') }}" href="{{ url_for('brew_monitor') }}">
+    <br>
+    {% block content %}{% endblock %}
+</div>
+</body>

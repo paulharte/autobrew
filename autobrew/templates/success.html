@@ -1,14 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <meta charset="UTF-8">
-    <title>Kegmeister Breweries: Success</title>
-    {{ charts_init }}
-</head>
-<body>
-<div align="center">
-    <img src="{{ url_for('static', filename='logo.gif') }}">
+{% extends "base.html" %}
+{% block title %}Success{% endblock %}
+{% block content %}
     {{ success_message }}
-</div>
-</body>
+    <br><br>
+    <a href="{{ url_for('brew_monitor') }}">Return Home</a>
+{% endblock %}
+

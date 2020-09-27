@@ -6,13 +6,18 @@ from autobrew.temperature.tempSourceFactory import TempSourceFactory
 
 
 class MockTempSourceFactory(TempSourceFactory):
+
+    def __init__(self):
+        room = MockTempSource("room")
+        brew = MockTempSource("brew")
+        self.temp_sources = [room, brew]
+
     def get_temp_source(self, name: str) -> TempSource:
         return MockTempSource(name)
 
     def get_all_temp_sources(self) -> List[TempSource]:
-        room = MockTempSource("room")
-        brew = MockTempSource("brew")
-        return [room, brew]
+        return self.temp_sources
+
 
 
 class MockTempSource(TempSource):

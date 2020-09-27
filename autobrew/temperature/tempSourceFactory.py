@@ -7,6 +7,7 @@ from autobrew.temperature.tempSource import TempSource
 
 
 class TempSourceFactory(ABC):
+    temp_sources: List[TempSource]
     @abstractmethod
     def get_temp_source(self, name: str) -> TempSource:
         pass
@@ -15,9 +16,22 @@ class TempSourceFactory(ABC):
     def get_all_temp_sources(self) -> List[TempSource]:
         pass
 
+    def remove_temp_source(self, to_remove: TempSource):
+        self.temp_sources.remove(to_remove)
+
+    def set_primary_source(self, name: str) -> bool:
+        success = False
+        for i in range(len(self.temp_sources)):
+            if self.temp_sources[i].get_name() == name:
+                self.temp_sources[i].set_primary(True)
+                success = True
+            else:
+                self.temp_sources[i].set_primary(False)
+
+        return success
+
 
 class ProbeTempSourceFactory(TempSourceFactory):
-    temp_sources: List[TempSource]
 
     def __init__(self):
         self.temp_sources = []
@@ -36,5 +50,3 @@ class ProbeTempSourceFactory(TempSourceFactory):
                 self.temp_sources.append(potential_new_source)
         return self.temp_sources
 
-    def remove_temp_source(self, to_remove: TempSource):
-        self.temp_sources.remove(to_remove)
