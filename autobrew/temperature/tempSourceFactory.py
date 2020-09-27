@@ -8,6 +8,7 @@ from autobrew.temperature.tempSource import TempSource
 
 class TempSourceFactory(ABC):
     temp_sources: List[TempSource]
+
     @abstractmethod
     def get_temp_source(self, name: str) -> TempSource:
         pass
@@ -32,7 +33,6 @@ class TempSourceFactory(ABC):
 
 
 class ProbeTempSourceFactory(TempSourceFactory):
-
     def __init__(self):
         self.temp_sources = []
 
@@ -49,4 +49,3 @@ class ProbeTempSourceFactory(TempSourceFactory):
             if potential_new_source not in self.temp_sources:
                 self.temp_sources.append(potential_new_source)
         return self.temp_sources
-

@@ -43,14 +43,16 @@ def brew_monitor(temperature_sources: TempSourceFactory, smelloscope: Smelloscop
 @app.route("/nickname")
 @inject
 def set_nickname(source_factory: TempSourceFactory):
-    if not request.args or "name" not in request.args or 'nickname' not in request.args:
+    if not request.args or "name" not in request.args or "nickname" not in request.args:
         abort(400)
     name = request.args.get("name")
     nickname = request.args.get("nickname")
 
     source = source_factory.get_temp_source(name)
     if not source:
-        return render_template("success.html", success_message="Could not find probe named: " + name)
+        return render_template(
+            "success.html", success_message="Could not find probe named: " + name
+        )
 
     source.set_nickname(nickname)
     message = name + " successfully updated nickname to " + nickname
@@ -74,14 +76,14 @@ def set_primary(source_factory: TempSourceFactory):
 
     success = source_factory.set_primary_source(name)
     if success:
-        message = name + " successfully set as primary temperature source. Heat switching is enabled"
+        message = (
+            name
+            + " successfully set as primary temperature source. Heat switching is enabled"
+        )
     else:
         message = "Could not find probe named: " + name
     logger.info(message)
-    return render_template(
-        "success.html",
-        success_message=message
-    )
+    return render_template("success.html", success_message=message)
 
 
 # Setup Flask Injector, this has to happen AFTER routes are added
