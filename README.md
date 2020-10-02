@@ -17,10 +17,11 @@
 
 Tech
 - Raspberry Pi (2 or 3)
-- ds18b20 temperature probe(s) (available on amazon)
-- MQ-3 alcohol sensor (available on alibaba, among other places)
-- MCP3008 analog to digital converter
-- USB heat pads (amazon)
+- ds18b20 temperature probe(s) [amazon](https://www.amazon.co.uk/gp/product/B00CHEZ250)
+- MQ-3 alcohol sensor [aliexpress](https://www.aliexpress.com/item/32471915970.html)
+- MCP3008 analog to digital converter [aliexpress](https://www.aliexpress.com/item/33040232084.html)
+- USB heat pads [amazon](https://www.amazon.co.uk/gp/product/B07YX39TMQ)
+- Beginner electronics kit (for breadboard, wires, etc) [amazon](https://www.amazon.co.uk/ELEGOO-Electronics-Potentiometer-tie-points-Breadboard/dp/B01LZRV539)
 
 Brewing
 - Brew kit (we love Coopers, but there are many others)
@@ -52,8 +53,8 @@ select SPI
 "lsmod" -> should see something like spi_2835
 
 
-<h4>Enable USB power on/off for Heat Control</h4>
-Steps
+<h4>How to Enable USB power on/off for Heat Control</h4>
+<h6>Steps</h6>
 
 Install [libusb](https://libusb.info/) to your Raspberry pi
 Commands:
@@ -77,4 +78,4 @@ Permission uhubctl to run without need for sudo
 - type :wq and press enter to save :)
 - run command to apply perm or restart the pi
   - sudo udevadm trigger --attr-match=subsystem=usb
-- [Follow these steps] (https://github.com/mvp/uhubctl#linux-usb-permissions)
+- [Further documentation, if you need it](https://github.com/mvp/uhubctl#linux-usb-permissions)

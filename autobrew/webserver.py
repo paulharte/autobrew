@@ -64,7 +64,8 @@ def set_nickname(source_factory: TempSourceFactory):
 @inject
 def get_heat_status(heater: HeatControl):
     status = "ON" if heater.is_power_on() else "OFF"
-    return jsonify(status), 201
+    message = "Heating status is: " + status
+    return render_template("success.html", success_message=message)
 
 
 @app.route("/set_primary")
