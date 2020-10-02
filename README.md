@@ -11,7 +11,7 @@
 - Temperature control to optimize your brew performance
 - Alcohol level estimation
 - Pi hosted website to monitor your brew as it progresses
- - Temperature and alocohol level graphs
+  - Temperature and alcohol level realtime graphs
 
 <h4>Hardware required:</h4>
 
@@ -68,13 +68,13 @@ Commands:
 
 Permission uhubctl to run without need for sudo
 - run command
- - sudo uhubctl
+  - sudo uhubctl
 - Note the **vid** in the lines like this "Current status for hub 1-1 [**2109**:3431 USB2.0 Hub, USB 2.10, 4 ports]"
 - create a permission file with this command
- - sudo vi /etc/udev/rules.d/52-usb.rules
+  - sudo vi /etc/udev/rules.d/52-usb.rules
 - write a line like this, replacing 2109 with your vid
- - SUBSYSTEM=="usb", ATTR{idVendor}=="2109", MODE="0666"
+  - SUBSYSTEM=="usb", ATTR{idVendor}=="2109", MODE="0666"
 - type :wq and press enter to save :)
 - run command to apply perm or restart the pi
- - sudo udevadm trigger --attr-match=subsystem=usb
+  - sudo udevadm trigger --attr-match=subsystem=usb
 - [Follow these steps] (https://github.com/mvp/uhubctl#linux-usb-permissions)

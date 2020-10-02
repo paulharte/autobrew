@@ -9,12 +9,10 @@ LOGGER = logging.getLogger()
 def switch_power(on: bool):
 
     on_off = "1" if on else "0"
-    commands = {
-        4: "uhubctl -l 1-1 -p 1 -a ",
-        3: "uhubctl -l 1-1 -p 2 -a ",
-        2: "uhubctl -l 1-1 -p 2 -a ",
-    }
-    command = commands.get(detect_pi_model())
+    if detect_pi_model() == 4:
+        command = "uhubctl -l 1-1 -a "
+    else:
+        command = "uhubctl -l 1-1 -p 2 -a "
 
     out = os.system(command + on_off)
 
