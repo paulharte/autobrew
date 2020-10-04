@@ -1,3 +1,4 @@
+from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.heating.heat_control import HeatControl
 from test.heating.mock_heat_control import MockHeatControl
 from autobrew.smelloscope.smelloscope import Smelloscope
@@ -13,7 +14,7 @@ import logging
 
 from test.temperature.mockTempSourceFactory import MockTempSourceFactory
 
-logger = logging.getLogger("autobrew")
+logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 def configure(binder):

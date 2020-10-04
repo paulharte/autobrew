@@ -4,8 +4,9 @@ from flask import Flask, render_template, request, jsonify
 from flask_googlecharts import GoogleCharts
 from flask_injector import FlaskInjector
 from injector import Injector, inject
-from werkzeug.exceptions import abort
+from werkzeug.exceptions import abort, HTTPException
 
+from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.charts.make_chart import make_chart
 from autobrew.dependencies import configure, autobrew_injector
 from autobrew.heating.heat_control import HeatControl
@@ -15,7 +16,7 @@ from autobrew.temperature.tempSourceFactory import TempSourceFactory
 
 app = Flask(__name__)
 charts = GoogleCharts(app)
-logger = logging.getLogger("autobrew")
+logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 @app.route("/", methods=["GET"])
@@ -87,8 +88,17 @@ def set_primary(source_factory: TempSourceFactory):
     return render_template("success.html", success_message=message)
 
 
-# Setup Flask Injector, this has to happen AFTER routes are added
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # pass through HTTP errors
+    if isinstance(e, HTTPException):
+        return e
+    logger.exception(e)
 
+    return render_template("error.html", e=e.message)
+
+
+# Setup Flask Injector, this has to happen AFTER routes are added
 FlaskInjector(app=app, injector=autobrew_injector)
 
 

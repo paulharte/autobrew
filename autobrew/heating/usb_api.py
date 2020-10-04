@@ -1,9 +1,10 @@
 import os
 
+from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.utils.detect_pi_model import detect_pi_model
 import logging
 
-LOGGER = logging.getLogger()
+logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 def switch_power(on: bool):
@@ -17,7 +18,7 @@ def switch_power(on: bool):
     out = os.system(command + on_off)
 
     if out == 0:
-        LOGGER.info("USB power switched to %s" % ("on" if on else "off"))
+        logger.info("USB power switched to %s" % ("on" if on else "off"))
         return
     else:
         raise PowerSwitchException("got error when switching power. Code: %d" % out)

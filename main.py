@@ -2,13 +2,15 @@ import sys
 import threading
 import logging
 
+from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.dependencies import autobrew_injector
 from autobrew.measurement_taker import MeasurementTaker
 from autobrew.webserver import run_webserver
 
 
+
 def set_logging(level=logging.DEBUG):
-    logger = logging.getLogger("autobrew")
+    logger = logging.getLogger(APP_LOGGING_NAME)
     logger.setLevel(level)
     logger.debug("Log level set to " + str(level))
     handler = logging.StreamHandler(stream=sys.stdout)

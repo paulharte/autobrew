@@ -3,14 +3,13 @@ import logging
 
 from injector import inject, singleton
 
-from autobrew.brew_settings import SAMPLE_INTERVAL_SECONDS
-from autobrew.dependencies import getTempSourceFactoryClass, getSmellClass
+from autobrew.brew_settings import SAMPLE_INTERVAL_SECONDS, APP_LOGGING_NAME
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscope import Smelloscope
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
 
-logger = logging.getLogger("autobrew")
+logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 class MeasurementTaker(object):

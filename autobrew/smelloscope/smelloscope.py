@@ -6,6 +6,7 @@ import board
 import adafruit_mcp3xxx.mcp3008 as mcp3008
 from adafruit_mcp3xxx.analog_in import AnalogIn
 
+from autobrew.brew_settings import SMELLOSCOPE_OFFSET
 from autobrew.measurement.measurement import Measurement
 
 
@@ -32,7 +33,7 @@ class Smelloscope(object):
         return chan.voltage
 
     def get_alcohol_level(self) -> float:
-        return 1.5 - self._get_voltage()
+        return SMELLOSCOPE_OFFSET - self._get_voltage()
 
     def get_measurement(self) -> Measurement:
         time = datetime.datetime.now()

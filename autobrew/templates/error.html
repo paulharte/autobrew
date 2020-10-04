@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}There has been an error{% endblock %}
+{% block content %}
+    {{ message }}
+    <br><br>
+    <a href="{{ url_for('brew_monitor') }}">Return Home</a>
+{% endblock %}
+
