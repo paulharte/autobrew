@@ -27,7 +27,8 @@ class HeatControl(object):
             self._power_is_on = False
 
     def is_power_on(self):
-        return self._power_is_on
+        # Assume on is default state for external purposes
+        return self._power_is_on in [None, True]
 
     def _switch_power(self, on: bool):
         switch_power(on)
