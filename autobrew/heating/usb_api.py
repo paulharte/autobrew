@@ -11,7 +11,7 @@ def switch_power(on: bool):
 
     on_off = "1" if on else "0"
     if detect_pi_model() == 4:
-        command = "uhubctl -l 1-1 -a "
+        command = "uhubctl -l 2 -a "
     else:
         command = "uhubctl -l 1-1 -p 2 -a "
 
