@@ -19,6 +19,13 @@ class MeasurementService(object):
             measurements.append(MeasurementStorage(filename).read())
         return measurements
 
+    def get_series(self, name) -> MeasurementSeries:
+        filenames = get_storage_files()
+        for filename in filenames:
+            storage = MeasurementStorage(filename)
+            if storage.name == name:
+                return storage.read()
+
     def set_measurement_nickname(self, name: str, nickname: str) -> MeasurementSeries:
         for series in self.get_all_series():
             if series.name == name:

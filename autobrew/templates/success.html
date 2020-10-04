@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Success{% endblock %}
 {% block content %}
-    {{ success_message }}
+    <div class="card">
+        {{ success_message }}
+    </div>
     <br><br>
     <a href="{{ url_for('brew_monitor') }}">Return Home</a>
+
 {% endblock %}
 

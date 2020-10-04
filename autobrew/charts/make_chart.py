@@ -1,15 +1,20 @@
-import datetime
 
 from autobrew.measurement.measurementSeries import MeasurementSeries
-from flask_googlecharts import MaterialLineChart
+import flask_googlecharts
+from autobrew.utils.googlecharts_flask_patch_utils import prep_data
+
+# Patch can be removed when this PR is merged
+# https://github.com/wikkiewikkie/flask-googlecharts/pull/6
+flask_googlecharts.utils.prep_data = prep_data
+
 
 
 def make_chart(series: MeasurementSeries):
     options = _make_options(series)
 
-    chart = MaterialLineChart(series.get_name(), options=options)
+    chart = flask_googlecharts.MaterialLineChart(series.get_name(), options=options)
     chart.add_column("datetime", "Time")
-    chart.add_column("number", "Temperature")
+    chart.add_column("number", "Measurement")
 
     rows = []
     for measurement in series.get_measurements():
@@ -26,9 +31,9 @@ def _make_options(series: MeasurementSeries) -> dict:
     return {
         "title": series.get_name(),
         "legend": {"position": "none"},
-        "width": 900,
+        "width": '90%',
         "height": 500,
-        "chartArea": {"width": "85%",},
+        "chartArea": {'left': 5, 'top': 20, 'right': 20,  'width': '85%', 'height': 500},
         "vAxis": {
             "viewWindow": {
                 "min": min_amt - vertical_padding,

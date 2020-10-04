@@ -1,21 +1,26 @@
 import logging
 
-from flask import Flask, render_template, request, jsonify
-from flask_googlecharts import GoogleCharts
+from flask import Flask, render_template, request
+import flask_googlecharts
 from flask_injector import FlaskInjector
-from injector import Injector, inject
+from injector import inject
 from werkzeug.exceptions import abort, HTTPException
 
 from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.charts.make_chart import make_chart
-from autobrew.dependencies import configure, autobrew_injector
+from autobrew.dependencies import autobrew_injector
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscope import Smelloscope
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
+from autobrew.utils.googlecharts_flask_patch_utils import prep_data
+
+# Patch can be removed when this PR is merged
+# https://github.com/wikkiewikkie/flask-googlecharts/pull/6
+flask_googlecharts.utils.prep_data = prep_data
 
 app = Flask(__name__)
-charts = GoogleCharts(app)
+charts = flask_googlecharts.GoogleCharts(app)
 logger = logging.getLogger(APP_LOGGING_NAME)
 
 
@@ -40,6 +45,22 @@ def brew_monitor(temperature_sources: TempSourceFactory, smelloscope: Smelloscop
         smell_sources=[smelloscope],
     )
 
+
+@app.route("/alcohol_level", methods=["GET"])
+@inject
+def alcohol_level(temperature_sources: TempSourceFactory, smelloscope: Smelloscope):
+
+    # TODO: make robust to smelloscope initialisation exceptions
+    """## Pull historical and turn into chart"""
+    historical_service = MeasurementService()
+    series = historical_service.get_series(smelloscope.get_name())
+    if series:
+        charts.register(make_chart(series))
+
+    return render_template(
+        "alcohol.html",
+        smell_sources=[smelloscope],
+    )
 
 @app.route("/nickname")
 @inject
@@ -95,7 +116,7 @@ def handle_exception(e):
         return e
     logger.exception(e)
 
-    return render_template("error.html", e=e.message)
+    return render_template("error.html", e=str(e))
 
 
 # Setup Flask Injector, this has to happen AFTER routes are added
