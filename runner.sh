@@ -6,3 +6,4 @@ pip install -r requirements.txt
 echo "Starting brew monitor"
 nohup python3 -u ./main.py > brew.log &
 echo "Brew monitor started"
+return

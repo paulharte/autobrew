@@ -31,9 +31,8 @@ def _make_options(series: MeasurementSeries) -> dict:
     return {
         "title": series.get_name(),
         "legend": {"position": "none"},
-        "width": '90%',
         "height": 500,
-        "chartArea": {'left': 5, 'top': 20, 'right': 20,  'width': '85%', 'height': 500},
+        "chartArea": {'left': 5, 'top': 20, 'right': 20,  'height': 500},
         "vAxis": {
             "viewWindow": {
                 "min": min_amt - vertical_padding,
