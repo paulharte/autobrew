@@ -6,7 +6,7 @@ from injector import inject, singleton
 from autobrew.brew_settings import SAMPLE_INTERVAL_SECONDS, APP_LOGGING_NAME
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
-from autobrew.smelloscope.smelloscope import Smelloscope
+from autobrew.smelloscope.smelloscope import Smelloscope, SmelloscopeNotAvailable
 from autobrew.temperature.probeTempApi import InvalidTemperatureFileError
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
 
@@ -44,7 +44,10 @@ class MeasurementTaker(object):
                     logger.exception(e)
                     self.temp_factory.remove_temp_source(source)
 
-            smell_measurement = self.smell_source.get_measurement()
-            self.measurement_service.save_measurement(smell_measurement)
-            logger.info("Alcohol measurement taken: " + str(smell_measurement))
+            try:
+                smell_measurement = self.smell_source.get_measurement()
+                self.measurement_service.save_measurement(smell_measurement)
+                logger.info("Alcohol measurement taken: " + str(smell_measurement))
+            except SmelloscopeNotAvailable as e:
+                logger.error("No alcohol measurement taken as smelloscope offline" + str(e))
             time.sleep(delay)

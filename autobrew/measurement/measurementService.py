@@ -37,6 +37,6 @@ class MeasurementService(object):
         filenames = get_storage_files()
         for filename in filenames:
             storage = MeasurementStorage(filename)
-            if storage.name == series.name:
+            if storage.name == series.get_name():
                 storage.set_series(series)
                 return series

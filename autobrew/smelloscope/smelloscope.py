@@ -14,7 +14,7 @@ class Smelloscope(object):
 
     NAME = "Alcohol_Smelloscope"
 
-    def __init__(self):
+    def _setupMcp(self):
         # create the spi bus
         spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
 
@@ -28,9 +28,14 @@ class Smelloscope(object):
         return self.NAME
 
     def _get_voltage(self) -> float:
-        # create an analog input channel on pin 0
-        chan = AnalogIn(self.mcp, mcp3008.P0)
-        return chan.voltage
+        try:
+            if not self.mcp:
+                self._setupMcp()
+            # create an analog input channel on pin 0
+            chan = AnalogIn(self.mcp, mcp3008.P0)
+            return chan.voltage
+        except Exception as e:
+            raise SmelloscopeNotAvailable(e)
 
     def get_alcohol_level(self) -> float:
         return SMELLOSCOPE_OFFSET - self._get_voltage()
@@ -40,3 +45,7 @@ class Smelloscope(object):
         alcohol_level = self.get_alcohol_level()
         measurement = Measurement(self.NAME, time, alcohol_level)
         return measurement
+
+
+class SmelloscopeNotAvailable(RuntimeError):
+    pass

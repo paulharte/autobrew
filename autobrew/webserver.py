@@ -11,7 +11,7 @@ from autobrew.charts.make_chart import make_chart
 from autobrew.dependencies import autobrew_injector
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
-from autobrew.smelloscope.smelloscope import Smelloscope
+from autobrew.smelloscope.smelloscope import Smelloscope, SmelloscopeNotAvailable
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
 from autobrew.utils.googlecharts_flask_patch_utils import prep_data
 
@@ -44,19 +44,18 @@ def brew_monitor(temperature_sources: TempSourceFactory):
 
 @app.route("/alcohol_level", methods=["GET"])
 @inject
-def alcohol_level(temperature_sources: TempSourceFactory, smelloscope: Smelloscope):
+def alcohol_level(smelloscope: Smelloscope):
 
-    # TODO: make robust to smelloscope initialisation exceptions
     """## Pull historical and turn into chart"""
     historical_service = MeasurementService()
-    series = historical_service.get_series(smelloscope.get_name())
-    if series:
-        charts.register(make_chart(series))
-
-    return render_template(
-        "alcohol.html",
-        smell_sources=[smelloscope],
-    )
+    try:
+        series = historical_service.get_series(smelloscope.get_name())
+        if series:
+            charts.register(make_chart(series))
+        return render_template("alcohol.html", smell_sources=[smelloscope])
+    except SmelloscopeNotAvailable as e:
+        logger.exception(e)
+        return render_template("error.html", message="Alcohol measurement not possible, as no sources found")
 
 @app.route("/nickname")
 @inject

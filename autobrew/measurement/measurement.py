@@ -14,3 +14,6 @@ class Measurement(object):
 
     def __str__(self):
         return "%s - %s - %s" % (self.source_name, self.time, self.measurement_amt)
+
+    def __eq__(self, other):
+        return (self.source_name == other.source_name) & (self.time == other.time) & (self.measurement_amt == other.measurement_amt)
