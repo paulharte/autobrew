@@ -26,12 +26,22 @@ def read_temp_raw(file: str):
 
 
 def read_temp(file: str) -> float:
-    lines = read_temp_raw(file)
-    while lines[0].strip()[-3:] != "YES":
-        time.sleep(0.2)
-        lines = read_temp_raw()
+    lines = _extract_valid_file_lines(file)
     equals_pos = lines[1].find("t=")
     if equals_pos != -1:
-        temp_string = lines[1][equals_pos + 2 :]
+        temp_string = lines[1][equals_pos + 2:]
         temp_c = float(temp_string) / 1000.0
         return temp_c
+
+
+def _extract_valid_file_lines(file: str):
+    for i in range(0, 100):
+        lines = read_temp_raw(file)
+        if lines[0].strip()[-3:] == "YES":
+            return lines
+        time.sleep(0.2)
+    raise InvalidTemperatureFileError(file)
+
+
+class InvalidTemperatureFileError(RuntimeError):
+    pass

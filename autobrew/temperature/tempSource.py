@@ -4,6 +4,8 @@ from autobrew.measurement.measurement import Measurement
 from autobrew.temperature.probeTempApi import read_temp
 
 PROBE_PREFIX = "Probe_"
+RETRY_MAX_AMOUNT = 50.0
+RETRY_MIN_AMOUNT = 0.0
 
 
 class TempSource(object):
@@ -49,5 +51,8 @@ class TempSource(object):
             return self.device_file[last_slash_index:].strip("/")
         return self.device_file[second_last_slash_index:last_slash_index].strip("/")
 
-    def _get_temperature(self):
-        return read_temp(self.device_file)
+    def _get_temperature(self) -> float:
+        temp = read_temp(self.device_file)
+        # Retry if we get an extreme value back
+        if temp > RETRY_MAX_AMOUNT | temp < RETRY_MIN_AMOUNT:
+            return read_temp(self.device_file)

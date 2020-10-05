@@ -7,6 +7,7 @@ from autobrew.brew_settings import SAMPLE_INTERVAL_SECONDS, APP_LOGGING_NAME
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscope import Smelloscope
+from autobrew.temperature.probeTempApi import InvalidTemperatureFileError
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
 
 logger = logging.getLogger(APP_LOGGING_NAME)
@@ -38,7 +39,7 @@ class MeasurementTaker(object):
                     if source.is_primary:
                         self.heat_control.adjust(measurement.measurement_amt)
 
-                except OSError as e:
+                except (OSError, InvalidTemperatureFileError) as e:
                     logger.error("Could not take temperature measurement")
                     logger.exception(e)
                     self.temp_factory.remove_temp_source(source)
