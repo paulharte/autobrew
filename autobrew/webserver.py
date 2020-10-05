@@ -26,13 +26,10 @@ logger = logging.getLogger(APP_LOGGING_NAME)
 
 @app.route("/", methods=["GET"])
 @inject
-def brew_monitor(temperature_sources: TempSourceFactory, smelloscope: Smelloscope):
+def brew_monitor(temperature_sources: TempSourceFactory):
     current_temp_sources = temperature_sources.get_all_temp_sources()
+    active_source_names = [source.get_name() for source in current_temp_sources]
 
-    # TODO: make robust to smelloscope initialisation exceptions
-    active_source_names = [source.get_name() for source in current_temp_sources] + [
-        smelloscope.get_name()
-    ]
     """## Pull historical and turn into chart"""
     historical_service = MeasurementService()
     for series in historical_service.get_all_series():
@@ -41,8 +38,7 @@ def brew_monitor(temperature_sources: TempSourceFactory, smelloscope: Smelloscop
 
     return render_template(
         "main_template.html",
-        temp_sources=current_temp_sources,
-        smell_sources=[smelloscope],
+        temp_sources=current_temp_sources
     )
 
 
