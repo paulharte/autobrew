@@ -54,5 +54,6 @@ class TempSource(object):
     def _get_temperature(self) -> float:
         temp = read_temp(self.device_file)
         # Retry if we get an extreme value back
-        if temp > RETRY_MAX_AMOUNT | temp < RETRY_MIN_AMOUNT:
+        if (temp > RETRY_MAX_AMOUNT) | (temp < RETRY_MIN_AMOUNT):
             return read_temp(self.device_file)
+        return temp
