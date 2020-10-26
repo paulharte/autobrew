@@ -9,7 +9,7 @@
     <br>
     <div class="card box-shadow">
         <div class="card-header">
-            <h3>Live {{ source.get_name() }} temperature is {{ source._get_temperature() }}
+            <h3>Live {{ source.get_name() }} temperature is <span id="temp_{{ source.get_name() }}">...</span>
             {% if source.is_primary %}
                 <span class="badge badge-secondary">PRIMARY</span>
             {% else %}
@@ -22,7 +22,24 @@
             {{ charts[source.get_name()] }}
         </div>
     </div>
-
     {% endfor %}
-
+{% endblock %}
+{% block jquery_scripts %}
+<script type="text/javascript">
+        function get_live_temp(probe_name) {
+            var url = '/live_temperature?name=' + probe_name;
+            var id = "#temp_" + probe_name;
+            $.get(url).done(function(response) {
+                $(id).text(response['temperature']);
+            }).fail(function() {
+                $(id).text("'Error: Could not pull temperature.'");
+                console.log("Live temperature pull failed");
+            });
+        }
+        $( document ).ready(function() {
+            {% for source in temp_sources %}
+                get_live_temp("{{ source.get_name() }}");
+            {% endfor %}
+        });
+    </script>
 {% endblock %}

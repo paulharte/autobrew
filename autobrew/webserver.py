@@ -1,6 +1,6 @@
 import logging
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import flask_googlecharts
 from flask_injector import FlaskInjector
 from injector import inject
@@ -36,10 +36,28 @@ def brew_monitor(temperature_sources: TempSourceFactory):
         if series.get_name() in active_source_names:
             charts.register(make_chart(series))
 
-    return render_template(
-        "main_template.html",
-        temp_sources=current_temp_sources
-    )
+    return render_template("main_template.html", temp_sources=current_temp_sources)
+
+
+@app.route("/live_temperature", methods=["GET"])
+@inject
+def get_live_temp(temperature_sources: TempSourceFactory):
+    if not request.args or "name" not in request.args:
+        abort(400)
+    name = request.args.get("name")
+    current_temp_sources = temperature_sources.get_all_temp_sources()
+    for source in current_temp_sources:
+        if name == source.get_name():
+            measurement = source.get_temperature_measurement()
+            payload = {
+                "temperature": measurement.measurement_amt,
+                "time": measurement.time,
+                "name": measurement.source_name,
+            }
+            return jsonify(payload)
+    # If the name is not present, abort
+    logger.error("Nad name: %s", name)
+    abort(400)
 
 
 @app.route("/alcohol_level", methods=["GET"])
@@ -55,7 +73,11 @@ def alcohol_level(smelloscope: Smelloscope):
         return render_template("alcohol.html", smell_sources=[smelloscope])
     except SmelloscopeNotAvailable as e:
         logger.exception(e)
-        return render_template("error.html", message="Alcohol measurement not possible, as no sources found")
+        return render_template(
+            "error.html",
+            message="Alcohol measurement not possible, as no sources found",
+        )
+
 
 @app.route("/nickname")
 @inject

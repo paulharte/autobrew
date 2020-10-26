@@ -15,10 +15,14 @@ class TestTempSource(TestCase):
         self.assertEqual(source2.get_display_name(), tempSource.PROBE_PREFIX + "a")
 
         source3 = tempSource.TempSource("/sys/bus/w1/devices/uniquename/w1_slave")
-        self.assertEqual(source3.get_display_name(), tempSource.PROBE_PREFIX + "uniquename")
+        self.assertEqual(
+            source3.get_display_name(), tempSource.PROBE_PREFIX + "uniquename"
+        )
 
         source4 = tempSource.TempSource("sys/bus/w1/devices/28-041651652cff/w1_slave")
-        self.assertEqual(source4.get_display_name(), tempSource.PROBE_PREFIX + "28-041651652cff")
+        self.assertEqual(
+            source4.get_display_name(), tempSource.PROBE_PREFIX + "28-041651652cff"
+        )
 
     def test_equality(self):
         source1 = tempSource.TempSource("path/to/a/filename2")
@@ -28,7 +32,10 @@ class TestTempSource(TestCase):
         self.assertEqual(source1, source2)
 
     def test_temp(self):
-        with mock.patch('test.temperature.test_tempSource.tempSource.read_temp', return_value=20.0):
+        with mock.patch(
+            "test.temperature.test_tempSource.tempSource.read_temp", return_value=20.0
+        ):
             source1 = tempSource.TempSource("path/to/a/filename2")
-            self.assertEqual(source1.get_temperature_measurement().measurement_amt, 20.0)
-
+            self.assertEqual(
+                source1.get_temperature_measurement().measurement_amt, 20.0
+            )

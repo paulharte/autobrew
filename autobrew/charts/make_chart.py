@@ -1,4 +1,3 @@
-
 from autobrew.measurement.measurementSeries import MeasurementSeries
 import flask_googlecharts
 from autobrew.utils.googlecharts_flask_patch_utils import prep_data
@@ -6,7 +5,6 @@ from autobrew.utils.googlecharts_flask_patch_utils import prep_data
 # Patch can be removed when this PR is merged
 # https://github.com/wikkiewikkie/flask-googlecharts/pull/6
 flask_googlecharts.utils.prep_data = prep_data
-
 
 
 def make_chart(series: MeasurementSeries):
@@ -32,7 +30,7 @@ def _make_options(series: MeasurementSeries) -> dict:
         "title": series.get_name(),
         "legend": {"position": "none"},
         "height": 500,
-        "chartArea": {'left': 5, 'top': 20, 'right': 20,  'height': 500},
+        "chartArea": {"left": 5, "top": 20, "right": 20, "height": 500},
         "vAxis": {
             "viewWindow": {
                 "min": min_amt - vertical_padding,

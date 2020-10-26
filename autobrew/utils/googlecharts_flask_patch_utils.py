@@ -10,35 +10,42 @@ def prep_data(data):
 
     TODO:  Implement Timeofday formatting"""
 
-    for row in data['rows']:
-        for val in row['c']:
-            if isinstance(val['v'], datetime.datetime):
-                milliseconds = round(val['v'].microsecond / 1000)  # JS takes milliseconds, not microseconds
-                val['v'] = "Date({}, {}, {}, {}, {}, {}, {})".format(val['v'].year,
-                                                                     val['v'].month-1,  # JS Dates are 0-based
-                                                                     val['v'].day,
-                                                                     val['v'].hour,
-                                                                     val['v'].minute,
-                                                                     val['v'].second,
-                                                                     milliseconds
-                                                                     )
-            elif isinstance(val['v'], datetime.date):
-                val['v'] = "Date({}, {}, {})".format(val['v'].year,
-                                                     val['v'].month-1,  # JS Dates are 0-based
-                                                     val['v'].day)
+    for row in data["rows"]:
+        for val in row["c"]:
+            if isinstance(val["v"], datetime.datetime):
+                milliseconds = round(
+                    val["v"].microsecond / 1000
+                )  # JS takes milliseconds, not microseconds
+                val["v"] = "Date({}, {}, {}, {}, {}, {}, {})".format(
+                    val["v"].year,
+                    val["v"].month - 1,  # JS Dates are 0-based
+                    val["v"].day,
+                    val["v"].hour,
+                    val["v"].minute,
+                    val["v"].second,
+                    milliseconds,
+                )
+            elif isinstance(val["v"], datetime.date):
+                val["v"] = "Date({}, {}, {})".format(
+                    val["v"].year,
+                    val["v"].month - 1,  # JS Dates are 0-based
+                    val["v"].day,
+                )
     return data
 
 
 def render_data(columns, rows):
     # type: (list, list) -> dict
-    data = {'cols': [], 'rows': []}
+    data = {"cols": [], "rows": []}
 
     for column in columns:
-        data['cols'].append({"id": "", "label": column[1], "pattern": "", "type": column[0]})
+        data["cols"].append(
+            {"id": "", "label": column[1], "pattern": "", "type": column[0]}
+        )
 
     for row in rows:
-        new_row = {'c': []}
+        new_row = {"c": []}
         for field in row:
-            new_row['c'].append({"v": field, "f": None})
-        data['rows'].append(new_row)
+            new_row["c"].append({"v": field, "f": None})
+        data["rows"].append(new_row)
     return prep_data(data)

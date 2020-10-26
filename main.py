@@ -8,7 +8,6 @@ from autobrew.measurement_taker import MeasurementTaker
 from autobrew.webserver import run_webserver
 
 
-
 def set_logging(level=logging.DEBUG):
     logger = logging.getLogger(APP_LOGGING_NAME)
     logger.setLevel(level)

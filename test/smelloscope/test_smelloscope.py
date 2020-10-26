@@ -4,7 +4,6 @@ from autobrew.smelloscope.smelloscope import Smelloscope, SmelloscopeNotAvailabl
 
 
 class TestSmelloscope(TestCase):
-
     def test_exception(self):
         sm = Smelloscope()
         self.assertRaises(SmelloscopeNotAvailable, sm.get_measurement)

@@ -49,5 +49,7 @@ class MeasurementTaker(object):
                 self.measurement_service.save_measurement(smell_measurement)
                 logger.info("Alcohol measurement taken: " + str(smell_measurement))
             except SmelloscopeNotAvailable as e:
-                logger.error("No alcohol measurement taken as smelloscope offline" + str(e))
+                logger.error(
+                    "No alcohol measurement taken as smelloscope offline" + str(e)
+                )
             time.sleep(delay)
