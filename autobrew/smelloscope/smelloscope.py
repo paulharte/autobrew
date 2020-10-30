@@ -8,12 +8,16 @@ from adafruit_mcp3xxx.analog_in import AnalogIn
 
 from autobrew.brew_settings import SMELLOSCOPE_OFFSET
 from autobrew.measurement.measurement import Measurement
+from autobrew.temperature.abstractSource import AbstractSource
 
 
-class Smelloscope(object):
+class Smelloscope(AbstractSource):
 
     NAME = "Alcohol_Smelloscope"
     mcp = None
+
+    def __init__(self):
+        super()
 
     def _setupMcp(self):
         # create the spi bus

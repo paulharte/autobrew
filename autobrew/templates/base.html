@@ -18,7 +18,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('brew_monitor') }}">Temperature</a>
+        <a class="nav-link" href="{{ url_for('temperature_monitor') }}">Temperature</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('alcohol_level') }}">Alcohol Level</a>
@@ -30,7 +30,7 @@
   </div>
 </nav>
 <div align="center" class="container">
-    <img src="{{ url_for('static', filename='logo.gif') }}" href="{{ url_for('brew_monitor') }}">
+    <img src="{{ url_for('static', filename='logo.gif') }}" href="{{ url_for('temperature_monitor') }}">
     <br>
     {% block content %}{% endblock %}
 </div>

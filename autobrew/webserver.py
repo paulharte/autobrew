@@ -26,7 +26,7 @@ logger = logging.getLogger(APP_LOGGING_NAME)
 
 @app.route("/", methods=["GET"])
 @inject
-def brew_monitor(temperature_sources: TempSourceFactory):
+def temperature_monitor(temperature_sources: TempSourceFactory):
     current_temp_sources = temperature_sources.get_all_temp_sources()
     active_source_names = [source.get_name() for source in current_temp_sources]
 
@@ -56,7 +56,26 @@ def get_live_temp(temperature_sources: TempSourceFactory):
             }
             return jsonify(payload)
     # If the name is not present, abort
-    logger.error("Nad name: %s", name)
+    logger.error("Bad name: %s", name)
+    abort(400)
+
+@app.route("/live_alcohol_level", methods=["GET"])
+@inject
+def get_live_alcohol_level(smelloscope: Smelloscope):
+    if not request.args or "name" not in request.args:
+        abort(400)
+    name = request.args.get("name")
+
+    if name == smelloscope.get_name():
+        measurement = smelloscope.get_measurement()
+        payload = {
+            "alcohol_level": measurement.measurement_amt,
+            "time": measurement.time,
+            "name": measurement.source_name,
+        }
+        return jsonify(payload)
+    # If the name is not present, abort
+    logger.error("Bad name: %s", name)
     abort(400)
 
 
@@ -105,6 +124,13 @@ def get_heat_status(heater: HeatControl):
     status = "ON" if heater.is_power_on() else "OFF"
     message = "Heating status is: " + status
     return render_template("success.html", success_message=message)
+
+
+@app.route("/config", methods=["GET"])
+@inject
+def config(source_factory: TempSourceFactory, smelloscope: Smelloscope):
+
+    return render_template("config.html", smell_sources=[smelloscope], temp_sources=source_factory.get_all_temp_sources())
 
 
 @app.route("/set_primary")

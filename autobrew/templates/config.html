@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Configuration{% endblock %}
+{% block content %}
+    <h3>Temperature Sources</h3>
+    <div class="card-deck mb-3 text-center">
+    {% for temp_source in temp_sources %}
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">{{ temp_source.get_name() }}</div>
+            <div class="card-body">
+                Source Name: {{ temp_source.get_name() }} <br>
+                Nickname: {{ temp_source.nickname }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <h3><br><br>Alcohol Level Sources</h3>
+    <div class="card-deck mb-3 text-center">
+    {% for smell_source in smell_sources %}
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">{{ smell_source.get_name() }}</div>
+            <div class="card-body">
+                Source Name: {{ smell_source.get_name() }} <br>
+                Nickname: {{ smell_source.nickname }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

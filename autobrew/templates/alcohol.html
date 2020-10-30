@@ -8,11 +8,30 @@
     {% for smell_source in smell_sources %}
     <div class="card box-shadow">
         <div class="card-header">
-            <h3>Live {{ smell_source.get_name() }} alcohol level is {{ smell_source.get_alcohol_level() }}</h3>
+            <h3>Live {{ smell_source.get_name() }} alcohol level is <span id="alcohol_{{ smell_source.get_name() }}">...</span></h3>
         </div>
         <div class="card-body">
             {{ charts[smell_source.get_name()] }}
         </div>
     </div>
     {% endfor %}
+{% endblock %}
+{% block jquery_scripts %}
+<script type="text/javascript">
+        function get_live_alcohol(name) {
+            var url = '/live_alcohol_level?name=' + name;
+            var id = "#alcohol_" + name;
+            $.get(url).done(function(response) {
+                $(id).text(response['alcohol_level']);
+            }).fail(function() {
+                $(id).text("'Error: Could not pull alcohol_level.'");
+                console.log("Live alcohol_level pull failed");
+            });
+        }
+        $( document ).ready(function() {
+            {% for smell_source in smell_sources %}
+                get_live_alcohol("{{ smell_source.get_name() }}");
+            {% endfor %}
+        });
+    </script>
 {% endblock %}
