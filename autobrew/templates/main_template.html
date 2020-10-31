@@ -9,7 +9,7 @@
     <br>
     <div class="card box-shadow">
         <div class="card-header">
-            <h3>Live {{ source.get_name() }} temperature is <span id="temp_{{ source.get_name() }}">...</span>
+            <h3>Live {{ source.get_display_name() }} temperature is <span id="temp_{{ source.get_name() }}">...</span>
             {% if source.is_primary %}
                 <span class="badge badge-secondary">PRIMARY</span>
             {% else %}

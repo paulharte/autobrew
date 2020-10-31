@@ -109,7 +109,7 @@ def set_nickname(source_factory: TempSourceFactory):
     source = source_factory.get_temp_source(name)
     if not source:
         return render_template(
-            "success.html", success_message="Could not find probe named: " + name
+            "error.html", message="Could not find probe named: " + name
         )
 
     source.set_nickname(nickname)

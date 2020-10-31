@@ -1,0 +1,24 @@
+{% macro config_item(source) -%}
+<div class="card mb-4 box-shadow">
+    <div class="card-header">{{ source.get_name() }}</div>
+    <div class="card-body">
+        <form action="{{ url_for('set_nickname') }}">
+          <div class="form-group row">
+            <label for="name" class="col-md-3 col-form-label">Source Name</label>
+            <div class="col-md-9">
+              <input type="text" readonly class="form-control-plaintext" id="name" name="name" value="{{ source.get_name() }}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nickname" class="col-md-3 col-form-label">Nickname</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="None">
+            </div>
+              <div class="col-md-3">
+              <input class="btn btn-primary" type="submit" value="Rename" >
+            </div>
+          </div>
+        </form>
+    </div>
+</div>
+{%- endmacro %}
