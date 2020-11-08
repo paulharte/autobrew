@@ -6,13 +6,16 @@ class AbstractSource(object):
     def __init__(self):
         self.is_primary = False
 
-    def set_nickname(self, name: str):
-        self.nickname = name
+    def set_nickname(self, nick: str):
+        self.nickname = nick
+
+    def get_nickname(self) -> str:
+        return self.nickname
 
     def set_primary(self, is_primary):
         self.is_primary = is_primary
 
-    def get_name(self):
+    def get_name(self) -> str:
         pass
 
     def get_display_name(self):

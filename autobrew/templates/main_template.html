@@ -12,10 +12,6 @@
             <h3>Live {{ source.get_display_name() }} temperature is <span id="temp_{{ source.get_name() }}">...</span>
             {% if source.is_primary %}
                 <span class="badge badge-secondary">PRIMARY</span>
-            {% else %}
-            <a href="{{ url_for('set_primary', name=source.get_name()) }}">
-                <button type="button" class="btn btn-sm btn-primary">Make primary source for heat control</button>
-            </a>
             {% endif %}</h3>
         </div>
         <div class="card-body">

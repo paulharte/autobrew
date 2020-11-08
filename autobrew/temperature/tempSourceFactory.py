@@ -10,12 +10,14 @@ class TempSourceFactory(ABC):
     temp_sources: List[TempSource]
 
     @abstractmethod
-    def get_temp_source(self, name: str) -> TempSource:
-        pass
-
-    @abstractmethod
     def get_all_temp_sources(self) -> List[TempSource]:
         pass
+
+    def get_temp_source(self, name: str) -> TempSource:
+        sources = self.get_all_temp_sources()
+        for source in sources:
+            if name in source.get_name():
+                return source
 
     def remove_temp_source(self, to_remove: TempSource):
         self.temp_sources.remove(to_remove)
@@ -36,12 +38,6 @@ class ProbeTempSourceFactory(TempSourceFactory):
     def __init__(self):
         self.temp_sources = []
 
-    def get_temp_source(self, name: str) -> TempSource:
-        sources = self.get_all_temp_sources()
-        for source in sources:
-            if name in source.get_name():
-                return source
-
     def get_all_temp_sources(self) -> List[TempSource]:
         files = get_temp_sources()
         for file in files:
@@ -49,3 +45,5 @@ class ProbeTempSourceFactory(TempSourceFactory):
             if potential_new_source not in self.temp_sources:
                 self.temp_sources.append(potential_new_source)
         return self.temp_sources
+
+

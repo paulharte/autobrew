@@ -18,6 +18,7 @@ class Smelloscope(AbstractSource):
 
     def __init__(self):
         super()
+        self.is_primary = True
 
     def _setupMcp(self):
         # create the spi bus

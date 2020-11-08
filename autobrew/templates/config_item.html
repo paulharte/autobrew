@@ -2,6 +2,13 @@
 <div class="card mb-4 box-shadow">
     <div class="card-header">{{ source.get_name() }}</div>
     <div class="card-body">
+        {% if source.is_primary %}
+            <span class="badge badge-secondary">PRIMARY</span>
+        {% else %}
+        <a href="{{ url_for('set_primary', name=source.get_name()) }}">
+            <button type="button" class="btn btn-sm btn-primary">Make primary source for heat control</button>
+        </a>
+        {% endif %}
         <form action="{{ url_for('set_nickname') }}">
           <div class="form-group row">
             <label for="name" class="col-md-3 col-form-label">Source Name</label>
@@ -12,7 +19,7 @@
           <div class="form-group row">
             <label for="nickname" class="col-md-3 col-form-label">Nickname</label>
             <div class="col-md-6">
-              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="None">
+              <input type="text" class="form-control" id="nickname" name="nickname" placeholder="None" value="{{ source.get_nickname() }}">
             </div>
               <div class="col-md-3">
               <input class="btn btn-primary" type="submit" value="Rename" >

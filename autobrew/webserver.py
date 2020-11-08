@@ -100,22 +100,28 @@ def alcohol_level(smelloscope: Smelloscope):
 
 @app.route("/nickname")
 @inject
-def set_nickname(source_factory: TempSourceFactory):
+def set_nickname(source_factory: TempSourceFactory, smelloscope: Smelloscope):
     if not request.args or "name" not in request.args or "nickname" not in request.args:
         abort(400)
     name = request.args.get("name")
     nickname = request.args.get("nickname")
 
     source = source_factory.get_temp_source(name)
-    if not source:
-        return render_template(
-            "error.html", message="Could not find probe named: " + name
-        )
-
-    source.set_nickname(nickname)
     message = name + " successfully updated nickname to " + nickname
-    logger.info(message)
-    return render_template("success.html", success_message=message)
+
+    if source:
+        source.set_nickname(nickname)
+        logger.info(message)
+        return render_template("success.html", success_message=message)
+
+    if name == smelloscope.get_name():
+        smelloscope.set_nickname(nickname)
+        logger.info(message)
+        return render_template("success.html", success_message=message)
+
+    return render_template(
+        "error.html", message="Could not find probe named: " + name
+    )
 
 
 @app.route("/heat_status", methods=["GET"])
@@ -146,10 +152,12 @@ def set_primary(source_factory: TempSourceFactory):
             name
             + " successfully set as primary temperature source. Heat switching is enabled"
         )
+        logger.info(message)
+        return render_template("success.html", success_message=message)
     else:
         message = "Could not find probe named: " + name
-    logger.info(message)
-    return render_template("success.html", success_message=message)
+        logger.error(message)
+        return render_template("error.html", message=message)
 
 
 @app.errorhandler(Exception)
