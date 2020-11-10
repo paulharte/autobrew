@@ -8,7 +8,7 @@ from autobrew.temperature.tempSourceFactory import (
     ProbeTempSourceFactory,
 )
 
-from injector import singleton, Injector
+from injector import singleton
 import platform
 import logging
 
@@ -18,39 +18,23 @@ logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 def configure(binder):
-    binder.bind(TempSourceFactory, to=getTempSourceFactoryClass(), scope=singleton)
-    binder.bind(Smelloscope, to=getSmellClass(), scope=singleton)
-    binder.bind(HeatControl, to=getHeatClass(), scope=singleton)
-
-
-def getTempSourceFactoryClass():
-    """ We want to mock out the temperature probes on windows"""
     if platform.system() == "Windows":
-        logger.info("Running on Windows, using mock temperature sources")
-        return MockTempSourceFactory
+        logger.info("Running on Windows, using mock temperature and smell sources")
+        configure_mocks(binder)
     else:
-        logger.debug("Not Running on Windows, using real probes")
-        return ProbeTempSourceFactory
+        logger.debug(
+            "Not Running on Windows, using Raspberry Pi smell and temperature sources"
+        )
+        configure_real(binder)
 
 
-def getSmellClass():
-    """ We want to mock out the temperature probes on windows"""
-    if platform.system() == "Windows":
-        logger.info("Running on Windows, using mock temperature sources")
-        return MockSmelloscope
-    else:
-        logger.debug("Not Running on Windows, using real smelloscope")
-        return Smelloscope
+def configure_real(binder):
+    binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
+    binder.bind(Smelloscope, to=Smelloscope, scope=singleton)
+    binder.bind(HeatControl, to=HeatControl, scope=singleton)
 
 
-def getHeatClass():
-    """ We want to mock out the temperature probes on windows"""
-    if platform.system() == "Windows":
-        logger.info("Running on Windows, using mock temperature sources")
-        return MockHeatControl
-    else:
-        logger.debug("Not Running on Windows, using USD heat Control")
-        return HeatControl
-
-
-autobrew_injector = Injector([configure])
+def configure_mocks(binder):
+    binder.bind(TempSourceFactory, to=MockTempSourceFactory, scope=singleton)
+    binder.bind(Smelloscope, to=MockSmelloscope, scope=singleton)
+    binder.bind(HeatControl, to=MockHeatControl, scope=singleton)

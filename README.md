@@ -11,7 +11,7 @@
 - Temperature control to optimize your brew performance
 - Alcohol level estimation
 - Pi hosted website to monitor your brew as it progresses
-  - Temperature and alcohol level realtime graphs
+  - Temperature and alcohol level graphs
 
 <h4>Hardware required:</h4>
 

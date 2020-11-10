@@ -3,12 +3,12 @@ import logging
 from flask import Flask, render_template, request, jsonify
 import flask_googlecharts
 from flask_injector import FlaskInjector
-from injector import inject
+from injector import inject, Injector
 from werkzeug.exceptions import abort, HTTPException
 
 from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.charts.make_chart import make_chart
-from autobrew.dependencies import autobrew_injector
+from autobrew.dependencies import configure
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscope import Smelloscope, SmelloscopeNotAvailable
@@ -58,6 +58,7 @@ def get_live_temp(temperature_sources: TempSourceFactory):
     # If the name is not present, abort
     logger.error("Bad name: %s", name)
     abort(400)
+
 
 @app.route("/live_alcohol_level", methods=["GET"])
 @inject
@@ -119,9 +120,7 @@ def set_nickname(source_factory: TempSourceFactory, smelloscope: Smelloscope):
         logger.info(message)
         return render_template("success.html", success_message=message)
 
-    return render_template(
-        "error.html", message="Could not find probe named: " + name
-    )
+    return render_template("error.html", message="Could not find probe named: " + name)
 
 
 @app.route("/heat_status", methods=["GET"])
@@ -136,7 +135,11 @@ def get_heat_status(heater: HeatControl):
 @inject
 def config(source_factory: TempSourceFactory, smelloscope: Smelloscope):
 
-    return render_template("config.html", smell_sources=[smelloscope], temp_sources=source_factory.get_all_temp_sources())
+    return render_template(
+        "config.html",
+        smell_sources=[smelloscope],
+        temp_sources=source_factory.get_all_temp_sources(),
+    )
 
 
 @app.route("/set_primary")
@@ -170,16 +173,13 @@ def handle_exception(e):
     return render_template("error.html", e=str(e))
 
 
-# Setup Flask Injector, this has to happen AFTER routes are added
-FlaskInjector(app=app, injector=autobrew_injector)
-
-
-def run_webserver(debug=False):
+def run_webserver(injector: Injector, debug=False):
     logger.info("Starting webserver")
+    FlaskInjector(app=app, injector=injector)
     if debug:
         logger.info("Webserver debug set to on")
     app.run(debug=debug, use_reloader=debug, host="0.0.0.0", port=7070)
 
 
 if __name__ == "__main__":
-    run_webserver(True)
+    run_webserver(Injector([configure]), True)

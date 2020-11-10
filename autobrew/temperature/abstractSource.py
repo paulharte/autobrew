@@ -1,4 +1,3 @@
-
 class AbstractSource(object):
     nickname = None
     is_primary = False

@@ -45,5 +45,3 @@ class ProbeTempSourceFactory(TempSourceFactory):
             if potential_new_source not in self.temp_sources:
                 self.temp_sources.append(potential_new_source)
         return self.temp_sources
-
-

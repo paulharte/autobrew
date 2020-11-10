@@ -27,7 +27,6 @@ class TempSource(AbstractSource):
         time = datetime.datetime.now()
         return Measurement(self.get_name(), time, temp)
 
-
     def _get_just_filename(self):
         last_slash_index = self.device_file.rstrip("/").rfind("/")
         if last_slash_index < 0:
