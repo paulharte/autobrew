@@ -1,9 +1,11 @@
-# created by virtualenv automatically
+
 /venv
 /autobrew/storage/*
 /.venv
 /.venv/*
 /.idea
-*__pycache__*
+*_pycache_*
 *.pyc
 *.log
+/.pytest_cache
+*.pytest_cache*
