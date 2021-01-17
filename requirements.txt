@@ -1,3 +1,4 @@
+boto3
 board
 Adafruit-Blinka==5.4.0
 adafruit-circuitpython-busdevice==5.0.1
