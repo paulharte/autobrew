@@ -7,12 +7,15 @@
 
 <h3>Automated beer brewing system for Rasberry Pi</h3>
 
+ ![Autobrew Screnshot](images/autobrew_screenshot.jpg?raw=true "Autobrew mobile screenshot")
+
 <h4>Features</h4>
 
 - Temperature control to optimize your brew performance
 - Alcohol level estimation
 - Pi hosted website to monitor your brew as it progresses
   - Temperature and alcohol level graphs
+- Custom logos 
 
 <h4>Hardware required:</h4>
 
@@ -43,7 +46,7 @@ https://www.circuitbasics.com/raspberry-pi-ds18b20-temperature-sensor-tutorial/
 
 <h4>Smell-o-scope wiring (MQ-3 alcohol sensor)</h4>
 
-![MQ-3 wiring](/images/mq3-connection.png)
+![MQ-3 wiring](images/mq3-connection.png)
 
 1. Enable SPI
 run command "sudo raspi-config"
