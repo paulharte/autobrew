@@ -22,7 +22,9 @@ def configure(binder):
         logger.info("Running on Windows, using mock temperature and smell sources")
         configure_mocks(binder)
     else:
-        logger.debug( "Not Running on Windows, using Raspberry Pi smell and temperature sources" )
+        logger.debug(
+            "Not Running on Windows, using Raspberry Pi smell and temperature sources"
+        )
         configure_real(binder)
 
 

@@ -1,13 +1,13 @@
 <h1>Autobrew</h1>
 
-![Build Status](https://github.com/paulharte/autobrew/workflows/Tests/badge.svg)
+![Build Status](https://github.com/paulharte/autobrew/workflows/Python%20CI%20CD/badge.svg)
 ![Build Status](https://github.com/paulharte/autobrew/workflows/Node.js%20CI/badge.svg)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![GitHub license](https://img.shields.io/github/license/paulharte/autobrew.svg)](https://github.com/paulharte/autobrew/blob/master/LICENSE)
 
 <h3>Automated beer brewing system for Rasberry Pi</h3>
 
- ![Autobrew Screnshot](images/autobrew_screenshot.jpg?raw=true "Autobrew mobile screenshot")
+ ![Autobrew Screnshot](images/desktop-screenshot.png?raw=true "Autobrew mobile screenshot")
 
 <h4>Features</h4>
 

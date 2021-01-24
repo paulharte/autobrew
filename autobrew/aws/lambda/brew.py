@@ -1,10 +1,7 @@
 import json
 
 
-
-
-class Serializable():
-
+class Serializable:
     def to_dict(self):
         return self.__dict__
 
@@ -33,9 +30,4 @@ class Brew(Serializable):
     def __init__(self):
         pass
 
-    #TODO: add validation here
-
-
-
-
-
+    # TODO: add validation here

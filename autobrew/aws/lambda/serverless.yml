@@ -23,7 +23,7 @@ provider:
         - dynamoDB:GetItem
         - dynamoDB:UpdateItem
         - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountID}:table/autobrew_brew
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_brew
 
 # you can define service wide environment variables here
 #  environment:
@@ -94,6 +94,7 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
 #  Outputs:
 #     NewOutput:
 #       Description: "Description for the output"
