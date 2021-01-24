@@ -34,15 +34,13 @@ package:
   individually: false
   exclude:
     - test_*
-#  include:
-#    - include-me.py
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.py
-#    - exclude-me-dir/**
+    - package.json
+    - package-lock.json
+    - node_modules/**
+
 plugins:
   - serverless-pseudo-parameters
-
+  - serverless-python-requirements
 functions:
   getAllBrews:
     handler: handler.get_brews
