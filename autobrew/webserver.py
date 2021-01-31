@@ -26,12 +26,13 @@ logger = logging.getLogger(APP_LOGGING_NAME)
 
 @app.route("/", methods=["GET"])
 @inject
-def temperature_monitor(temperature_sources: TempSourceFactory):
+def temperature_monitor(
+    temperature_sources: TempSourceFactory, historical_service: MeasurementService
+):
     current_temp_sources = temperature_sources.get_all_temp_sources()
     active_source_names = [source.get_name() for source in current_temp_sources]
 
-    """## Pull historical and turn into chart"""
-    historical_service = MeasurementService()
+    # Pull from historical and turn into chart
     for series in historical_service.get_all_series():
         if series.get_name() in active_source_names:
             charts.register(make_chart(series))
@@ -82,10 +83,9 @@ def get_live_alcohol_level(smelloscope: Smelloscope):
 
 @app.route("/alcohol_level", methods=["GET"])
 @inject
-def alcohol_level(smelloscope: Smelloscope):
+def alcohol_level(smelloscope: Smelloscope, historical_service: MeasurementService):
 
     """## Pull historical and turn into chart"""
-    historical_service = MeasurementService()
     try:
         series = historical_service.get_series(smelloscope.get_name())
         if series:

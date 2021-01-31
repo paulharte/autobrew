@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from autobrew.temperature.probeTempApi import get_temp_sources
+from injector import inject
+
+from autobrew.temperature.probeTempApi import ProbeApi
 
 from autobrew.temperature.tempSource import TempSource
 
@@ -35,13 +37,16 @@ class TempSourceFactory(ABC):
 
 
 class ProbeTempSourceFactory(TempSourceFactory):
-    def __init__(self):
+    @inject
+    def __init__(self, api: ProbeApi):
+        self.api = api
         self.temp_sources = []
+        self.get_all_temp_sources()
 
     def get_all_temp_sources(self) -> List[TempSource]:
-        files = get_temp_sources()
+        files = self.api.get_temp_sources()
         for file in files:
-            potential_new_source = TempSource(file)
+            potential_new_source = TempSource(self.api, file)
             if potential_new_source not in self.temp_sources:
                 self.temp_sources.append(potential_new_source)
         return self.temp_sources

@@ -31,25 +31,28 @@ class MeasurementTaker(object):
     def run_measurements(self):
         delay = SAMPLE_INTERVAL_SECONDS
         while True:
-            for source in self.temp_factory.get_all_temp_sources():
-                try:
-                    measurement = source.get_temperature_measurement()
-                    self.measurement_service.save_measurement(measurement)
-                    logger.info("Temperature measurement taken: " + str(measurement))
-                    if source.is_primary:
-                        self.heat_control.adjust(measurement.measurement_amt)
-
-                except (OSError, InvalidTemperatureFileError) as e:
-                    logger.error("Could not take temperature measurement")
-                    logger.exception(e)
-                    self.temp_factory.remove_temp_source(source)
-
-            try:
-                smell_measurement = self.smell_source.get_measurement()
-                self.measurement_service.save_measurement(smell_measurement)
-                logger.info("Alcohol measurement taken: " + str(smell_measurement))
-            except SmelloscopeNotAvailable as e:
-                logger.error(
-                    "No alcohol measurement taken as smelloscope offline" + str(e)
-                )
+            self.take_temperature_measurements()
+            self.take_smell_measurements()
             time.sleep(delay)
+
+    def take_temperature_measurements(self):
+        for source in self.temp_factory.get_all_temp_sources():
+            try:
+                measurement = source.get_temperature_measurement()
+                self.measurement_service.save_measurement(measurement)
+                logger.info("Temperature measurement taken: " + str(measurement))
+                if source.is_primary:
+                    self.heat_control.adjust(measurement.measurement_amt)
+
+            except (OSError, InvalidTemperatureFileError) as e:
+                logger.error("Could not take temperature measurement")
+                logger.exception(e)
+                self.temp_factory.remove_temp_source(source)
+
+    def take_smell_measurements(self):
+        try:
+            smell_measurement = self.smell_source.get_measurement()
+            self.measurement_service.save_measurement(smell_measurement)
+            logger.info("Alcohol measurement taken: " + str(smell_measurement))
+        except SmelloscopeNotAvailable as e:
+            logger.error("No alcohol measurement taken as smelloscope offline" + str(e))

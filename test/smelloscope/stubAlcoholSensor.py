@@ -2,7 +2,6 @@ from autobrew.brew_settings import SMELLOSCOPE_OFFSET
 
 
 class StubAlcoholSensor(object):
-
     def __init__(self):
         self._i = 0
 
