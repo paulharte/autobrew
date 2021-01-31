@@ -3,7 +3,7 @@ from unittest import TestCase, mock
 from flask_injector import FlaskInjector
 from injector import Injector
 
-from autobrew.dependencies import configure_mocks
+from autobrew.configuration import configure_stubs
 from autobrew.smelloscope.smelloscope import Smelloscope
 from autobrew.temperature.tempSource import PROBE_PREFIX
 from autobrew.webserver import app
@@ -12,7 +12,7 @@ from test.temperature.mockTempSourceFactory import BREW_SOURCE_NAME
 
 class TestWebserver(TestCase):
     def make_client(self):
-        injector = Injector([configure_mocks])
+        injector = Injector([configure_stubs])
         FlaskInjector(app=app, injector=injector)
         return app.test_client()
 

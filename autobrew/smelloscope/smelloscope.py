@@ -1,13 +1,11 @@
 import datetime
 
-import busio
-import digitalio
-import board
-import adafruit_mcp3xxx.mcp3008 as mcp3008
-from adafruit_mcp3xxx.analog_in import AnalogIn
+
+from injector import inject
 
 from autobrew.brew_settings import SMELLOSCOPE_OFFSET
 from autobrew.measurement.measurement import Measurement
+from autobrew.smelloscope.hardware_alcohol_sensor import HardwareAlcoholSensor
 from autobrew.temperature.abstractSource import AbstractSource
 
 
@@ -16,30 +14,18 @@ class Smelloscope(AbstractSource):
     NAME = "Alcohol_Smelloscope"
     mcp = None
 
-    def __init__(self):
+    @inject
+    def __init__(self, alcohol_sensor: HardwareAlcoholSensor):
         super()
+        self.alcohol_sensor = alcohol_sensor
         self.is_primary = True
-
-    def _setupMcp(self):
-        # create the spi bus
-        spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
-
-        # create the cs (chip select)
-        cs = digitalio.DigitalInOut(board.D5)
-
-        # create the mcp object
-        self.mcp = mcp3008.MCP3008(spi, cs)
 
     def get_name(self):
         return self.NAME
 
     def _get_voltage(self) -> float:
         try:
-            if not self.mcp:
-                self._setupMcp()
-            # create an analog input channel on pin 0
-            chan = AnalogIn(self.mcp, mcp3008.P0)
-            return chan.voltage
+            return self.alcohol_sensor.get_voltage()
         except Exception as e:
             raise SmelloscopeNotAvailable(e)
 

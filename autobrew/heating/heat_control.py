@@ -1,11 +1,15 @@
+from injector import inject
+
 from autobrew.brew_settings import MIN_TEMP_C, MAX_TEMP_C
-from autobrew.heating.usb_api import switch_power
+from autobrew.heating.heat_switcher import HeatSwitcher
 
 
 class HeatControl(object):
     _power_is_on: bool
 
-    def __init__(self):
+    @inject
+    def __init__(self, heat_switcher: HeatSwitcher):
+        self.heat_switcher = heat_switcher
         self._power_is_on = None  # We don't know state on startup
         if MIN_TEMP_C > MAX_TEMP_C:
             raise RuntimeError("MIN_TEMP_C cannot be higher than MAX_TEMP_C")
@@ -31,4 +35,4 @@ class HeatControl(object):
         return self._power_is_on in [None, True]
 
     def _switch_power(self, on: bool):
-        switch_power(on)
+        self.heat_switcher.switch(on)

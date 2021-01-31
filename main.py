@@ -5,7 +5,7 @@ import logging
 from injector import Injector
 
 from autobrew.brew_settings import APP_LOGGING_NAME
-from autobrew.dependencies import configure
+from autobrew.configuration import configure
 from autobrew.measurement_taker import MeasurementTaker
 from autobrew.webserver import run_webserver
 

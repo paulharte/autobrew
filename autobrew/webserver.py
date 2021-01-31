@@ -8,7 +8,7 @@ from werkzeug.exceptions import abort, HTTPException
 
 from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.charts.make_chart import make_chart
-from autobrew.dependencies import configure
+from autobrew.configuration import configure
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscope import Smelloscope, SmelloscopeNotAvailable
