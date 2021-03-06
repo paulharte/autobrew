@@ -2,7 +2,8 @@ from typing import List
 
 from injector import inject
 
-from autobrew.measurement.fileStorage import FileStorage
+from autobrew.brew.brew import Brew
+
 from autobrew.measurement.measurement import Measurement
 from autobrew.measurement.measurementSeries import MeasurementSeries
 from autobrew.measurement.measurementStorage import MeasurementStorage
@@ -10,39 +11,47 @@ from autobrew.measurement.measurementStorage import MeasurementStorage
 
 class MeasurementService(object):
     @inject
-    def __init__(self, file_storage: FileStorage):
-        self.file_storage = file_storage
+    def __init__(self, storage: MeasurementStorage):
+        self.storage = storage
 
-    def save_measurement(self, measurement: Measurement):
-        MeasurementStorage(self.file_storage, measurement.source_name).add_measurement(
-            measurement
-        )
+    def save_measurement(
+        self, measurement: Measurement, brew: Brew
+    ) -> MeasurementSeries:
+        series = self.storage.read_by_source(measurement.source_name, brew.id)
+        if not series:
+            series = self.new_series(brew, measurement.source_name)
+        series.append(measurement)
+        self.save_series(series)
+        return series
 
-    def get_all_series(self) -> List[MeasurementSeries]:
-        filenames = self.file_storage.get_storage_files()
+    def new_series(self, brew: Brew, source_name: str) -> MeasurementSeries:
+        series = MeasurementSeries(source_name, brew.id)
+        self.storage.save(series)
+        return series
+
+    def get_all_series_for_brew(self, brew: Brew) -> List[MeasurementSeries]:
+        all_series = self.storage.get_all_series()
         measurements = []
-        for filename in filenames:
-            measurements.append(MeasurementStorage(self.file_storage, filename).read())
+        for series in all_series:
+            if series.brew_id == brew.id:
+                measurements.append(series)
         return measurements
 
-    def get_series(self, name) -> MeasurementSeries:
-        filenames = self.file_storage.get_storage_files()
-        for filename in filenames:
-            storage = MeasurementStorage(self.file_storage, filename)
-            if storage.name == name:
-                return storage.read()
+    def get_series(self, series_id: str) -> MeasurementSeries:
+        return self.storage.read(series_id)
 
-    def set_measurement_nickname(self, name: str, nickname: str) -> MeasurementSeries:
-        for series in self.get_all_series():
-            if series.name == name:
+    def get_series_by_source(self, source_name: str, brew_id: int) -> MeasurementSeries:
+        return self.storage.read_by_source(source_name, brew_id)
+
+    def set_measurement_nickname(
+        self, series_id: str, nickname: str
+    ) -> MeasurementSeries:
+        for series in self.storage.get_all_series():
+            if series.id == series_id:
                 series.nickname = nickname
                 self.save_series(series)
                 return series
 
     def save_series(self, series: MeasurementSeries) -> MeasurementSeries:
-        filenames = self.file_storage.get_storage_files()
-        for filename in filenames:
-            storage = MeasurementStorage(self.file_storage, filename)
-            if storage.name == series.get_name():
-                storage.set_series(series)
-                return series
+        self.storage.save(series)
+        return series

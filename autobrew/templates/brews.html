@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}AutoBrew Brews{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    {% import "three_dots.html" as three_dots %}
+    {% for brew in all_brews %}
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">{{ brew.get_display_name() }}
+            {% if brew.active %}
+                <span class="badge badge-secondary">ACTIVE</span>
+            {% else %}
+                {{ three_dots.three_dots(brew) }}
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('set_nickname') }}">
+              <div class="form-group row">
+                <label for="nickname" class="col-md-3 col-form-label">Name</label>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="nickname" name="nickname" placeholder="None" value="{{ brew.name }}">
+                </div>
+                  <div class="col-md-3">
+                  <input class="btn btn-primary" type="submit" value="Rename" >
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+    <div>
+        <p>
+          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Create New Brew
+          </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <form action="{{ url_for('brews.new_brew') }}">
+              <div class="form-group row">
+                <label for="name" class="col-md-3 col-form-label">Name</label>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="col-md-3">
+                  <input class="btn btn-primary" type="submit" value="Create" >
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
+{% endblock %}
+

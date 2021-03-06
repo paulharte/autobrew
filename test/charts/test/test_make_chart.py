@@ -8,7 +8,7 @@ from autobrew.measurement.measurementSeries import MeasurementSeries
 
 class TestMakeChart(TestCase):
     def test_make_chart(self):
-        series = MeasurementSeries("source")
+        series = MeasurementSeries("source", 1)
         chart = make_chart(series)
         self.assertIsNotNone(chart)
 

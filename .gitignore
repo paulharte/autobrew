@@ -9,3 +9,5 @@
 *.log
 /.pytest_cache
 *.pytest_cache*
+
+twitter_secrets.yaml

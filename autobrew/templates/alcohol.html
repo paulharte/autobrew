@@ -11,7 +11,9 @@
             <h3>Live {{ smell_source.get_display_name() }} alcohol level is <span id="alcohol_{{ smell_source.get_name() }}">...</span></h3>
         </div>
         <div class="card-body">
-            {{ charts[smell_source.get_name()] }}
+            {% if charts %}
+                {{ charts[smell_source.get_name()] }}
+            {% endif %}
         </div>
     </div>
     {% endfor %}

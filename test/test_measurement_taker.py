@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from injector import Injector
 
+from autobrew.brew.brewService import BrewService
 from autobrew.configuration import configure_test
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.measurement_taker import MeasurementTaker
@@ -11,26 +12,34 @@ from test.temperature.stubProbeApi import STUB_BREW_NAME, STUB_ROOM_NAME
 
 
 class TestMeasurementTaker(TestCase):
-    def test_take_alcohol(self):
-        injector = Injector([configure_test])
-        taker = injector.get(MeasurementTaker)
+    def setUp(self) -> None:
+        self.injector = Injector([configure_test])
+        self.brew_service = self.injector.get(BrewService)
+        self.brew = self.brew_service.new("MyBrew")
 
-        taker.take_smell_measurements()
-        taker.take_smell_measurements()
-        measure_service = injector.get(MeasurementService)
-        series = measure_service.get_series(Smelloscope.NAME)
+    def test_take_alcohol(self):
+
+        taker = self.injector.get(MeasurementTaker)
+
+        taker.take_smell_measurements(self.brew)
+        taker.take_smell_measurements(self.brew)
+        measure_service = self.injector.get(MeasurementService)
+        series = measure_service.get_series_by_source(Smelloscope.NAME, self.brew.id)
 
         self.assertEqual(len(series.get_measurements()), 2)
 
     def test_take_temp(self):
-        injector = Injector([configure_test])
-        taker = injector.get(MeasurementTaker)
+        taker = self.injector.get(MeasurementTaker)
 
-        taker.take_temperature_measurements()
-        measure_service = injector.get(MeasurementService)
+        taker.take_temperature_measurements(self.brew)
+        measure_service = self.injector.get(MeasurementService)
 
-        brew_series = measure_service.get_series(PROBE_PREFIX + STUB_BREW_NAME)
+        brew_series = measure_service.get_series_by_source(
+            PROBE_PREFIX + STUB_BREW_NAME, self.brew.id
+        )
         self.assertEqual(len(brew_series.get_measurements()), 1)
 
-        room_series = measure_service.get_series(PROBE_PREFIX + STUB_ROOM_NAME)
+        room_series = measure_service.get_series_by_source(
+            PROBE_PREFIX + STUB_ROOM_NAME, self.brew.id
+        )
         self.assertEqual(len(room_series.get_measurements()), 1)

@@ -1,16 +1,15 @@
 {% macro config_item(source) -%}
+{% import "three_dots.html" as three_dots %}
 <div class="card mb-4 box-shadow">
-    <div class="card-header">{{ source.get_name() }}</div>
-    <div class="card-body">
+    <div class="card-header">
+        {{ source.get_display_name() }}
         {% if source.is_primary %}
             <span class="badge badge-secondary">PRIMARY</span>
         {% else %}
-        <div class="container">
-            <a href="{{ url_for('set_primary', name=source.get_name()) }}">
-                <button type="button" class="btn btn-sm btn-primary">Make primary source for heat control</button>
-            </a> <br><br>
-        </div>
+            {{ three_dots.three_dots(source) }}
         {% endif %}
+    </div>
+    <div class="card-body">
         <form action="{{ url_for('set_nickname') }}">
           <div class="form-group row">
             <label for="name" class="col-md-3 col-form-label">Source Name</label>

@@ -20,31 +20,47 @@ class TestWebserver(TestCase):
         client = self.make_client()
 
         response = client.get("/")
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 302)
+
+        response = client.get("/temperature_monitor")
+        self.assertEqual(response.status_code, 200)
 
         response = client.get("/config")
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
-        response = client.get("/config")
-        assert response.status_code == 200
+        response = client.get("/brews/")
+        self.assertEqual(response.status_code, 200)
 
+    def test_get_measurements(self):
+        client = self.make_client()
+        self._test_get_measurements(client)
+
+    def test_new_brew(self):
+        client = self.make_client()
+        response = client.get("/brews/new?name=mynewbrew")
+        assert response.status_code, 200
+        assert "mynewbrew" in str(response.data)
+
+        self._test_get_measurements(client)
+
+    def _test_get_measurements(self, client):
         response = client.get("/live_alcohol_level")
-        assert response.status_code == 400
+        self.assertEqual(response.status_code, 400)
 
         response = client.get("/live_temperature")
-        assert response.status_code == 400
+        self.assertEqual(response.status_code, 400)
 
         response = client.get("/live_alcohol_level?name=" + Smelloscope.NAME)
-        assert response.status_code == 200
-        assert b"alcohol_level" in response.data
-        assert b"name" in response.data
-        assert b"time" in response.data
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"alcohol_level", response.data)
+        self.assertIn(b"name", response.data)
+        self.assertIn(b"time", response.data)
 
         response = client.get("/live_temperature?name=" + PROBE_PREFIX + STUB_BREW_NAME)
-        assert response.status_code == 200
-        assert b"temperature" in response.data
-        assert b"name" in response.data
-        assert b"time" in response.data
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"temperature", response.data)
+        self.assertIn(b"name", response.data)
+        self.assertIn(b"time", response.data)
 
     def test_nickname(self):
         client = self.make_client()
@@ -52,17 +68,17 @@ class TestWebserver(TestCase):
         response = client.get(
             "/nickname?name=" + PROBE_PREFIX + STUB_BREW_NAME + "&nickname=my_nickname"
         )
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
         assert "successfully updated nickname to my_nickname" in str(response.data)
 
     def test_primary(self):
         client = self.make_client()
 
         response = client.get("/set_primary?name=" + PROBE_PREFIX + STUB_BREW_NAME)
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
         assert "successfully set as primary temperature source" in str(response.data)
 
     def test_heat_status(self):
         client = self.make_client()
         response = client.get("/heat_status")
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)

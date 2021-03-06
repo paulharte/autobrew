@@ -10,8 +10,6 @@ RETRY_MIN_AMOUNT = 0.0
 
 
 class TempSource(AbstractSource):
-    device_file = None
-
     def __init__(self, api: ProbeApi, device_file: str):
         super()
         self.device_file = device_file

@@ -7,9 +7,14 @@ class MeasurementSeries(object):
     source_name: str
     nickname: str = None
 
-    def __init__(self, source_name: str):
+    def __init__(self, source_name: str, brew_id: int):
         self.source_name = source_name
         self.measurements = []
+        self.brew_id = brew_id
+
+    @property
+    def id(self) -> str:
+        return str(self.brew_id) + self.source_name
 
     def append(self, measurement: Measurement):
         self.measurements.append(measurement)

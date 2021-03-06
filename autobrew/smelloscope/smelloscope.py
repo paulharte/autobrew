@@ -14,7 +14,6 @@ class Smelloscope(AbstractSource):
     NAME = "Alcohol_Smelloscope"
     mcp = None
 
-    @inject
     def __init__(self, alcohol_sensor: HardwareAlcoholSensor):
         super()
         self.alcohol_sensor = alcohol_sensor
@@ -37,6 +36,9 @@ class Smelloscope(AbstractSource):
         alcohol_level = self.get_alcohol_level()
         measurement = Measurement(self.NAME, time, alcohol_level)
         return measurement
+
+    def __eq__(self, other):
+        return self.get_name() == other.get_name()
 
 
 class SmelloscopeNotAvailable(RuntimeError):

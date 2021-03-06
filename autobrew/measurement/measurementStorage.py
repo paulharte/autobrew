@@ -1,37 +1,48 @@
+from typing import List
+
 from injector import inject
 
-from autobrew.measurement.fileStorage import FileStorage
-from autobrew.measurement.measurement import Measurement
+from autobrew.file.fileStorage import FileStorage
 from autobrew.measurement.measurementSeries import MeasurementSeries
 
 
 class MeasurementStorage(object):
     """ Handles all file io for measurement series"""
 
+    SUB_FOLDER = "measurements"
     SUFFIX = ".txt"
-    name: str = None
 
-    def __init__(self, file_storage: FileStorage, name: str):
-        self.name = name.replace(self.SUFFIX, "")
+    @inject
+    def __init__(self, file_storage: FileStorage):
         self.file_storage = file_storage
 
-    def add_measurement(self, measurement: Measurement):
-        series = self.read()
-        series.append(measurement)
-        self._save(series)
-
-    def set_series(self, series: MeasurementSeries):
-        self._save(series)
-
-    def read(self) -> MeasurementSeries:
+    def read(self, series_id: str) -> MeasurementSeries:
         try:
-            filename = self.name + self.SUFFIX
-            return self.file_storage.read(filename)
+            filename = self.form_filename(series_id)
+            return self.file_storage.read(filename, self.SUB_FOLDER)
         except (FileNotFoundError, EOFError):
-            new_series = MeasurementSeries(self.name)
-            self._save(new_series)
-            return new_series
+            # TODO: make this better
+            return None
 
-    def _save(self, series: MeasurementSeries):
-        filename = self.name + self.SUFFIX
-        self.file_storage.save(filename, series)
+    def read_by_source(self, source_name: str, brew_id: str) -> MeasurementSeries:
+        all_series = self.get_all_series()
+        for series in all_series:
+            if (series.source_name == source_name) and (series.brew_id == brew_id):
+                return series
+
+    def save(self, series: MeasurementSeries):
+        filename = self.form_filename(series.id)
+        self.file_storage.save(filename, series, self.SUB_FOLDER)
+
+    def form_filename(self, series_id: str):
+        return series_id + self.SUFFIX
+
+    def get_all_series(self) -> List[MeasurementSeries]:
+        filenames = self.file_storage.get_storage_files(
+            suffix=self.SUFFIX, sub_folder=self.SUB_FOLDER
+        )
+        measurements = []
+        for filename in filenames:
+            series = self.file_storage.read(filename, self.SUB_FOLDER)
+            measurements.append(series)
+        return measurements

@@ -3,10 +3,14 @@ import logging
 
 from injector import inject, singleton
 
+from autobrew.alerting.alerter import Alerter
+from autobrew.brew.brew import Brew
+from autobrew.brew.brewService import BrewService
 from autobrew.brew_settings import SAMPLE_INTERVAL_SECONDS, APP_LOGGING_NAME
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
-from autobrew.smelloscope.smelloscope import Smelloscope, SmelloscopeNotAvailable
+from autobrew.smelloscope.smelloscope import SmelloscopeNotAvailable
+from autobrew.smelloscope.smelloscopeFactory import SmelloscopeFactory
 from autobrew.temperature.probeTempApi import InvalidTemperatureFileError
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
 
@@ -18,41 +22,55 @@ class MeasurementTaker(object):
     @inject
     def __init__(
         self,
+        brew_service: BrewService,
         temp_factory: TempSourceFactory,
-        smell_source: Smelloscope,
+        smell_factory: SmelloscopeFactory,
         heat_control: HeatControl,
         measurement_service: MeasurementService,
+        alerter: Alerter,
     ):
+        self.brew_service = brew_service
         self.temp_factory = temp_factory
-        self.smell_source = smell_source
+        self.smell_factory = smell_factory
         self.heat_control = heat_control
         self.measurement_service = measurement_service
+        self.alerter = alerter
 
     def run_measurements(self):
         delay = SAMPLE_INTERVAL_SECONDS
         while True:
-            self.take_temperature_measurements()
-            self.take_smell_measurements()
+            active_brew = self.brew_service.get_active()
+            if active_brew:
+                self.take_temperature_measurements(active_brew)
+                self.take_smell_measurements(active_brew)
             time.sleep(delay)
 
-    def take_temperature_measurements(self):
+    def take_temperature_measurements(self, brew: Brew):
         for source in self.temp_factory.get_all_temp_sources():
             try:
                 measurement = source.get_temperature_measurement()
-                self.measurement_service.save_measurement(measurement)
+                self.measurement_service.save_measurement(measurement, brew)
                 logger.info("Temperature measurement taken: " + str(measurement))
                 if source.is_primary:
                     self.heat_control.adjust(measurement.measurement_amt)
 
             except (OSError, InvalidTemperatureFileError) as e:
-                logger.error("Could not take temperature measurement")
+                msg = (
+                    "Could not take temperature measurement due to exception %s"
+                    % type(e)
+                )
+                logger.error(msg)
                 logger.exception(e)
                 self.temp_factory.remove_temp_source(source)
+                self.alerter.alert_owner(msg)
 
-    def take_smell_measurements(self):
-        try:
-            smell_measurement = self.smell_source.get_measurement()
-            self.measurement_service.save_measurement(smell_measurement)
-            logger.info("Alcohol measurement taken: " + str(smell_measurement))
-        except SmelloscopeNotAvailable as e:
-            logger.error("No alcohol measurement taken as smelloscope offline" + str(e))
+    def take_smell_measurements(self, brew: Brew):
+        for smell_source in self.smell_factory.get_all_sources():
+            try:
+                smell_measurement = smell_source.get_measurement()
+                self.measurement_service.save_measurement(smell_measurement, brew)
+                logger.info("Alcohol measurement taken: " + str(smell_measurement))
+            except SmelloscopeNotAvailable as e:
+                msg = "No alcohol measurement taken as smelloscope offline" + str(e)
+                logger.error(msg)
+                self.alerter.alert_owner(msg)
