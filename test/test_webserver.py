@@ -31,6 +31,11 @@ class TestWebserver(TestCase):
         response = client.get("/brews/")
         self.assertEqual(response.status_code, 200)
 
+        response = client.get("/heat_status")
+        self.assertEqual(response.status_code, 200)
+        assert "Heater Status" in str(response.data)
+
+
     def test_get_measurements(self):
         client = self.make_client()
         self._test_get_measurements(client)

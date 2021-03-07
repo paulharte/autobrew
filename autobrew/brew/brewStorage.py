@@ -4,6 +4,7 @@ import logging
 from injector import inject
 
 from autobrew.brew.brew import Brew
+from autobrew.brew.brewExceptions import AutobrewNotFoundError
 from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.file.fileStorage import FileStorage
 
@@ -34,7 +35,7 @@ class BrewStorage(object):
         for brew_id in self.file_storage.get_storage_files(None, self.SUB_FOLDER):
             try:
                 brews.append(self.read(brew_id))
-            except (FileNotFoundError, EOFError) as e:
+            except AutobrewNotFoundError as e:
                 logger.error(e)
         return brews
 

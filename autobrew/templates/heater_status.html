@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Success{% endblock %}
+{% block content %}
+    <div class="card box-shadow">
+        <div class="card-header">
+            <h3>Heater Status</h3>
+        </div>
+        <div class="card-body">
+            Heating status is: {{status}} <br><br>
+            {% if source %}
+            Max temperature is {{max}} °c <br>
+            Min Temperature is {{min}} °c<br><br>
+            Heater is controlled by temperature source "{{ source.get_display_name() }}"
+            {% else %}
+            Heat control is not enabled! Please set a primary source for heat control in
+            <a href="{{url_for('config')}}">configuration screen</a>
+            {% endif %}
+        </div>
+    </div>
+    <br><br>
+    <a href="{{ url_for('temperature_monitor') }}">Return Home</a>
+
+{% endblock %}
+

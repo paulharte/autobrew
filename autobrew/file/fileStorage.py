@@ -2,6 +2,7 @@ import os
 import pickle
 from typing import List
 
+from autobrew.brew.brewExceptions import AutobrewNotFoundError
 
 FOLDER_NAME = "storage"
 FOLDER_PATH = os.path.dirname(os.path.abspath(__file__)).replace("file", FOLDER_NAME)
@@ -9,12 +10,20 @@ FOLDER_PATH = os.path.dirname(os.path.abspath(__file__)).replace("file", FOLDER_
 
 class FileStorage(object):
     """ Handles all file io"""
+    def __init__(self):
+        # Make folder if it is not already there
+        try:
+            os.listdir(FOLDER_PATH)
+        except FileNotFoundError:
+            os.mkdir(FOLDER_PATH)
 
     def read(self, filename: str, sub_folder: str = None):
         path = self.form_path(filename, sub_folder)
-        # Potentially throws FileNotFoundError, EOFError
-        with open(path, "rb") as file:
-            return pickle.load(file)
+        try:
+            with open(path, "rb") as file:
+                return pickle.load(file)
+        except (FileNotFoundError, EOFError) as e:
+            raise AutobrewNotFoundError(e)
 
     def save(self, filename: str, obj, sub_folder: str = None):
         path = self.form_path(filename, sub_folder)

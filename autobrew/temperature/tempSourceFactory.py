@@ -9,7 +9,9 @@ from autobrew.temperature.tempSource import TempSource
 
 
 class TempSourceFactory(ABC):
-    temp_sources: List[TempSource]
+
+    def __init__(self):
+        self.temp_sources: List[TempSource] = []
 
     @abstractmethod
     def get_all_temp_sources(self) -> List[TempSource]:
@@ -35,10 +37,17 @@ class TempSourceFactory(ABC):
 
         return success
 
+    def get_primary_source(self) -> TempSource:
+        for source in self.temp_sources:
+            if source.is_primary:
+                return source
+        return None
+
 
 class ProbeTempSourceFactory(TempSourceFactory):
     @inject
     def __init__(self, api: ProbeApi):
+        super().__init__()
         self.api = api
         self.temp_sources = []
         self.get_all_temp_sources()

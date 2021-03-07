@@ -9,7 +9,7 @@ from werkzeug.utils import redirect
 
 from autobrew.brew.brewEndpoints import brew_blueprint
 from autobrew.brew.brewService import BrewService
-from autobrew.brew_settings import APP_LOGGING_NAME
+from autobrew.brew_settings import APP_LOGGING_NAME, MAX_TEMP_C, MIN_TEMP_C
 from autobrew.charts.make_chart import make_chart
 from autobrew.configuration import configure
 from autobrew.heating.heat_control import HeatControl
@@ -137,23 +137,23 @@ def set_nickname(
     if source:
         source.set_nickname(nickname)
         logger.info(message)
-        return render_template("success.html", success_message=message)
+        return render_template("success.html", message=message)
 
     smelloscope = smelloscopeFactory.get_source(name)
     if smelloscope:
         smelloscope.set_nickname(nickname)
         logger.info(message)
-        return render_template("success.html", success_message=message)
+        return render_template("success.html", message=message)
 
     return render_template("error.html", message="Could not find probe named: " + name)
 
 
 @app.route("/heat_status", methods=["GET"])
 @inject
-def get_heat_status(heater: HeatControl):
+def get_heat_status(heater: HeatControl, temp_factory: TempSourceFactory):
     status = "ON" if heater.is_power_on() else "OFF"
-    message = "Heating status is: " + status
-    return render_template("success.html", success_message=message)
+    primary_source = temp_factory.get_primary_source()
+    return render_template("heater_status.html", status=status, max=MAX_TEMP_C, min=MIN_TEMP_C, source=primary_source)
 
 
 @app.route("/config", methods=["GET"])
@@ -181,7 +181,7 @@ def set_primary(source_factory: TempSourceFactory):
             + " successfully set as primary temperature source. Heat switching is enabled"
         )
         logger.info(message)
-        return render_template("success.html", success_message=message)
+        return render_template("success.html", message=message)
     else:
         message = "Could not find probe named: " + name
         logger.error(message)

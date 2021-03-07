@@ -6,7 +6,7 @@
         {% if source.is_primary %}
             <span class="badge badge-secondary">PRIMARY</span>
         {% else %}
-            {{ three_dots.three_dots(source) }}
+            {{ three_dots.three_dots(url_for('set_primary', name=source.get_name()), 'Make primary source for heat control' ) }}
         {% endif %}
     </div>
     <div class="card-body">

@@ -15,14 +15,11 @@ class BrewService(object):
         brew = Brew(name)
         brew.active = True
         brew = self.storage.new(brew)
-        self.set_others_inactive(brew.id)
+        self._set_others_inactive(brew.id)
         return brew
 
     def save(self, brew: Brew):
         return self.storage.save(brew)
-
-    def reset(self, id: int):
-        pass
 
     def get_all(self) -> List[Brew]:
         return self.storage.get_all()
@@ -32,8 +29,17 @@ class BrewService(object):
             if brew.active:
                 return brew
 
-    def set_others_inactive(self, active_id: int):
+    def _set_others_inactive(self, active_id: int):
         for brew in self.get_all():
             if brew.active and (brew.id != active_id):
                 brew.active = False
                 self.save(brew)
+
+    def set_active(self, brew_id: int) -> Brew:
+        brew = self.storage.read(brew_id)
+        brew.active = True
+        brew = self.storage.save(brew)
+        self._set_others_inactive(brew.id)
+        return brew
+
+

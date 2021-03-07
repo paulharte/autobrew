@@ -1,10 +1,14 @@
+import logging
 from typing import List
 
 from injector import inject
 
+from autobrew.brew.brewExceptions import AutobrewNotFoundError
+from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.file.fileStorage import FileStorage
 from autobrew.measurement.measurementSeries import MeasurementSeries
 
+logger = logging.getLogger(APP_LOGGING_NAME)
 
 class MeasurementStorage(object):
     """ Handles all file io for measurement series"""
@@ -17,12 +21,8 @@ class MeasurementStorage(object):
         self.file_storage = file_storage
 
     def read(self, series_id: str) -> MeasurementSeries:
-        try:
-            filename = self.form_filename(series_id)
-            return self.file_storage.read(filename, self.SUB_FOLDER)
-        except (FileNotFoundError, EOFError):
-            # TODO: make this better
-            return None
+        filename = self.form_filename(series_id)
+        return self.file_storage.read(filename, self.SUB_FOLDER)
 
     def read_by_source(self, source_name: str, brew_id: str) -> MeasurementSeries:
         all_series = self.get_all_series()
@@ -43,6 +43,9 @@ class MeasurementStorage(object):
         )
         measurements = []
         for filename in filenames:
-            series = self.file_storage.read(filename, self.SUB_FOLDER)
-            measurements.append(series)
+            try:
+                series = self.file_storage.read(filename, self.SUB_FOLDER)
+                measurements.append(series)
+            except AutobrewNotFoundError as e:
+                logger.exception(e)
         return measurements

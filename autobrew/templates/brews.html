@@ -10,7 +10,7 @@
             {% if brew.active %}
                 <span class="badge badge-secondary">ACTIVE</span>
             {% else %}
-                {{ three_dots.three_dots(brew) }}
+                {{ three_dots.three_dots(url_for('brews.set_active', id=brew.id), 'Make active brew' ) }}
             {% endif %}
         </div>
         <div class="card-body">
