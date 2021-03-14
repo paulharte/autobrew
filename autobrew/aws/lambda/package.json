@@ -1,13 +1,13 @@
 {
   "name": "autobrew-aws",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": {},
   "scripts": {
     "deploy": "serverless deploy"
   },
   "devDependencies": {
-    "serverless": "^2.18.0",
+    "serverless": "^2.29.0",
     "serverless-pseudo-parameters": "^2.5.0",
     "serverless-python-requirements": "^5.1.0"
   }

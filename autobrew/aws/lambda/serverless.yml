@@ -8,7 +8,7 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: python3.7
-  lambdaHashingVersion: 2020314
+  lambdaHashingVersion: 20201221
   memorySize: 128
 
   stage: prod
@@ -17,23 +17,25 @@ provider:
     cors: true
 
 
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - dynamoDB:PutItem
-        - dynamoDB:Scan
-        - dynamoDB:GetItem
-        - dynamoDB:UpdateItem
-        - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_brew
-    - Effect: "Allow"
-      Action:
-        - dynamoDB:PutItem
-        - dynamoDB:Scan
-        - dynamoDB:GetItem
-        - dynamoDB:UpdateItem
-        - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_measurement_series
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamoDB:PutItem
+            - dynamoDB:Scan
+            - dynamoDB:GetItem
+            - dynamoDB:UpdateItem
+            - dynamoDB:DeleteItem
+          Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_brew
+        - Effect: "Allow"
+          Action:
+            - dynamoDB:PutItem
+            - dynamoDB:Scan
+            - dynamoDB:GetItem
+            - dynamoDB:UpdateItem
+            - dynamoDB:DeleteItem
+          Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_measurement_series
 
 
 # you can define service wide environment variables here
@@ -72,21 +74,18 @@ functions:
       - httpApi:
           method: post
           path: /brew
-          authorizer: aws_iam
   updateBrew:
     handler: handler.update_brew
     events:
       - httpApi:
           method: put
           path: /brew/{brew_remote_id}
-          authorizer: aws_iam
   deleteBrew:
     handler: handler.delete_brew
     events:
       - httpApi:
           method: delete
           path: /brew/{brew_remote_id}
-          authorizer: aws_iam
 
   getAllMeasurements:
     handler: handler.get_all_measurement_series
@@ -94,39 +93,39 @@ functions:
       - httpApi:
           method: get
           path: /measurements
-    getMeasurement:
-      handler: handler.get_measurement_series
-      events:
-        - httpApi:
-            method: get
-            path: /brew/{brew_remote_id}/measurements/{source_name}
-    getMeasurementForBrew:
-      handler: handler.get_measurement_series_for_brew
-      events:
-        - httpApi:
-            method: get
-            path: /brew/{brew_remote_id}/measurements
-    createMasurements:
-      handler: handler.create_measurements
-      events:
-        - httpApi:
-            method: post
-            path: /measurements
-            authorizer: aws_iam
-    updateMeasurements:
-      handler: handler.update_measurements
-      events:
-        - httpApi:
-            method: put
-            path: /brew/{brew_remote_id}/measurements/{source_name}
-            authorizer: aws_iam
-    deleteMeasurements:
-      handler: handler.delete_measurements
-      events:
-        - httpApi:
-            method: delete
-            path: /brew/{brew_remote_id}/measurements/{source_name}
-            authorizer: aws_iam
+  getMeasurement:
+    handler: handler.get_measurement_series
+    events:
+      - httpApi:
+          method: get
+          path: /brew/{brew_remote_id}/measurements/{source_name}
+  getMeasurementForBrew:
+    handler: handler.get_measurement_series_for_brew
+    events:
+      - httpApi:
+          method: get
+          path: /brew/{brew_remote_id}/measurements
+  createMasurements:
+    handler: handler.create_measurements
+    events:
+      - httpApi:
+          method: post
+          path: /measurements
+          authorizer: aws_iam
+  updateMeasurements:
+    handler: handler.update_measurements
+    events:
+      - httpApi:
+          method: put
+          path: /brew/{brew_remote_id}/measurements/{source_name}
+          authorizer: aws_iam
+  deleteMeasurements:
+    handler: handler.delete_measurements
+    events:
+      - httpApi:
+          method: delete
+          path: /brew/{brew_remote_id}/measurements/{source_name}
+          authorizer: aws_iam
 
 #    Define function environment variables here
 #    environment:

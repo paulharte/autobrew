@@ -32,7 +32,6 @@ class StubDynamo(object):
                 out.append(table[key])
         return out
 
-
     def delete(self, table_name: str, id_to_delete, id_name):
         key = _form_key(id_to_delete, id_name)
         table: dict = self.dynamo_db.get(table_name)

@@ -19,9 +19,7 @@ class MeasurementServiceRemote(object):
         ]
 
     def put(self, measurement_series: MeasurementSeriesRemote):
-        out = self.db.put(
-            MEASUREMENT_SERIES_DYNAMO_TABLE, measurement_series.to_dict()
-        )
+        out = self.db.put(MEASUREMENT_SERIES_DYNAMO_TABLE, measurement_series.to_dict())
         return MeasurementSeriesRemote.from_dict(out)
 
     def get(self, brew_remote_id: str, source_name: str) -> MeasurementSeriesRemote:
@@ -34,10 +32,8 @@ class MeasurementServiceRemote(object):
 
     def get_all_for_brew(self, brew_remote_id: str):
         json_series = self.db.get_many(
-                MEASUREMENT_SERIES_DYNAMO_TABLE,
-                brew_remote_id,
-                MEASUREMENT_SERIES_KEY[0],
-            )
+            MEASUREMENT_SERIES_DYNAMO_TABLE, brew_remote_id, MEASUREMENT_SERIES_KEY[0],
+        )
         return [MeasurementSeriesRemote.from_dict(json_s) for json_s in json_series]
 
     def create(self, brew: MeasurementSeriesRemote):

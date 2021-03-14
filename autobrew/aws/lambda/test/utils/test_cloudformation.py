@@ -1,9 +1,15 @@
+import platform
 from unittest import TestCase
 import os
 
+import pytest
 import yaml
 from . import cloudFormationValidator
 import json
+
+local_only = pytest.mark.skipif(
+    platform.system() != "Windows", reason="requires aws account"
+)
 
 
 def formPath():
@@ -19,6 +25,7 @@ def formRulesPath():
 
 
 class TestCloudFormation(TestCase):
+    @local_only
     def test_validate(self):
         """ Validates the Cloudformation part of the serverless yaml for syntax errors, etc"""
         cloudFormationValidator.aws_region = "eu-west-1"

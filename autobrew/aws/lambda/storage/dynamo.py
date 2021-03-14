@@ -28,7 +28,7 @@ class Dynamo(object):
         table = self.dynamo_db.Table(table_name)
         filtering_exp = Key(id_name).eq(id_to_get)
         out = table.query(filtering_exp)
-        return out.get('Items')
+        return out.get("Items")
 
     def delete(self, table_name: str, id_to_delete: str, id_name: str):
         table = self.dynamo_db.Table(table_name)
