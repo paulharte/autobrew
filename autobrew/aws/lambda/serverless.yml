@@ -136,7 +136,7 @@ resources:
     brewTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: autobrew_brew
+        TableName: autobrew_brews
         AttributeDefinitions:
           - AttributeName: remote_id
             AttributeType: S
