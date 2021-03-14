@@ -153,7 +153,13 @@ def set_nickname(
 def get_heat_status(heater: HeatControl, temp_factory: TempSourceFactory):
     status = "ON" if heater.is_power_on() else "OFF"
     primary_source = temp_factory.get_primary_source()
-    return render_template("heater_status.html", status=status, max=MAX_TEMP_C, min=MIN_TEMP_C, source=primary_source)
+    return render_template(
+        "heater_status.html",
+        status=status,
+        max=MAX_TEMP_C,
+        min=MIN_TEMP_C,
+        source=primary_source,
+    )
 
 
 @app.route("/config", methods=["GET"])

@@ -10,6 +10,7 @@ FOLDER_PATH = os.path.dirname(os.path.abspath(__file__)).replace("file", FOLDER_
 
 class FileStorage(object):
     """ Handles all file io"""
+
     def __init__(self):
         # Make folder if it is not already there
         try:

@@ -10,6 +10,7 @@ from autobrew.measurement.measurementSeries import MeasurementSeries
 
 logger = logging.getLogger(APP_LOGGING_NAME)
 
+
 class MeasurementStorage(object):
     """ Handles all file io for measurement series"""
 

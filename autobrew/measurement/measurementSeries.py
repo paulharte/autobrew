@@ -3,14 +3,11 @@ from typing import List
 
 
 class MeasurementSeries(object):
-    measurements: List[Measurement]
-    source_name: str
-    nickname: str = None
-
     def __init__(self, source_name: str, brew_id: int):
-        self.source_name = source_name
-        self.measurements = []
-        self.brew_id = brew_id
+        self.source_name: str = source_name
+        self.measurements: List[Measurement] = []
+        self.brew_id: int = brew_id
+        self.nickname: str = None
 
     @property
     def id(self) -> str:

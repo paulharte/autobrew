@@ -1,4 +1,2 @@
-
-
 class AutobrewNotFoundError(RuntimeError):
     pass

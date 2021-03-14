@@ -1,3 +1,4 @@
+import uuid
 from typing import List
 
 import logging
@@ -22,11 +23,6 @@ class BrewStorage(object):
         self.file_storage.save(str(brew.id), brew, self.SUB_FOLDER)
         return brew
 
-    def new(self, brew: Brew) -> Brew:
-        brew_id = self._find_unused_id()
-        brew.id = brew_id
-        return self.save(brew)
-
     def read(self, brew_id: int) -> Brew:
         return self.file_storage.read(str(brew_id), self.SUB_FOLDER)
 
@@ -39,8 +35,11 @@ class BrewStorage(object):
                 logger.error(e)
         return brews
 
-    def _find_unused_id(self) -> int:
+    def generate_id(self) -> int:
         for i in range(100000):
             if str(i) not in self.file_storage.get_storage_files(None, self.SUB_FOLDER):
                 return i
         raise RuntimeError("Unable to get id for new brew")
+
+    def generate_remote_id(self) -> str:
+        return str(uuid.uuid4())

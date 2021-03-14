@@ -9,7 +9,6 @@ from autobrew.temperature.tempSource import TempSource
 
 
 class TempSourceFactory(ABC):
-
     def __init__(self):
         self.temp_sources: List[TempSource] = []
 

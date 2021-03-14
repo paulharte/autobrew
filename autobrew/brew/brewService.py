@@ -14,7 +14,9 @@ class BrewService(object):
     def new(self, name) -> Brew:
         brew = Brew(name)
         brew.active = True
-        brew = self.storage.new(brew)
+        brew.id = self.storage.generate_id()
+        brew.remote_id = self.storage.generate_remote_id()
+        brew = self.storage.save(brew)
         self._set_others_inactive(brew.id)
         return brew
 
@@ -41,5 +43,3 @@ class BrewService(object):
         brew = self.storage.save(brew)
         self._set_others_inactive(brew.id)
         return brew
-
-

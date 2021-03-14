@@ -1,0 +1,150 @@
+import datetime
+from unittest import TestCase
+import json
+
+from ..test.stubDynamo import StubDynamo
+from ..measurements.measurementServiceRemote import MeasurementServiceRemote
+from ..brew.brewServiceRemote import BrewServiceRemote
+from ..handler import *
+
+
+class TestHandler(TestCase):
+    def setUp(self) -> None:
+        self.brew_service = BrewServiceRemote(StubDynamo())
+        self.measurement_service = MeasurementServiceRemote(StubDynamo())
+
+    def test_brew(self):
+        remote_id = "d2e85707"
+        event = make_event(
+            {"name": "brew1", "id": "1", "remote_id": remote_id, "active": True}
+        )
+        resp = create_brew(event, None, self.brew_service)
+        self.assertEqual(resp["statusCode"], 200)
+
+        get_event = make_event(None, remote_id)
+        resp = get_brew(get_event, remote_id, self.brew_service)
+        self.assertEqual(resp["statusCode"], 200)
+        resp = get_brews(get_event, remote_id, self.brew_service)
+        self.assertEqual(resp["statusCode"], 200)
+        self.assertEqual(len(json.loads(resp["body"])), 1)
+
+        put_event = make_event(
+            {"name": "brew1new", "id": "1", "remote_id": remote_id, "active": True},
+            remote_id,
+        )
+        resp = update_brew(put_event, None, self.brew_service)
+        self.assertEqual(resp["statusCode"], 200)
+        resp = get_brew(get_event, remote_id, self.brew_service)
+        self.assertEqual(resp["statusCode"], 200)
+        self.assertEqual(BrewRemote.from_json(resp["body"]).name, "brew1new")
+
+        delete_event = make_event(None, remote_id)
+        resp = delete_brew(delete_event, None, self.brew_service)
+        self.assertEqual(resp["statusCode"], 200)
+
+        resp = get_brews(get_event, remote_id, self.brew_service)
+        self.assertEqual(resp["statusCode"], 200)
+        self.assertEqual(len(json.loads(resp["body"])), 0)
+
+    def test_series(self):
+        remote_id = "d2e85707"
+        temp_1 = "temperature1"
+        event = make_series_event(
+            {
+                "source_name": temp_1,
+                "brew_id": "1",
+                "brew_remote_id": remote_id,
+                "measurements": [],
+            }
+        )
+        resp = create_measurements(event, None, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 200)
+
+        get_event = make_series_event(None, remote_id, temp_1)
+        resp = get_measurement_series(get_event, remote_id, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 200)
+        resp = get_all_measurement_series(
+            get_event, remote_id, self.measurement_service
+        )
+        self.assertEqual(resp["statusCode"], 200)
+        self.assertEqual(len(json.loads(resp["body"])), 1)
+
+        measurement = {
+            "source_name": "temperature1",
+            "amount": 20.1,
+            "time": str(datetime.datetime(2021, 1, 31, 13, 10)),
+        }
+
+        put_event = make_series_event(
+            {
+                "source_name": "temperature1",
+                "brew_id": "1",
+                "brew_remote_id": remote_id,
+                "measurements": [measurement],
+            },
+            remote_id,
+            temp_1,
+        )
+        resp = update_measurements(put_event, None, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 200)
+        resp = get_measurement_series(get_event, remote_id, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 200)
+        output = MeasurementSeriesRemote.from_json(resp["body"])
+        self.assertEqual(output.source_name, "temperature1")
+        self.assertEqual(output.measurements[0].amount, 20.1)
+
+        delete_event = make_series_event(None, remote_id, temp_1)
+        resp = delete_measurements(delete_event, None, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 200)
+
+        resp = get_all_measurement_series(
+            get_event, remote_id, self.measurement_service
+        )
+        self.assertEqual(resp["statusCode"], 200)
+        self.assertEqual(len(json.loads(resp["body"])), 0)
+
+    def test_series_get_measurements_for_brew(self):
+        remote_id = "d2e85707"
+        temp_1 = "temperature1"
+        smelloscope = "smelloscope1"
+        other_brew = "someOtherBrew12345"
+        self._create_series(temp_1, remote_id)
+        self._create_series(smelloscope, remote_id)
+        self._create_series(smelloscope, other_brew)
+
+        event = make_series_event(None, remote_id, None)
+        resp = get_measurement_series_for_brew(event, None, self.measurement_service)
+        self.assertEqual(len(json.loads(resp["body"])), 2)
+
+        event = make_series_event(None, other_brew, None)
+        resp = get_measurement_series_for_brew(event, None, self.measurement_service)
+        self.assertEqual(len(json.loads(resp["body"])), 1)
+
+    def _create_series(self, source_name: str, remote_id: str):
+        event = make_series_event(
+            {
+                "source_name": source_name,
+                "brew_id": "1",
+                "brew_remote_id": remote_id,
+                "measurements": [],
+            }
+        )
+        resp = create_measurements(event, None, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 200)
+        return resp["body"]
+
+
+def make_event(payload: dict, id: str = None):
+    return {"pathParameters": {"brew_remote_id": id}, "body": json.dumps(payload)}
+
+
+def make_series_event(
+    payload: dict, brew_remote_id: str = None, source_name: str = None
+):
+    return {
+        "pathParameters": {
+            "brew_remote_id": brew_remote_id,
+            "source_name": source_name,
+        },
+        "body": json.dumps(payload),
+    }

@@ -6,8 +6,8 @@ class Brew(object):
         self.name = name
         self.id: int
         self.measurement_ids: List[str]
-        self.smelloscope_ids: List[str]
         self.active = False
+        self.remote_id: str
 
     def get_display_name(self) -> str:
         return self.name if self.name else self.id

@@ -6,7 +6,7 @@ class Serializable:
         return self.__dict__
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.toDict(), sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     @classmethod
     def from_json(cls, json_string):
@@ -17,17 +17,8 @@ class Serializable:
 
     @classmethod
     def from_dict(cls, attributes):
+        if attributes is None:
+            return
         obj = cls()
         obj.__dict__ = attributes
         return obj
-
-
-class Brew(Serializable):
-    id: str
-    name: str
-    active = False
-
-    def __init__(self):
-        pass
-
-    # TODO: add validation here

@@ -39,11 +39,8 @@ class TestBrewService(TestCase):
 
         all_brews = service.get_all()
         self.assertEqual(len(all_brews), 2)
-        count= 0
+        count = 0
         for brew in all_brews:
             if brew.active:
-                count+=1
+                count += 1
         self.assertEqual(1, count)
-
-
-

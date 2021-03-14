@@ -1,22 +1,30 @@
 import json
-from .brew import Brew
-from .brewService import BrewService
+from .brew.brewRemote import BrewRemote
+from .brew.brewServiceRemote import make_brew_service
+from .measurements.measurementServiceRemote import make_measurement_service
+from .measurements.measurementSeriesRemote import MeasurementSeriesRemote
 
 
-def create_brew(event: dict, context):
-    brew = Brew.from_json(event["body"])
-    response = BrewService().create(brew)
+def create_brew(event: dict, context, service=None):
+    if not service:
+        service = make_brew_service()
+    brew = BrewRemote.from_json(event["body"])
+    response = service.create(brew)
     return {"statusCode": 200, "body": json.dumps(response)}
 
 
-def get_brews(event: dict, context):
-    brews = BrewService().getAll()
-    return {"statusCode": 200, "body": json.dumps(brews)}
+def get_brews(event: dict, context, service=None):
+    if not service:
+        service = make_brew_service()
+    brews = service.getAll()
+    return {"statusCode": 200, "body": json.dumps(brews, default=lambda o: o.to_json())}
 
 
-def get_brew(event: dict, context):
-    id_to_get = event["pathParameters"]["id"]
-    brew = BrewService().get(id_to_get)
+def get_brew(event: dict, context, service=None):
+    if not service:
+        service = make_brew_service()
+    id_to_get = event["pathParameters"]["brew_remote_id"]
+    brew = service.get(id_to_get)
 
     if not brew:
         return {"statusCode": 404, "body": json.dumps({"error": "Brew does not exist"})}
@@ -24,13 +32,89 @@ def get_brew(event: dict, context):
     return {"statusCode": 200, "body": brew.to_json()}
 
 
-def update_brew(event, context):
-    brew = Brew.from_json(event["body"])
-    response = BrewService().put(brew)
+def update_brew(event: dict, context, service=None):
+    if not service:
+        service = make_brew_service()
+    brew = BrewRemote.from_json(event["body"])
+    response = service.put(brew)
     return {"statusCode": 200, "body": json.dumps(response)}
 
 
-def delete_brew(event, context):
-    id_to_delete = event["pathParameters"]["id"]
-    response = BrewService().delete(id_to_delete)
+def delete_brew(event: dict, context, service=None):
+    if not service:
+        service = make_brew_service()
+    id_to_delete = event["pathParameters"]["brew_remote_id"]
+    response = service.delete(id_to_delete)
     return {"statusCode": 200, "body": json.dumps(response)}
+
+
+## Measurements
+
+
+def create_measurements(event: dict, context, service=None):
+    if not service:
+        service = make_measurement_service()
+    series = MeasurementSeriesRemote.from_json(event["body"])
+    response = service.create(series)
+    return {"statusCode": 200, "body": response.to_json()}
+
+
+def get_all_measurement_series(event: dict, context, service=None):
+    if not service:
+        service = make_measurement_service()
+    series = service.getAll()
+    return {
+        "statusCode": 200,
+        "body": json.dumps(series, default=lambda o: o.to_json()),
+    }
+
+
+def get_measurement_series(event: dict, context, service=None):
+    if not service:
+        service = make_measurement_service()
+    brew_remote_id = event["pathParameters"]["brew_remote_id"]
+    source_name = event["pathParameters"]["source_name"]
+    series = service.get(brew_remote_id, source_name)
+
+    if not series:
+        return {
+            "statusCode": 404,
+            "body": json.dumps({"error": "Measurement series does not exist"}),
+        }
+
+    return {"statusCode": 200, "body": series.to_json()}
+
+
+def get_measurement_series_for_brew(event: dict, context, service=None):
+    if not service:
+        service = make_measurement_service()
+    brew_remote_id = event["pathParameters"]["brew_remote_id"]
+    series = service.get_all_for_brew(brew_remote_id)
+
+    if not series:
+        return {
+            "statusCode": 404,
+            "body": json.dumps({"error": "Measurement series does not exist"}),
+        }
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps(series, default=lambda o: o.to_json()),
+    }
+
+
+def update_measurements(event: dict, context, service=None):
+    if not service:
+        service = make_measurement_service()
+    series = MeasurementSeriesRemote.from_json(event["body"])
+    response = service.put(series)
+    return {"statusCode": 200, "body": response.to_json()}
+
+
+def delete_measurements(event: dict, context, service=None):
+    if not service:
+        service = make_measurement_service()
+    brew_remote_id = event["pathParameters"]["brew_remote_id"]
+    source_name = event["pathParameters"]["source_name"]
+    response = service.delete(brew_remote_id, source_name)
+    return {"statusCode": 200, "body": response.to_json()}
