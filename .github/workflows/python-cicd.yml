@@ -25,6 +25,7 @@ jobs:
         python -m pytest
 
   deploy-lambda:
+    needs: tests
     runs-on: ubuntu-latest
     defaults:
       run:
