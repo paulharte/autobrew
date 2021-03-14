@@ -157,7 +157,7 @@ resources:
           - AttributeName: brew_remote_id
             KeyType: HASH
           - AttributeName: source_name
-            KeyType: HASH
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
 
 #  Outputs:
