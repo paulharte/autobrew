@@ -111,21 +111,18 @@ functions:
       - httpApi:
           method: post
           path: /measurements
-          authorizer: aws_iam
   updateMeasurements:
     handler: handler.update_measurements
     events:
       - httpApi:
           method: put
           path: /brew/{brew_remote_id}/measurements/{source_name}
-          authorizer: aws_iam
   deleteMeasurements:
     handler: handler.delete_measurements
     events:
       - httpApi:
           method: delete
           path: /brew/{brew_remote_id}/measurements/{source_name}
-          authorizer: aws_iam
 
 #    Define function environment variables here
 #    environment:
