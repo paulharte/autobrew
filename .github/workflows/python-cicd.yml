@@ -23,6 +23,7 @@ jobs:
     - name: Test main code with pytest
       run:
         python -m pytest
+
     - name: Test remote code with pytest
         run:
           cd autobrew/aws/lambda
