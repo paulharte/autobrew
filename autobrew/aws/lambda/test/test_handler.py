@@ -1,11 +1,11 @@
 import datetime
 from unittest import TestCase
-import json
 
-from ..test.stubDynamo import StubDynamo
-from ..measurements.measurementServiceRemote import MeasurementServiceRemote
-from ..brew.brewServiceRemote import BrewServiceRemote
-from ..handler import *
+
+from measurements.measurementServiceRemote import MeasurementServiceRemote
+from brew.brewServiceRemote import BrewServiceRemote
+from handler import *
+from test_utils.stubDynamo import StubDynamo
 
 
 class TestHandler(TestCase):

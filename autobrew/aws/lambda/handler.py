@@ -1,8 +1,8 @@
 import json
-from .brew.brewRemote import BrewRemote
-from .brew.brewServiceRemote import make_brew_service
-from .measurements.measurementServiceRemote import make_measurement_service
-from .measurements.measurementSeriesRemote import MeasurementSeriesRemote
+from brew.brewRemote import BrewRemote
+from brew.brewServiceRemote import make_brew_service
+from measurements.measurementServiceRemote import make_measurement_service
+from measurements.measurementSeriesRemote import MeasurementSeriesRemote
 
 
 def create_brew(event: dict, context, service=None):

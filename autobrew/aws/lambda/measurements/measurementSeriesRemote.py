@@ -1,7 +1,7 @@
 from typing import List
 
-from ..brew.brewRemote import Serializable
-from .measurementRemote import MeasurementRemote
+from brew.brewRemote import Serializable
+from measurements.measurementRemote import MeasurementRemote
 import json
 
 

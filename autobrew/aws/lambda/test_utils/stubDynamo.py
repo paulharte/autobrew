@@ -1,7 +1,7 @@
 from typing import List
 
-from ..measurements.measurementServiceRemote import MEASUREMENT_SERIES_DYNAMO_TABLE
-from ..brew.brewServiceRemote import BREWS_DYNAMO_TABLE, BREW_TABLE_ID
+from measurements.measurementServiceRemote import MEASUREMENT_SERIES_DYNAMO_TABLE
+from brew.brewServiceRemote import BREWS_DYNAMO_TABLE, BREW_TABLE_ID
 
 
 class StubDynamo(object):

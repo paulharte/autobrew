@@ -1,8 +1,8 @@
 from typing import List
 
 import uuid
-from .brewRemote import BrewRemote
-from ..storage.dynamo import Dynamo
+from brew.brewRemote import BrewRemote
+from storage.dynamo import Dynamo
 
 BREWS_DYNAMO_TABLE = "autobrew_brews"
 BREW_TABLE_ID = "remote_id"

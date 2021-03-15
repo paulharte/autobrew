@@ -1,6 +1,6 @@
 from unittest import TestCase
 import json
-from ..measurements.measurementSeriesRemote import MeasurementSeriesRemote
+from measurements.measurementSeriesRemote import MeasurementSeriesRemote
 
 
 class TestMeasurementSeries(TestCase):

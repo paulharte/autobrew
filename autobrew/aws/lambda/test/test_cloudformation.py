@@ -4,24 +4,26 @@ import os
 
 import pytest
 import yaml
-from . import cloudFormationValidator
+from test_utils import cloudFormationValidator
 import json
 
 local_only = pytest.mark.skipif(
     platform.system() != "Windows", reason="requires aws account"
 )
 
+def getBaseLambdaFolder() -> str:
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    return my_path[: my_path.rfind("test")]
 
 def formPath():
-    my_path = os.path.abspath(os.path.dirname(__file__))
-    lambda_folder = my_path[: my_path.rfind("test")]
+    lambda_folder = getBaseLambdaFolder()
     path = os.path.join(lambda_folder, "serverless.yml")
     return path
 
 
 def formRulesPath():
-    my_path = os.path.abspath(os.path.dirname(__file__))
-    return os.path.join(my_path, "cf-rules.json")
+    lambda_folder = getBaseLambdaFolder()
+    return os.path.join(lambda_folder, "test_utils", "cf-rules.json")
 
 
 class TestCloudFormation(TestCase):

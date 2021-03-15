@@ -1,8 +1,8 @@
 from typing import List
 
 
-from ..storage.dynamo import Dynamo
-from .measurementSeriesRemote import MeasurementSeriesRemote
+from storage.dynamo import Dynamo
+from measurements.measurementSeriesRemote import MeasurementSeriesRemote
 
 MEASUREMENT_SERIES_DYNAMO_TABLE = "autobrew_measurement_series"
 MEASUREMENT_SERIES_KEY = ["brew_remote_id", "source_name"]

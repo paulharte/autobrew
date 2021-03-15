@@ -46,6 +46,7 @@ package:
   exclude:
     - test_*
     - test/**
+    - test_utils/**
     - package.json
     - package-lock.json
     - node_modules/**

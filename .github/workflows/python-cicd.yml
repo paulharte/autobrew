@@ -20,9 +20,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Test with pytest
+    - name: Test main code with pytest
       run:
         python -m pytest
+    - name: Test remote code with pytest
+        run:
+          cd autobrew/aws/lambda
+          python -m pytest
 
   deploy-lambda:
     needs: tests
