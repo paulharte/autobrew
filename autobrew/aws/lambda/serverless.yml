@@ -1,7 +1,6 @@
 
 service: autobrew-brews
 app: autobrew
-#org: your-org-name
 
 frameworkVersion: '2'
 
@@ -11,7 +10,7 @@ provider:
   lambdaHashingVersion: 20201221
   memorySize: 128
 
-  stage: uat
+  stage: ${opt:stage, 'uat'}
   region: eu-west-1
   httpApi:
     cors: true
@@ -25,7 +24,7 @@ provider:
         - dynamoDB:GetItem
         - dynamoDB:UpdateItem
         - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_brews
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.BREW_TABLE}
     - Effect: "Allow"
       Action:
         - dynamoDB:PutItem
@@ -33,12 +32,13 @@ provider:
         - dynamoDB:GetItem
         - dynamoDB:UpdateItem
         - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_measurement_series
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.MEASUREMENT_TABLE}
 
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+  environment:
+    BREW_TABLE: autobrew_brews_${opt:stage, 'uat'}
+    MEASUREMENT_TABLE: autobrew_measurement_series_${opt:stage, 'uat'}
 
 # you can add packaging information here
 package:
@@ -135,7 +135,7 @@ resources:
     brewTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: autobrew_brews
+        TableName: ${self:provider.environment.BREW_TABLE}
         AttributeDefinitions:
           - AttributeName: remote_id
             AttributeType: S
@@ -146,7 +146,7 @@ resources:
     measurementSeriesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: autobrew_measurement_series
+        TableName: ${self:provider.environment.MEASUREMENT_TABLE}
         AttributeDefinitions:
           - AttributeName: brew_remote_id
             AttributeType: S

@@ -1,10 +1,11 @@
+import os
 from typing import List
 
 import uuid
 from brew.brewRemote import BrewRemote
 from storage.dynamo import Dynamo
 
-BREWS_DYNAMO_TABLE = "autobrew_brews"
+BREWS_DYNAMO_TABLE = os.environ.get('brew_table', default="autobrew_brews")
 BREW_TABLE_ID = "remote_id"
 
 
@@ -19,7 +20,7 @@ class BrewServiceRemote(object):
         ]
 
     def put(self, brew: BrewRemote):
-        return self.db.put(BREWS_DYNAMO_TABLE, brew.to_dict())
+        self.db.put(BREWS_DYNAMO_TABLE, brew.to_dict())
 
     def get(self, id_to_get: int) -> BrewRemote:
         brew_dict = self.db.get(BREWS_DYNAMO_TABLE, str(id_to_get), BREW_TABLE_ID)
@@ -29,10 +30,10 @@ class BrewServiceRemote(object):
             return None
 
     def create(self, brew: BrewRemote):
-        return self.put(brew)
+        self.put(brew)
 
     def delete(self, id_to_delete: int):
-        return self.db.delete(BREWS_DYNAMO_TABLE, str(id_to_delete), BREW_TABLE_ID)
+        self.db.delete(BREWS_DYNAMO_TABLE, str(id_to_delete), BREW_TABLE_ID)
 
     def get_unique_brew_id(self) -> str:
         return uuid.uuid4()

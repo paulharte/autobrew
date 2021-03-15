@@ -131,7 +131,6 @@ class TestHandler(TestCase):
         )
         resp = create_measurements(event, None, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)
-        return resp["body"]
 
 
 def make_event(payload: dict, id: str = None):

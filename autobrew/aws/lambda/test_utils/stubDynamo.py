@@ -16,7 +16,6 @@ class StubDynamo(object):
         table: dict = self.dynamo_db.get(table_name)
         key = _get_key(table_name, item)
         table[key] = item
-        return item
 
     def get(self, table_name: str, id_to_get, id_name):
         key = _form_key(id_to_get, id_name)
@@ -36,7 +35,6 @@ class StubDynamo(object):
         key = _form_key(id_to_delete, id_name)
         table: dict = self.dynamo_db.get(table_name)
         del table[key]
-        return {}
 
 
 def _get_key(table_name: str, item: dict):

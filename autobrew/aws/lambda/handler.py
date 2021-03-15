@@ -3,14 +3,17 @@ from brew.brewRemote import BrewRemote
 from brew.brewServiceRemote import make_brew_service
 from measurements.measurementServiceRemote import make_measurement_service
 from measurements.measurementSeriesRemote import MeasurementSeriesRemote
+import logging
+logging.basicConfig(level=logging.INFO)
+
 
 
 def create_brew(event: dict, context, service=None):
     if not service:
         service = make_brew_service()
     brew = BrewRemote.from_json(event["body"])
-    response = service.create(brew)
-    return {"statusCode": 200, "body": json.dumps(response)}
+    service.create(brew)
+    return {"statusCode": 200}
 
 
 def get_brews(event: dict, context, service=None):
@@ -36,16 +39,16 @@ def update_brew(event: dict, context, service=None):
     if not service:
         service = make_brew_service()
     brew = BrewRemote.from_json(event["body"])
-    response = service.put(brew)
-    return {"statusCode": 200, "body": json.dumps(response)}
+    service.put(brew)
+    return {"statusCode": 200}
 
 
 def delete_brew(event: dict, context, service=None):
     if not service:
         service = make_brew_service()
     id_to_delete = event["pathParameters"]["brew_remote_id"]
-    response = service.delete(id_to_delete)
-    return {"statusCode": 200, "body": json.dumps(response)}
+    service.delete(id_to_delete)
+    return {"statusCode": 200}
 
 
 ## Measurements
@@ -56,7 +59,7 @@ def create_measurements(event: dict, context, service=None):
         service = make_measurement_service()
     series = MeasurementSeriesRemote.from_json(event["body"])
     response = service.create(series)
-    return {"statusCode": 200, "body": response.to_json()}
+    return {"statusCode": 200}
 
 
 def get_all_measurement_series(event: dict, context, service=None):
@@ -107,8 +110,8 @@ def update_measurements(event: dict, context, service=None):
     if not service:
         service = make_measurement_service()
     series = MeasurementSeriesRemote.from_json(event["body"])
-    response = service.put(series)
-    return {"statusCode": 200, "body": response.to_json()}
+    service.put(series)
+    return {"statusCode": 200}
 
 
 def delete_measurements(event: dict, context, service=None):
@@ -116,5 +119,5 @@ def delete_measurements(event: dict, context, service=None):
         service = make_measurement_service()
     brew_remote_id = event["pathParameters"]["brew_remote_id"]
     source_name = event["pathParameters"]["source_name"]
-    response = service.delete(brew_remote_id, source_name)
-    return {"statusCode": 200, "body": response.to_json()}
+    service.delete(brew_remote_id, source_name)
+    return {"statusCode": 200}
