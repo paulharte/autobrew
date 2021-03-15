@@ -26,8 +26,8 @@ jobs:
 
     - name: Test remote code with pytest
       run:
-        cd autobrew/aws/lambda
         python -m pytest
+      working-directory: autobrew/aws/lambda
 
   deploy-lambda:
     needs: tests
