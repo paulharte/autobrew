@@ -4,7 +4,7 @@ import uuid
 from .brewRemote import BrewRemote
 from ..storage.dynamo import Dynamo
 
-BREWS_DYNAMO_TABLE = "autobrew_brew"
+BREWS_DYNAMO_TABLE = "autobrew_brews"
 BREW_TABLE_ID = "remote_id"
 
 

@@ -25,7 +25,7 @@ provider:
         - dynamoDB:GetItem
         - dynamoDB:UpdateItem
         - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_brew
+      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/autobrew_brews
     - Effect: "Allow"
       Action:
         - dynamoDB:PutItem
