@@ -53,5 +53,5 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
-      - name: Serverless Deploy --stage uat --region eu-west-1
-        run: npm run-script deploy
+      - name: Serverless Deploy
+        run: npm run-script deploy-uat
