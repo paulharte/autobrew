@@ -11,18 +11,13 @@ provider:
   memorySize: 128
 
   stage: ${opt:stage, 'uat'}
-  region: #{AWS::Region}
+  region: ${opt:region}
   httpApi:
     cors: true
     authorizers:
       serviceAuthorizer:
         identitySource: $request.header.Authorization
-        issuerUrl:
-          Fn::Join:
-            - ''
-            - - 'https://cognito-idp.'
-              - '#{AWS::Region}'
-              - '.amazonaws.com/eu-west-1_k4rFWLDKO'
+        issuerUrl: https://cognito-idp.#{AWS::Region}.amazonaws.com/eu-west-1_k4rFWLDKO
         audience:
           - 64k4n04qv28q032ma70e0shf4b
 
