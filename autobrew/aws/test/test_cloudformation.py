@@ -11,18 +11,18 @@ local_only = pytest.mark.skipif(
     platform.system() != "Windows", reason="requires aws account"
 )
 
-def getBaseLambdaFolder() -> str:
+def getBaseAwsFolder() -> str:
     my_path = os.path.abspath(os.path.dirname(__file__))
     return my_path[: my_path.rfind("test")]
 
 def formPath():
-    lambda_folder = getBaseLambdaFolder()
+    lambda_folder = getBaseAwsFolder()
     path = os.path.join(lambda_folder, "serverless.yml")
     return path
 
 
 def formRulesPath():
-    lambda_folder = getBaseLambdaFolder()
+    lambda_folder = getBaseAwsFolder()
     return os.path.join(lambda_folder, "test_utils", "cf-rules.json")
 
 
