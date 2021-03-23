@@ -11,6 +11,7 @@ from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscope import SmelloscopeNotAvailable
 from autobrew.smelloscope.smelloscopeFactory import SmelloscopeFactory
+from autobrew.sync.syncService import SyncService
 from autobrew.temperature.probeTempApi import InvalidTemperatureFileError
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
 
@@ -28,6 +29,7 @@ class MeasurementTaker(object):
         heat_control: HeatControl,
         measurement_service: MeasurementService,
         alerter: Alerter,
+        sync: SyncService
     ):
         self.brew_service = brew_service
         self.temp_factory = temp_factory
@@ -35,6 +37,7 @@ class MeasurementTaker(object):
         self.heat_control = heat_control
         self.measurement_service = measurement_service
         self.alerter = alerter
+        self.sync = sync
 
     def run_measurements(self):
         delay = SAMPLE_INTERVAL_SECONDS
@@ -49,8 +52,9 @@ class MeasurementTaker(object):
         for source in self.temp_factory.get_all_temp_sources():
             try:
                 measurement = source.get_temperature_measurement()
-                self.measurement_service.save_measurement(measurement, brew)
+                series = self.measurement_service.save_measurement(measurement, brew)
                 logger.info("Temperature measurement taken: " + str(measurement))
+                self.sync.sync_measurements(brew, series)
                 if source.is_primary:
                     self.heat_control.adjust(measurement.measurement_amt)
 
@@ -68,8 +72,9 @@ class MeasurementTaker(object):
         for smell_source in self.smell_factory.get_all_sources():
             try:
                 smell_measurement = smell_source.get_measurement()
-                self.measurement_service.save_measurement(smell_measurement, brew)
+                series = self.measurement_service.save_measurement(smell_measurement, brew)
                 logger.info("Alcohol measurement taken: " + str(smell_measurement))
+                self.sync.sync_measurements(brew, series)
             except SmelloscopeNotAvailable as e:
                 msg = "No alcohol measurement taken as smelloscope offline" + str(e)
                 logger.error(msg)

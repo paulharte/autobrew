@@ -1,8 +1,10 @@
 from autobrew.measurement.measurement import Measurement
 from typing import List
 
+from storage.serializable import Serializable
 
-class MeasurementSeries(object):
+
+class MeasurementSeries(Serializable):
     def __init__(self, source_name: str, brew_id: int):
         self.source_name: str = source_name
         self.measurements: List[Measurement] = []

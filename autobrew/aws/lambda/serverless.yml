@@ -6,15 +6,25 @@ frameworkVersion: '2'
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.8
   lambdaHashingVersion: 20201221
   memorySize: 128
 
   stage: ${opt:stage, 'uat'}
-  region: eu-west-1
+  region: ${AWS::Region}
   httpApi:
     cors: true
-
+    authorizers:
+      serviceAuthorizer:
+        identitySource: $request.header.Authorization
+        issuerUrl:
+          Fn::Join:
+            - ''
+            - - 'https://cognito-idp.'
+              - '${AWS::Region}'
+              - '.amazonaws.com/eu-west-1_k4rFWLDKO'
+        audience:
+          - 64k4n04qv28q032ma70e0shf4b
 
   iamRoleStatements:
     - Effect: "Allow"
@@ -39,6 +49,7 @@ provider:
   environment:
     BREW_TABLE: autobrew_brews_${opt:stage, 'uat'}
     MEASUREMENT_TABLE: autobrew_measurement_series_${opt:stage, 'uat'}
+    DOMAIN_SUFFIX: palspetprojects
 
 # you can add packaging information here
 package:

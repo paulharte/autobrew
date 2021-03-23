@@ -3,7 +3,7 @@ import json
 from measurements.measurementSeriesRemote import MeasurementSeriesRemote
 
 
-class TestMeasurementSeries(TestCase):
+class TestMeasurementSeriesRemote(TestCase):
     def test_series(self):
         incoming = json.dumps(
             {

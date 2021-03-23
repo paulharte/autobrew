@@ -32,7 +32,7 @@ class Smelloscope(AbstractSource):
         return SMELLOSCOPE_OFFSET - self._get_voltage()
 
     def get_measurement(self) -> Measurement:
-        time = datetime.datetime.now()
+        time = datetime.datetime.utcnow()
         alcohol_level = self.get_alcohol_level()
         measurement = Measurement(self.NAME, time, alcohol_level)
         return measurement

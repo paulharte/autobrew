@@ -23,7 +23,7 @@ class TempSource(AbstractSource):
 
     def get_temperature_measurement(self) -> Measurement:
         temp = self._get_temperature()
-        time = datetime.datetime.now()
+        time = datetime.datetime.utcnow()
         return Measurement(self.get_name(), time, temp)
 
     def _get_just_filename(self):

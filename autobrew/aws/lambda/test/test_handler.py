@@ -53,9 +53,8 @@ class TestHandler(TestCase):
             {
                 "source_name": temp_1,
                 "brew_id": "1",
-                "brew_remote_id": remote_id,
                 "measurements": [],
-            }
+            }, remote_id
         )
         resp = create_measurements(event, None, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)
@@ -125,9 +124,8 @@ class TestHandler(TestCase):
             {
                 "source_name": source_name,
                 "brew_id": "1",
-                "brew_remote_id": remote_id,
                 "measurements": [],
-            }
+            }, remote_id
         )
         resp = create_measurements(event, None, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)

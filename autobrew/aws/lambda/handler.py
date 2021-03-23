@@ -58,6 +58,7 @@ def create_measurements(event: dict, context, service=None):
     if not service:
         service = make_measurement_service()
     series = MeasurementSeriesRemote.from_json(event["body"])
+    series.brew_remote_id = event["pathParameters"]["brew_remote_id"]
     response = service.create(series)
     return {"statusCode": 200}
 
@@ -110,6 +111,7 @@ def update_measurements(event: dict, context, service=None):
     if not service:
         service = make_measurement_service()
     series = MeasurementSeriesRemote.from_json(event["body"])
+    series.brew_remote_id = event["pathParameters"]["brew_remote_id"]
     service.put(series)
     return {"statusCode": 200}
 

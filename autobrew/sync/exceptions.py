@@ -1,0 +1,3 @@
+
+class SyncFailedError(RuntimeError):
+    pass

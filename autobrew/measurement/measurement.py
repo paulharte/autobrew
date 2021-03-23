@@ -1,7 +1,9 @@
 import datetime
 
+from storage.serializable import Serializable
 
-class Measurement(object):
+
+class Measurement(Serializable):
     def __init__(self, source: str, time: datetime.datetime, measurement_amt: float):
         self.source_name = source
         self.time = time

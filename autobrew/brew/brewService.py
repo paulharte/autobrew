@@ -1,27 +1,32 @@
+import datetime
 from typing import List
 
 from injector import inject
 
 from autobrew.brew.brew import Brew
 from autobrew.brew.brewStorage import BrewStorage
+from autobrew.sync.syncService import SyncService
 
 
 class BrewService(object):
     @inject
-    def __init__(self, storage: BrewStorage):
+    def __init__(self, storage: BrewStorage, sync: SyncService):
         self.storage = storage
+        self.sync = sync
 
     def new(self, name) -> Brew:
-        brew = Brew(name)
+        brew = Brew(name, datetime.datetime.utcnow())
         brew.active = True
         brew.id = self.storage.generate_id()
         brew.remote_id = self.storage.generate_remote_id()
-        brew = self.storage.save(brew)
+        brew = self.save(brew)
         self._set_others_inactive(brew.id)
         return brew
 
     def save(self, brew: Brew):
-        return self.storage.save(brew)
+        brew = self.storage.save(brew)
+        self.sync.sync_brew(brew)
+        return brew
 
     def get_all(self) -> List[Brew]:
         return self.storage.get_all()
@@ -40,6 +45,7 @@ class BrewService(object):
     def set_active(self, brew_id: int) -> Brew:
         brew = self.storage.read(brew_id)
         brew.active = True
-        brew = self.storage.save(brew)
+        brew = self.save(brew)
         self._set_others_inactive(brew.id)
         return brew
+

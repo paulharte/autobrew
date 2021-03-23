@@ -1,3 +1,4 @@
+import datetime
 import json
 
 
@@ -6,7 +7,7 @@ class Serializable:
         return self.__dict__
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: convert_to_json(o), sort_keys=True, indent=4)
 
     @classmethod
     def from_json(cls, json_string):
@@ -22,3 +23,10 @@ class Serializable:
         obj = cls()
         obj.__dict__ = attributes
         return obj
+
+
+def convert_to_json(obj):
+    if isinstance(obj, (datetime.datetime, datetime.date)):
+        return obj.isoformat()
+    else:
+        return obj.__dict__

@@ -2,7 +2,7 @@ import logging
 
 import twitter
 
-from autobrew.alerting.tweeter.secrets import TwitterSecrets
+from autobrew.alerting.tweeter.secretsService import TwitterSecrets
 from autobrew.brew_settings import APP_LOGGING_NAME
 
 logger = logging.getLogger(APP_LOGGING_NAME)
