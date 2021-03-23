@@ -2,10 +2,10 @@ import datetime
 from unittest import TestCase
 
 
-from measurements.measurementServiceRemote import MeasurementServiceRemote
-from brew.brewServiceRemote import BrewServiceRemote
-from handler import *
-from test_utils.stubDynamo import StubDynamo
+from autobrew.aws.measurements.measurementServiceRemote import MeasurementServiceRemote
+from autobrew.aws.brew.brewServiceRemote import BrewServiceRemote
+from autobrew.aws.handler import *
+from autobrew.aws.test_utils.stubDynamo import StubDynamo
 
 
 class TestHandler(TestCase):

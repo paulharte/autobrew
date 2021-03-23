@@ -1,7 +1,7 @@
 from autobrew.measurement.measurement import Measurement
 from typing import List
 
-from storage.serializable import Serializable
+from autobrew.aws.storage.serializable import Serializable
 
 
 class MeasurementSeries(Serializable):

@@ -1,8 +1,8 @@
 import json
 from unittest import TestCase
-from brew.brewServiceRemote import BrewServiceRemote
-from brew.brewRemote import BrewRemote
-from test_utils.stubDynamo import StubDynamo
+from autobrew.aws.brew.brewServiceRemote import BrewServiceRemote
+from autobrew.aws.brew.brewRemote import BrewRemote
+from autobrew.aws.test_utils.stubDynamo import StubDynamo
 
 
 class TestBrewService(TestCase):

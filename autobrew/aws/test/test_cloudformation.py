@@ -4,7 +4,7 @@ import os
 
 import pytest
 import yaml
-from test_utils import cloudFormationValidator
+from autobrew.aws.test_utils import cloudFormationValidator
 import json
 
 local_only = pytest.mark.skipif(

@@ -1,6 +1,6 @@
 from unittest import TestCase
 import json
-from brew.brewRemote import BrewRemote
+from autobrew.aws.brew.brewRemote import BrewRemote
 
 
 class TestBrew(TestCase):

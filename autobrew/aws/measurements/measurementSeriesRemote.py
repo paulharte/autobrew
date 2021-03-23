@@ -1,7 +1,7 @@
 from typing import List
 
-from brew.brewRemote import Serializable
-from measurements.measurementRemote import MeasurementRemote
+from autobrew.aws.brew.brewRemote import Serializable
+from autobrew.aws.measurements.measurementRemote import MeasurementRemote
 import json
 
 

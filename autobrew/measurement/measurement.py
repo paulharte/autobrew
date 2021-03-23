@@ -1,6 +1,6 @@
 import datetime
 
-from storage.serializable import Serializable
+from autobrew.aws.storage.serializable import Serializable
 
 
 class Measurement(Serializable):

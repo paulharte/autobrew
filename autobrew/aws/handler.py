@@ -1,8 +1,8 @@
 import json
-from brew.brewRemote import BrewRemote
-from brew.brewServiceRemote import make_brew_service
-from measurements.measurementServiceRemote import make_measurement_service
-from measurements.measurementSeriesRemote import MeasurementSeriesRemote
+from autobrew.aws.brew.brewRemote import BrewRemote
+from autobrew.aws.brew.brewServiceRemote import make_brew_service
+from autobrew.aws.measurements.measurementServiceRemote import make_measurement_service
+from autobrew.aws.measurements.measurementSeriesRemote import MeasurementSeriesRemote
 import logging
 logging.basicConfig(level=logging.INFO)
 
