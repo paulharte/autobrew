@@ -46,6 +46,7 @@ provider:
   environment:
     BREW_TABLE: autobrew_brews_${opt:stage, 'uat'}
     MEASUREMENT_TABLE: autobrew_measurement_series_${opt:stage, 'uat'}
+    STAGE: ${opt:stage, 'uat'}
 
 # you can add packaging information here
 package:

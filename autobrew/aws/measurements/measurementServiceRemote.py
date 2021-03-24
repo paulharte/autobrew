@@ -6,7 +6,7 @@ from storage.dynamo import Dynamo
 from measurements.measurementSeriesRemote import MeasurementSeriesRemote
 
 MEASUREMENT_SERIES_DYNAMO_TABLE = os.environ.get(
-    "measurement_table", default="autobrew_measurement_series"
+    "MEASUREMENT_TABLE", default="autobrew_measurement_series"
 )
 MEASUREMENT_SERIES_KEY = ["brew_remote_id", "source_name"]
 
