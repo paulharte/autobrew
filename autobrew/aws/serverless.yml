@@ -61,16 +61,6 @@ package:
 plugins:
   - serverless-pseudo-parameters
   - serverless-python-requirements
-  - serverless-domain-manager
-
-custom:
-  customDomain:
-    domainName: brew-${opt:stage, 'uat'}.paulspetprojects.net
-    basePath: ''
-    stage: ${opt:stage, 'uat'}
-    createRoute53Record: true
-    certificateName: "*.paulspetprojects.net"
-    certificateArn: arn:aws:acm:us-east-1:570149424171:certificate/45c14e8b-883b-49ce-a5b7-bd7ac84376d1
 
 functions:
   getAllBrews:
