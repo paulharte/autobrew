@@ -17,7 +17,6 @@ import boto3
 import sys
 import argparse
 import json
-from pprint import pprint
 
 aws_profile = ""
 aws_region = ""

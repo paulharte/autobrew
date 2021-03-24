@@ -1,3 +1,2 @@
-
 class SyncFailedError(RuntimeError):
     pass

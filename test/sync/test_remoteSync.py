@@ -12,12 +12,14 @@ class TestRemoteSync(TestCase):
     def setUp(self) -> None:
         self.injector = Injector([configure_test])
         identity = self.injector.get(IdentityManager)
-        self.sync = RemoteSync(identity, AwsConfig('uat'))
+        self.sync = RemoteSync(identity, AwsConfig("uat"))
 
     def test_formMeasurementUrl(self):
-        url = self.sync.formMeasurementUrl('brew1', 'temp1')
-        self.assertEqual('https://brew-uat.paulspetprojects.net/brew/brew1/measurements/temp1', url)
+        url = self.sync.formMeasurementUrl("brew1", "temp1")
+        self.assertEqual(
+            "https://brew-uat.paulspetprojects.net/brew/brew1/measurements/temp1", url
+        )
 
     def test_formBrewUrl(self):
-        url = self.sync.formBrewUrl('brew1')
-        self.assertEqual('https://brew-uat.paulspetprojects.net/brew/brew1', url)
+        url = self.sync.formBrewUrl("brew1")
+        self.assertEqual("https://brew-uat.paulspetprojects.net/brew/brew1", url)

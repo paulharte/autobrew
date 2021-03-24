@@ -2,10 +2,12 @@
   "name": "autobrew-aws",
   "description": "",
   "version": "0.1.1",
-  "dependencies": {},
+  "dependencies": {
+    "serverless-domain-manager": "^5.1.0"
+  },
   "scripts": {
-    "deploy-uat": "serverless deploy --stage uat --region eu-west-1",
-    "deploy-prod": "serverless deploy --stage prod --region eu-west-1"
+    "deploy-uat": "sls create_domain --stage uat --region eu-west-1 && serverless deploy --stage uat --region eu-west-1",
+    "deploy-prod": "sls create_domain --stage prod --region eu-west-1 && serverless deploy --stage prod --region eu-west-1"
   },
   "devDependencies": {
     "serverless": "^2.29.0",

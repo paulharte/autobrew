@@ -1,4 +1,5 @@
-APP_LOGIN = 'cognito-app-login'
+APP_LOGIN = "cognito-app-login"
+
 
 class IdentitySecrets(object):
     def __init__(self, secrets: dict):
@@ -8,9 +9,7 @@ class IdentitySecrets(object):
         try:
             return self.secrets[key1][key2]
         except KeyError:
-            raise RuntimeError(
-                "Missing value in secrets file: %s:%s" % (key1, key2)
-            )
+            raise RuntimeError("Missing value in secrets file: %s:%s" % (key1, key2))
 
     def get_client_id(self):
         return self._extract_value(APP_LOGIN, "app-client-id")

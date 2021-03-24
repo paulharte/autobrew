@@ -4,16 +4,18 @@ import os
 
 import pytest
 import yaml
-from autobrew.aws.test_utils import cloudFormationValidator
+from test_utils import cloudFormationValidator
 import json
 
 local_only = pytest.mark.skipif(
     platform.system() != "Windows", reason="requires aws account"
 )
 
+
 def getBaseAwsFolder() -> str:
     my_path = os.path.abspath(os.path.dirname(__file__))
     return my_path[: my_path.rfind("test")]
+
 
 def formPath():
     lambda_folder = getBaseAwsFolder()

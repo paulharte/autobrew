@@ -2,10 +2,12 @@ import os
 from typing import List
 
 
-from autobrew.aws.storage.dynamo import Dynamo
-from autobrew.aws.measurements.measurementSeriesRemote import MeasurementSeriesRemote
+from storage.dynamo import Dynamo
+from measurements.measurementSeriesRemote import MeasurementSeriesRemote
 
-MEASUREMENT_SERIES_DYNAMO_TABLE = os.environ.get('measurement_table', default="autobrew_measurement_series")
+MEASUREMENT_SERIES_DYNAMO_TABLE = os.environ.get(
+    "measurement_table", default="autobrew_measurement_series"
+)
 MEASUREMENT_SERIES_KEY = ["brew_remote_id", "source_name"]
 
 
@@ -21,7 +23,6 @@ class MeasurementServiceRemote(object):
 
     def put(self, measurement_series: MeasurementSeriesRemote):
         self.db.put(MEASUREMENT_SERIES_DYNAMO_TABLE, measurement_series.to_dict())
-
 
     def get(self, brew_remote_id: str, source_name: str) -> MeasurementSeriesRemote:
         brew_dict = self.db.get(

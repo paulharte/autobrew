@@ -48,4 +48,3 @@ class BrewService(object):
         brew = self.save(brew)
         self._set_others_inactive(brew.id)
         return brew
-
