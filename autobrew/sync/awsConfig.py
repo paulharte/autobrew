@@ -1,13 +1,13 @@
-
-
-
-
 class AwsConfig(object):
-    BASE_URLS = {'uat': 'https://brew-uat.paulspetprojects.net/', 'prod': 'https://brew.paulspetprojects.net/'}
+    BASE_URLS = {
+        "uat": "https://brew-uat.paulspetprojects.net/",
+        "prod": "https://brew-prod.paulspetprojects.net/",
+    }
 
-    TOKEN_ENDPOINTS = {'uat': 'https://autobrew-uat.auth.eu-west-1.amazoncognito.com/token',
-                       'prod': 'https://autobrew-prod.auth.eu-west-1.amazoncognito.com/token'}
-
+    TOKEN_ENDPOINTS = {
+        "uat": "https://autobrew-uat.auth.eu-west-1.amazoncognito.com/token",
+        "prod": "https://autobrew-prod.auth.eu-west-1.amazoncognito.com/token",
+    }
 
     def __init__(self, env: str):
         self.env = env
@@ -17,4 +17,3 @@ class AwsConfig(object):
 
     def get_token_endpoint(self):
         return self.TOKEN_ENDPOINTS[self.env]
-

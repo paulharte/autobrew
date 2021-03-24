@@ -29,7 +29,7 @@ class MeasurementTaker(object):
         heat_control: HeatControl,
         measurement_service: MeasurementService,
         alerter: Alerter,
-        sync: SyncService
+        sync: SyncService,
     ):
         self.brew_service = brew_service
         self.temp_factory = temp_factory
@@ -43,6 +43,7 @@ class MeasurementTaker(object):
         delay = SAMPLE_INTERVAL_SECONDS
         while True:
             active_brew = self.brew_service.get_active()
+            self.sync.sync_brew(active_brew)
             if active_brew:
                 self.take_temperature_measurements(active_brew)
                 self.take_smell_measurements(active_brew)
@@ -72,7 +73,9 @@ class MeasurementTaker(object):
         for smell_source in self.smell_factory.get_all_sources():
             try:
                 smell_measurement = smell_source.get_measurement()
-                series = self.measurement_service.save_measurement(smell_measurement, brew)
+                series = self.measurement_service.save_measurement(
+                    smell_measurement, brew
+                )
                 logger.info("Alcohol measurement taken: " + str(smell_measurement))
                 self.sync.sync_measurements(brew, series)
             except SmelloscopeNotAvailable as e:

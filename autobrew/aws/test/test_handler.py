@@ -2,10 +2,10 @@ import datetime
 from unittest import TestCase
 
 
-from autobrew.aws.measurements.measurementServiceRemote import MeasurementServiceRemote
-from autobrew.aws.brew.brewServiceRemote import BrewServiceRemote
-from autobrew.aws.handler import *
-from autobrew.aws.test_utils.stubDynamo import StubDynamo
+from measurements.measurementServiceRemote import MeasurementServiceRemote
+from brew.brewServiceRemote import BrewServiceRemote
+from handler import *
+from test_utils.stubDynamo import StubDynamo
 
 
 class TestHandler(TestCase):
@@ -50,11 +50,7 @@ class TestHandler(TestCase):
         remote_id = "d2e85707"
         temp_1 = "temperature1"
         event = make_series_event(
-            {
-                "source_name": temp_1,
-                "brew_id": "1",
-                "measurements": [],
-            }, remote_id
+            {"source_name": temp_1, "brew_id": "1", "measurements": [],}, remote_id
         )
         resp = create_measurements(event, None, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)
@@ -121,11 +117,7 @@ class TestHandler(TestCase):
 
     def _create_series(self, source_name: str, remote_id: str):
         event = make_series_event(
-            {
-                "source_name": source_name,
-                "brew_id": "1",
-                "measurements": [],
-            }, remote_id
+            {"source_name": source_name, "brew_id": "1", "measurements": [],}, remote_id
         )
         resp = create_measurements(event, None, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)

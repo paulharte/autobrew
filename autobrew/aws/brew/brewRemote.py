@@ -1,6 +1,6 @@
 import datetime
 from typing import List
-from autobrew.aws.storage.serializable import Serializable
+from storage.serializable import Serializable
 
 
 class BrewRemote(Serializable):

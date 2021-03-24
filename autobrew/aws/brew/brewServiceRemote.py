@@ -2,10 +2,10 @@ import os
 from typing import List
 
 import uuid
-from autobrew.aws.brew.brewRemote import BrewRemote
-from autobrew.aws.storage.dynamo import Dynamo
+from brew.brewRemote import BrewRemote
+from storage.dynamo import Dynamo
 
-BREWS_DYNAMO_TABLE = os.environ.get('brew_table', default="autobrew_brews")
+BREWS_DYNAMO_TABLE = os.environ.get("brew_table", default="autobrew_brews")
 BREW_TABLE_ID = "remote_id"
 
 

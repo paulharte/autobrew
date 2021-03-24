@@ -11,7 +11,11 @@ EXAMPLE_SECRET_YAML = """
   secret: XXXX
 %s:
   key: XXX
-  secret: XXX""" % (CONSUMER, ACCCESS_TOKEN)
+  secret: XXX""" % (
+    CONSUMER,
+    ACCCESS_TOKEN,
+)
+
 
 class TwitterSecrets(object):
     def __init__(self, secrets: dict):
@@ -52,10 +56,6 @@ def extract_secrets() -> TwitterSecrets:
             return TwitterSecrets(secrets_dict)
     except FileNotFoundError:
         msg = (
-            "Please create a secrets.yaml file in the base of this project (%s)"
-            % path
+            "Please create a secrets.yaml file in the base of this project (%s)" % path
         )
         raise TwitterSecretException(msg)
-
-
-

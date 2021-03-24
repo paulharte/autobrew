@@ -21,30 +21,31 @@ provider:
         audience:
           - 64k4n04qv28q032ma70e0shf4b
 
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - dynamoDB:PutItem
-        - dynamoDB:Scan
-        - dynamoDB:GetItem
-        - dynamoDB:UpdateItem
-        - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.BREW_TABLE}
-    - Effect: "Allow"
-      Action:
-        - dynamoDB:PutItem
-        - dynamoDB:Scan
-        - dynamoDB:GetItem
-        - dynamoDB:UpdateItem
-        - dynamoDB:DeleteItem
-      Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.MEASUREMENT_TABLE}
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamoDB:PutItem
+            - dynamoDB:Scan
+            - dynamoDB:GetItem
+            - dynamoDB:UpdateItem
+            - dynamoDB:DeleteItem
+          Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.BREW_TABLE}
+        - Effect: "Allow"
+          Action:
+            - dynamoDB:PutItem
+            - dynamoDB:Scan
+            - dynamoDB:GetItem
+            - dynamoDB:UpdateItem
+            - dynamoDB:DeleteItem
+          Resource: arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:provider.environment.MEASUREMENT_TABLE}
 
 
 # you can define service wide environment variables here
   environment:
     BREW_TABLE: autobrew_brews_${opt:stage, 'uat'}
     MEASUREMENT_TABLE: autobrew_measurement_series_${opt:stage, 'uat'}
-    DOMAIN_SUFFIX: palspetprojects
 
 # you can add packaging information here
 package:
@@ -60,6 +61,7 @@ package:
 plugins:
   - serverless-pseudo-parameters
   - serverless-python-requirements
+
 functions:
   getAllBrews:
     handler: handler.get_brews
@@ -79,18 +81,21 @@ functions:
       - httpApi:
           method: post
           path: /brew
+          authorizer: serviceAuthorizer
   updateBrew:
     handler: handler.update_brew
     events:
       - httpApi:
           method: put
           path: /brew/{brew_remote_id}
+          authorizer: serviceAuthorizer
   deleteBrew:
     handler: handler.delete_brew
     events:
       - httpApi:
           method: delete
           path: /brew/{brew_remote_id}
+          authorizer: serviceAuthorizer
 
   getAllMeasurements:
     handler: handler.get_all_measurement_series
@@ -116,18 +121,21 @@ functions:
       - httpApi:
           method: post
           path: /measurements
+          authorizer: serviceAuthorizer
   updateMeasurements:
     handler: handler.update_measurements
     events:
       - httpApi:
           method: put
           path: /brew/{brew_remote_id}/measurements/{source_name}
+          authorizer: serviceAuthorizer
   deleteMeasurements:
     handler: handler.delete_measurements
     events:
       - httpApi:
           method: delete
           path: /brew/{brew_remote_id}/measurements/{source_name}
+          authorizer: serviceAuthorizer
 
 #    Define function environment variables here
 #    environment:

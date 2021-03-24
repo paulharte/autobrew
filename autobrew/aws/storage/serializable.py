@@ -7,7 +7,9 @@ class Serializable:
         return self.__dict__
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: convert_to_json(o), sort_keys=True, indent=4)
+        return json.dumps(
+            self, default=lambda o: convert_to_json(o), sort_keys=True, indent=4
+        )
 
     @classmethod
     def from_json(cls, json_string):

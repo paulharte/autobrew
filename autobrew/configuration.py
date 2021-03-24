@@ -44,7 +44,7 @@ def configure_prod(binder):
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
     binder.bind(ProbeApi, to=ProbeApi, scope=singleton)
     binder.bind(FileStorage, to=FileStorage, scope=singleton)
-    binder.bind(AwsConfig, to=AwsConfig('prod'), scope=singleton)
+    binder.bind(AwsConfig, to=AwsConfig("prod"), scope=singleton)
 
 
 def configure_local(binder):
@@ -53,7 +53,7 @@ def configure_local(binder):
     binder.bind(HeatSwitcher, to=MockHeatSwitcher, scope=singleton)
     binder.bind(ProbeApi, to=StubProbeApi, scope=singleton)
     binder.bind(TwitterAlerter, to=StubTwitterAlerter, scope=singleton)
-    binder.bind(AwsConfig, to=AwsConfig('uat'), scope=singleton)
+    binder.bind(AwsConfig, to=AwsConfig("uat"), scope=singleton)
 
 
 def configure_test(binder):

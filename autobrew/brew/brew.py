@@ -11,8 +11,7 @@ class Brew(Serializable):
         self.measurement_ids: List[str]
         self.active = False
         self.start_time = start_time
-        self.remote_id:str
-
+        self.remote_id: str
 
     def get_display_name(self) -> str:
         return self.name if self.name else self.id
@@ -29,4 +28,8 @@ class Brew(Serializable):
 
 def sort_brews(brews: List[Brew]) -> List[Brew]:
     # sorts with active on top
-    return sorted(brews, key=lambda br: int(br.active) + (br.start_time.toordinal() * 1/ 100000000), reverse=True)
+    return sorted(
+        brews,
+        key=lambda br: int(br.active) + (br.start_time.toordinal() * 1 / 100000000),
+        reverse=True,
+    )

@@ -9,13 +9,14 @@ REGION = "eu-west-1"
 
 logger = logging.getLogger()
 
+
 class Dynamo(object):
     def __init__(self):
         self.dynamo_db = boto3.resource(DYNAMO_DB, region_name=REGION)
 
     def get_all(self, table_name: str) -> List:
         table = self.dynamo_db.Table(table_name)
-        return table.scan().get('Items')
+        return table.scan().get("Items")
 
     def put(self, table_name: str, item: dict):
         table = self.dynamo_db.Table(table_name)
@@ -36,8 +37,9 @@ class Dynamo(object):
         table = self.dynamo_db.Table(table_name)
         key = _form_key(id_to_delete, id_name)
         resp = table.delete_item(Key=key)
-        logger.info("Item deleted from to Dynamo table: %s. Item: %s", table_name, id_to_delete)
-
+        logger.info(
+            "Item deleted from to Dynamo table: %s. Item: %s", table_name, id_to_delete
+        )
 
 
 def _form_key(id_to_get, id_name):

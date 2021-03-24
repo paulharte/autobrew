@@ -32,14 +32,14 @@ class IdentityManager(object):
         secrets = self._extract_secrets()
 
         body = {
-            'grant_type': 'client_credentials',
-            'client_id': secrets.get_client_id(),
-            'client_secret': secrets.get_client_secret(),
-            'scope': self._determine_scope()
+            "grant_type": "client_credentials",
+            "client_id": secrets.get_client_id(),
+            "client_secret": secrets.get_client_secret(),
+            "scope": self._determine_scope(),
         }
 
         response = requests.post(self.config.get_token_endpoint(), data=body)
         return json.loads(response.text)["access_token"]
 
     def _determine_scope(self):
-        return self.config.get_base_url() + 'brews.readwrite'
+        return self.config.get_base_url() + "brews.readwrite"

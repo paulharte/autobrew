@@ -1,6 +1,6 @@
 import datetime
 
-from autobrew.aws.brew.brewRemote import Serializable
+from brew.brewRemote import Serializable
 
 
 class MeasurementRemote(Serializable):
