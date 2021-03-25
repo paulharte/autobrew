@@ -31,7 +31,7 @@ def new_brew(brew_service: BrewService):
 def set_active(brew_service: BrewService):
     if not request.args or "id" not in request.args:
         return render_template("error.html", message="Invalid request")
-    brew_id = request.args.get("id")
+    brew_id = str(request.args.get("id"))
     brew = brew_service.set_active(brew_id)
     return render_template(
         "success.html",

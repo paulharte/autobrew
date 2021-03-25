@@ -8,7 +8,7 @@ class MeasurementSeriesRemote(Serializable):
     def __init__(self):
         self.source_name: str
         self.measurements: List[MeasurementRemote]
-        self.brew_id: int
+        self.brew_id: str
         self.brew_remote_id: str
         self.nickname: str = None
 

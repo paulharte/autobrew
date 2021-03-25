@@ -34,7 +34,7 @@ class TestMeasurementSeriesRemote(TestCase):
         incoming = json.dumps(
             {
                 "source_name": "temperature1",
-                "brew_id": 1,
+                "brew_id": "1",
                 "brew_remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da674",
                 "measurements": [],
             }

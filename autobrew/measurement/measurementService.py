@@ -40,7 +40,7 @@ class MeasurementService(object):
     def get_series(self, series_id: str) -> MeasurementSeries:
         return self.storage.read(series_id)
 
-    def get_series_by_source(self, source_name: str, brew_id: int) -> MeasurementSeries:
+    def get_series_by_source(self, source_name: str, brew_id: str) -> MeasurementSeries:
         return self.storage.read_by_source(source_name, brew_id)
 
     def set_measurement_nickname(

@@ -34,7 +34,7 @@ class TestBrew(TestCase):
         incoming = json.dumps(
             {
                 "name": "brew2",
-                "id": 2,
+                "id": "2",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da675",
                 "active": False,
                 "start_time": time_str

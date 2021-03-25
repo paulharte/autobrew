@@ -36,13 +36,13 @@ class BrewService(object):
             if brew.active:
                 return brew
 
-    def _set_others_inactive(self, active_id: int):
+    def _set_others_inactive(self, active_id: str):
         for brew in self.get_all():
             if brew.active and (brew.id != active_id):
                 brew.active = False
                 self.save(brew)
 
-    def set_active(self, brew_id: int) -> Brew:
+    def set_active(self, brew_id: str) -> Brew:
         brew = self.storage.read(brew_id)
         brew.active = True
         brew = self.save(brew)

@@ -5,10 +5,10 @@ from autobrew.aws.storage.serializable import Serializable
 
 
 class MeasurementSeries(Serializable):
-    def __init__(self, source_name: str, brew_id: int):
+    def __init__(self, source_name: str, brew_id: str):
         self.source_name: str = source_name
         self.measurements: List[Measurement] = []
-        self.brew_id: int = brew_id
+        self.brew_id: str = brew_id
         self.nickname: str = None
 
     @property

@@ -20,11 +20,11 @@ class BrewStorage(object):
         self.file_storage = file_storage
 
     def save(self, brew: Brew) -> Brew:
-        self.file_storage.save(str(brew.id), brew, self.SUB_FOLDER)
+        self.file_storage.save(brew.id, brew, self.SUB_FOLDER)
         return brew
 
-    def read(self, brew_id: int) -> Brew:
-        return self.file_storage.read(str(brew_id), self.SUB_FOLDER)
+    def read(self, brew_id: str) -> Brew:
+        return self.file_storage.read(brew_id, self.SUB_FOLDER)
 
     def get_all(self) -> List[Brew]:
         brews = []
@@ -35,10 +35,10 @@ class BrewStorage(object):
                 logger.error(e)
         return brews
 
-    def generate_id(self) -> int:
+    def generate_id(self) -> str:
         for i in range(100000):
             if str(i) not in self.file_storage.get_storage_files(None, self.SUB_FOLDER):
-                return i
+                return str(i)
         raise RuntimeError("Unable to get id for new brew")
 
     def generate_remote_id(self) -> str:

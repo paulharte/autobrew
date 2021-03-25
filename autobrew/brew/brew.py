@@ -7,7 +7,7 @@ from autobrew.aws.storage.serializable import Serializable
 class Brew(Serializable):
     def __init__(self, name: str, start_time: datetime.datetime):
         self.name = name
-        self.id: int
+        self.id: str
         self.measurement_ids: List[str]
         self.active = False
         self.start_time = start_time
