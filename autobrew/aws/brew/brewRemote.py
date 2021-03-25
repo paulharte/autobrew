@@ -1,5 +1,5 @@
 import datetime
-from typing import List, Tuple
+from typing import List
 from storage.serializable import Serializable
 
 

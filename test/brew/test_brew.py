@@ -2,7 +2,7 @@ import datetime
 from unittest import TestCase
 
 from autobrew.brew.brew import Brew, sort_brews
-from autobrew.aws.brew.brewRemote import BrewRemote
+from autobrew.aws.storage.serializable import Serializable
 
 
 class TestBrew(TestCase):
@@ -37,7 +37,7 @@ class TestBrew(TestCase):
         brew1.remote_id = "12345"  # need to have this id before sending
 
         self.assertTrue(brew1.to_json())
-        decoded = BrewRemote.from_json(brew1.to_json())
+        decoded = Serializable.from_json(brew1.to_json())
         self.assertTrue(decoded)
         self.assertEqual(decoded.name, "one")
         self.assertEqual(decoded.start_time, before)
