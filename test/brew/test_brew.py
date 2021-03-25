@@ -2,7 +2,7 @@ import datetime
 from unittest import TestCase
 
 from autobrew.brew.brew import Brew, sort_brews
-from brew.brewRemote import BrewRemote
+from autobrew.aws.brew.brewRemote import BrewRemote
 
 
 class TestBrew(TestCase):
