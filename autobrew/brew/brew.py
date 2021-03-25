@@ -23,7 +23,7 @@ class Brew(Serializable):
         return self.id == other.id
 
     def __str__(self):
-        return "Brew Name:%s, Id:%s" % (self.name, self.id)
+        return "Brew '%s'(Id:%s, RemoteId:%s)" % (self.name, self.id, self.remote_id)
 
 
 def sort_brews(brews: List[Brew]) -> List[Brew]:

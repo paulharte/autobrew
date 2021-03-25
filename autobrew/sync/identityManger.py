@@ -39,6 +39,8 @@ class IdentityManager(object):
         }
 
         response = requests.post(self.config.get_token_endpoint(), data=body)
+        print("token")
+        print(response.text)
         return json.loads(response.text)["access_token"]
 
     def _determine_scope(self):

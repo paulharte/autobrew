@@ -46,11 +46,21 @@ class TestHandler(TestCase):
         self.assertEqual(resp["statusCode"], 200)
         self.assertEqual(len(json.loads(resp["body"])), 0)
 
+    def test_brew_error(self):
+        event = make_event({})
+        resp = create_brew(event, None, self.brew_service)
+        self.assertEqual(resp["statusCode"], 400)
+        resp = update_brew(event, None, self.brew_service)
+        self.assertEqual(resp["statusCode"], 400)
+        resp = delete_brew(event, None, self.brew_service)
+        self.assertEqual(resp["statusCode"], 400)
+
     def test_series(self):
         remote_id = "d2e85707"
         temp_1 = "temperature1"
         event = make_series_event(
-            {"source_name": temp_1, "brew_id": "1", "measurements": [],}, remote_id
+            {"source_name": temp_1, "brew_remote_id": "1", "measurements": [],},
+            remote_id,
         )
         resp = create_measurements(event, None, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)
@@ -66,7 +76,7 @@ class TestHandler(TestCase):
 
         measurement = {
             "source_name": "temperature1",
-            "amount": 20.1,
+            "measurement_amt": 20.1,
             "time": str(datetime.datetime(2021, 1, 31, 13, 10)),
         }
 
@@ -81,12 +91,13 @@ class TestHandler(TestCase):
             temp_1,
         )
         resp = update_measurements(put_event, None, self.measurement_service)
+
         self.assertEqual(resp["statusCode"], 200)
         resp = get_measurement_series(get_event, remote_id, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)
         output = MeasurementSeriesRemote.from_json(resp["body"])
         self.assertEqual(output.source_name, "temperature1")
-        self.assertEqual(output.measurements[0].amount, 20.1)
+        self.assertEqual(output.measurements[0].measurement_amt, 20.1)
 
         delete_event = make_series_event(None, remote_id, temp_1)
         resp = delete_measurements(delete_event, None, self.measurement_service)
@@ -97,6 +108,13 @@ class TestHandler(TestCase):
         )
         self.assertEqual(resp["statusCode"], 200)
         self.assertEqual(len(json.loads(resp["body"])), 0)
+
+    def test_series_error(self):
+        event = make_event({})
+        resp = update_measurements(event, None, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 400)
+        resp = delete_measurements(event, None, self.measurement_service)
+        self.assertEqual(resp["statusCode"], 400)
 
     def test_series_get_measurements_for_brew(self):
         remote_id = "d2e85707"
@@ -117,23 +135,31 @@ class TestHandler(TestCase):
 
     def _create_series(self, source_name: str, remote_id: str):
         event = make_series_event(
-            {"source_name": source_name, "brew_id": "1", "measurements": [],}, remote_id
+            {
+                "source_name": source_name,
+                "brew_id": "1",
+                "brew_remote_id": remote_id,
+                "measurements": [],
+            },
+            remote_id,
         )
         resp = create_measurements(event, None, self.measurement_service)
         self.assertEqual(resp["statusCode"], 200)
 
 
-def make_event(payload: dict, id: str = None):
-    return {"pathParameters": {"brew_remote_id": id}, "body": json.dumps(payload)}
+def make_event(payload: dict, brew_remote_id: str = None):
+    out = {"pathParameters": {}, "body": json.dumps(payload)}
+    if brew_remote_id:
+        out["pathParameters"] = {"brew_remote_id": brew_remote_id}
+    return out
 
 
 def make_series_event(
     payload: dict, brew_remote_id: str = None, source_name: str = None
 ):
-    return {
-        "pathParameters": {
-            "brew_remote_id": brew_remote_id,
-            "source_name": source_name,
-        },
-        "body": json.dumps(payload),
-    }
+    out = {"pathParameters": {}, "body": json.dumps(payload)}
+    if brew_remote_id:
+        out["pathParameters"]["brew_remote_id"] = brew_remote_id
+    if source_name:
+        out["pathParameters"]["source_name"] = source_name
+    return out

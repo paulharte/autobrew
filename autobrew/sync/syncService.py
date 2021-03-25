@@ -16,11 +16,10 @@ class SyncService(object):
 
     def sync_brew(self, brew: Brew):
         self.remote_sync.sync_brew(brew)
-        logger.info("Brew %s synced to cloud" % brew.remote_id)
+        logger.info(" %s synced to cloud" % brew)
 
     def sync_measurements(self, brew: Brew, series: MeasurementSeries):
         self.remote_sync.sync_measurements(brew, series)
         logger.info(
-            "Measurement on %s for brew %s synced to cloud"
-            % (series.source_name, brew.remote_id)
+            "Measurement on %s for %s synced to cloud" % (series.source_name, brew)
         )

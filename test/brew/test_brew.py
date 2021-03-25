@@ -2,6 +2,7 @@ import datetime
 from unittest import TestCase
 
 from autobrew.brew.brew import Brew, sort_brews
+from brew.brewRemote import BrewRemote
 
 
 class TestBrew(TestCase):
@@ -29,3 +30,14 @@ class TestBrew(TestCase):
 
         self.assertTrue(brew1.to_json())
         self.assertTrue(brew2.to_json())
+
+    def test_from_json(self):
+        before = datetime.datetime(2021, 2, 1, 18, 00)
+        brew1 = Brew("one", before)
+        brew1.remote_id = "12345"  # need to have this id before sending
+
+        self.assertTrue(brew1.to_json())
+        decoded = BrewRemote.from_json(brew1.to_json())
+        self.assertTrue(decoded)
+        self.assertEqual(decoded.name, "one")
+        self.assertEqual(decoded.start_time, before)

@@ -43,8 +43,8 @@ class MeasurementTaker(object):
         delay = SAMPLE_INTERVAL_SECONDS
         while True:
             active_brew = self.brew_service.get_active()
-            self.sync.sync_brew(active_brew)
             if active_brew:
+                self.sync.sync_brew(active_brew)
                 self.take_temperature_measurements(active_brew)
                 self.take_smell_measurements(active_brew)
             time.sleep(delay)

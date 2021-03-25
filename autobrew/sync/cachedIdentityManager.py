@@ -6,7 +6,7 @@ from autobrew.sync.identityManger import IdentityManager
 
 
 class CachedIdentityManger(object):
-    CACHE_LIFE_SECONDS = 60
+    CACHE_LIFE_SECONDS = 600
 
     @inject
     def __init__(self, identity_manager: IdentityManager):
@@ -21,6 +21,7 @@ class CachedIdentityManger(object):
             new_token = self.identityManager.get_access_token()
             self.cached_token = new_token
             self.cached_time = datetime.datetime.utcnow()
+            return new_token
 
     def is_expired(self):
         now = datetime.datetime.utcnow()
