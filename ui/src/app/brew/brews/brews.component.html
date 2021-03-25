@@ -1,0 +1,6 @@
+<div *ngIf="brews">
+    <div *ngFor="let brew of brews"> 
+        {{brew}}
+        <app-progress [brew]=brew></app-progress>
+    </div>
+</div>

@@ -77,7 +77,7 @@ class TestHandler(TestCase):
         measurement = {
             "source_name": "temperature1",
             "measurement_amt": 20.1,
-            "time": str(datetime.datetime(2021, 1, 31, 13, 10)),
+            "time": datetime.datetime(2021, 1, 31, 13, 10).isoformat(),
         }
 
         put_event = make_series_event(

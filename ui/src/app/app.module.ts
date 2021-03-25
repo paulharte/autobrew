@@ -6,19 +6,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrewNavbarComponent } from './brew-navbar/brew-navbar.component';
 import { ProgressComponent } from './brew/progress/progress.component';
+import { BrewsComponent } from './brew/brews/brews.component';
+import { BrewService } from './brew/brew.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     BrewNavbarComponent,
-    ProgressComponent
+    ProgressComponent,
+    BrewsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule 
   ],
-  providers: [],
+  providers: [BrewService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

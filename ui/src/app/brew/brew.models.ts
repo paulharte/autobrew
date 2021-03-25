@@ -1,5 +1,5 @@
 
-interface Brew {
+export interface Brew {
     name: string
     id: number
     remote_id: string
@@ -8,7 +8,7 @@ interface Brew {
     measurement_ids: string[]
 }
 
-interface MeasurementSeries {
+export interface MeasurementSeries {
     source_name: string
     measurements: Measurement[]
     brew_id: number
@@ -16,7 +16,7 @@ interface MeasurementSeries {
     nickname: string
 }
 
-interface Measurement {
+export interface Measurement {
     source_name: string
     time: Date
     measurement_amt: number

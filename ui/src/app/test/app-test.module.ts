@@ -5,6 +5,7 @@ import { BrewNavbarComponent } from '../brew-navbar/brew-navbar.component';
 import { ProgressComponent } from '../brew/progress/progress.component';
 import { HttpClientTestingModule,
    } from '@angular/common/http/testing';
+import { BrewService } from '../brew/brew.service';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { HttpClientTestingModule,
   ],
   providers: [
     // {provide: HttpClient, useClass: httpMock}
+    BrewService
   ],
   bootstrap: []
 })

@@ -6,7 +6,9 @@ from json import JSONDecodeError
 
 class Serializable:
     def to_dict(self):
-        return self.__dict__
+        attributes =  self.__dict__
+        return _convert_attributes(attributes, 'time', lambda x: x.isoformat())
+
 
     def to_json(self):
         return json.dumps(
@@ -29,13 +31,7 @@ class Serializable:
         if attributes is None:
             return
         obj = cls()
-        for (key, val) in attributes.items():
-            if "time" in key:
-                try:
-                    time = datetime.datetime.fromisoformat(val)
-                    attributes[key] = time
-                except ValueError:
-                    pass
+        attributes = _convert_attributes(attributes, 'time', datetime.datetime.fromisoformat)
         obj.__dict__ = attributes
         obj.validate()
         return obj
@@ -56,3 +52,14 @@ def convert_to_json(obj):
         return obj.isoformat()
     else:
         return obj.__dict__
+
+
+def _convert_attributes(attributes: dict, search: str, func) -> dict:
+    for (key, val) in attributes.items():
+        if search in key:
+            try:
+                time = func(val)
+                attributes[key] = time
+            except (ValueError, AttributeError):
+                pass
+    return attributes

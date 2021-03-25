@@ -27,7 +27,7 @@ class RemoteSync(object):
         url = self.formBrewUrl(brew.remote_id)
         resp = requests.put(url, brew.to_json(), headers=_form_headers(token))
         if resp.status_code != 200:
-            logger.warning("failed put to %s", url)
+            logger.warning("failed put to %s(%s)", url, resp.status_code)
             raise SyncFailedError(resp.text)
 
     def sync_measurements(self, brew: Brew, series: MeasurementSeries):
@@ -35,7 +35,7 @@ class RemoteSync(object):
         url = self.formMeasurementUrl(brew.remote_id, series.source_name)
         resp = requests.put(url, series.to_json(), headers=_form_headers(token))
         if resp.status_code != 200:
-            logger.warning("failed put to %s", url)
+            logger.warning("failed put to %s(%s)", url, resp.status_code)
             raise SyncFailedError(resp.text)
 
     def formMeasurementUrl(self, brew_remote_id: str, series_source: str) -> str:
@@ -52,6 +52,4 @@ class RemoteSync(object):
 
 
 def _form_headers(token: str) -> dict:
-    print("used token")
-    print(token)
-    return {"Authorization": "Bearer %s" % token}
+    return {"Authorization": "Bearer %s" % token, 'Content-type': 'application/json', 'Accept': 'text/plain'}

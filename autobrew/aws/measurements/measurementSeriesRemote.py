@@ -1,10 +1,7 @@
-import logging
-from json import JSONDecodeError
 from typing import List
 
 from brew.brewRemote import Serializable
 from measurements.measurementRemote import MeasurementRemote
-import json
 
 
 class MeasurementSeriesRemote(Serializable):
@@ -19,14 +16,13 @@ class MeasurementSeriesRemote(Serializable):
         return {"source_name": str, "brew_remote_id": str, "measurements": list}
 
     @classmethod
-    def from_json(cls, json_string):
-        try:
-            attributes = json.loads(json_string)
-        except JSONDecodeError as e:
-            logging.error("Could not decode json: %s", json_string)
-            raise e
-        if not isinstance(attributes, dict):
-            raise ValueError()
-        o = cls.from_dict(attributes)
-        o.measurements = [MeasurementRemote.from_dict(meas) for meas in o.measurements]
-        return o
+    def from_dict(cls, attributes: dict):
+        obj = Serializable.from_dict(attributes)
+        obj.__class__ = cls
+        obj.measurements = [MeasurementRemote.from_dict(meas) for meas in attributes['measurements']]
+        return obj
+
+    def to_dict(self):
+        d = super().to_dict()
+        d['measurements'] = [meas.to_dict() for meas in self.measurements]
+        return d
