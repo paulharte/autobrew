@@ -2,12 +2,9 @@ import logging
 from json import JSONDecodeError
 from typing import List
 
-from autobrew.brew_settings import APP_LOGGING_NAME
 from brew.brewRemote import Serializable
 from measurements.measurementRemote import MeasurementRemote
 import json
-
-logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 class MeasurementSeriesRemote(Serializable):
@@ -26,7 +23,7 @@ class MeasurementSeriesRemote(Serializable):
         try:
             attributes = json.loads(json_string)
         except JSONDecodeError as e:
-            logger.error("Could not decode json: %s", json_string)
+            logging.error("Could not decode json: %s", json_string)
             raise e
         if not isinstance(attributes, dict):
             raise ValueError()

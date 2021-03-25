@@ -1,11 +1,7 @@
 import datetime
 import json
-from json import JSONDecodeError
 import logging
-
-from autobrew.brew_settings import APP_LOGGING_NAME
-
-logger = logging.getLogger(APP_LOGGING_NAME)
+from json import JSONDecodeError
 
 
 class Serializable:
@@ -22,7 +18,7 @@ class Serializable:
         try:
             attributes = json.loads(json_string)
         except JSONDecodeError as e:
-            logger.error("Could not decode json: %s", json_string)
+            logging.error("Could not decode json: %s", json_string)
             raise e
         if not isinstance(attributes, dict):
             raise ValueError()

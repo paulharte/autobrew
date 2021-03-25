@@ -5,7 +5,7 @@ from storage.serializable import Serializable
 
 class BrewRemote(Serializable):
     def __init__(self):
-        self.id: str
+        self.id: int
         self.name: str
         self.active: bool
         self.measurement_ids: List[str]
