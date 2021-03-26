@@ -2,6 +2,7 @@ import datetime
 from typing import List
 
 from autobrew.aws.storage.serializable import Serializable
+from autobrew.aws.brew.stages import FERMENTING
 
 
 class Brew(Serializable):
@@ -12,6 +13,7 @@ class Brew(Serializable):
         self.active = False
         self.start_time = start_time
         self.remote_id: str
+        self.current_stage = FERMENTING
 
     def get_display_name(self) -> str:
         return self.name if self.name else self.id

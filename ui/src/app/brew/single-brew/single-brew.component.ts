@@ -10,7 +10,7 @@ export class SingleBrewComponent implements OnInit {
 
   DAYS_TO_BREW = 7;
 
-  @Input() brew?: Brew;
+  @Input() brew!: Brew;
 
   constructor() { }
 

@@ -1,0 +1,59 @@
+name: Node.js CI CD
+
+on:
+  push:
+    branches: [master, main, develop, dev/*]
+  pull_request:
+    branches: [master, main, develop, dev/*]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run test:prod
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
+    env:
+      AWS_S3_BUCKET_NAME: autobrew-ui-uat
+    strategy:
+      matrix:
+        node-version: [10.x]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@master
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: npm install
+      - name: Build Application
+        run: npm run-script build:prod
+      - uses: jakejarvis/s3-sync-action@master
+        name: Upload App to S3 Bucket
+        with:
+          args: --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ env.AWS_S3_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "eu-west-1"
+          SOURCE_DIR: "dist/autobrew-ui"

@@ -9,6 +9,9 @@ import { ProgressComponent } from './brew/progress/progress.component';
 import { BrewsComponent } from './brew/brews/brews.component';
 import { BrewService } from './brew/brew.service';
 import { SingleBrewComponent } from './brew/single-brew/single-brew.component';
+import { SeriesComponent } from './brew/measurement/series/series.component';
+import { GoogleChartsModule } from 'angular-google-charts';
+import { MeasurementsComponent } from './brew/measurement/measurements/measurements.component';
 
 @NgModule({
   declarations: [
@@ -16,12 +19,15 @@ import { SingleBrewComponent } from './brew/single-brew/single-brew.component';
     BrewNavbarComponent,
     ProgressComponent,
     BrewsComponent,
-    SingleBrewComponent
+    SingleBrewComponent,
+    SeriesComponent,
+    MeasurementsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule 
+    HttpClientModule,
+    GoogleChartsModule 
   ],
   providers: [BrewService],
   bootstrap: [AppComponent]

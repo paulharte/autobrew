@@ -1,5 +1,7 @@
 <div *ngIf="brews">
     <div *ngFor="let brew of brews"> 
         <app-single-brew [brew]="brew"></app-single-brew>
+        <app-measurements [brew]="brew"></app-measurements>
     </div>
+    
 </div>

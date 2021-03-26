@@ -22,7 +22,6 @@ export class ProgressComponent implements OnInit {
     const total_time = this.endTime.getTime() - this.startTime.getTime();
     const time_elapsed = new Date().getTime() - this.startTime.getTime();
     this.progress_percent = this.getPercentage(total_time, time_elapsed);
-    console.log(this.progress_percent);
   }
 
   private getPercentage(total: number, current: number): number {

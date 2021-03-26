@@ -6,12 +6,18 @@ import { ProgressComponent } from '../brew/progress/progress.component';
 import { HttpClientTestingModule,
    } from '@angular/common/http/testing';
 import { BrewService } from '../brew/brew.service';
+import { BrewsComponent } from '../brew/brews/brews.component';
+import { SeriesComponent } from '../brew/measurement/series/series.component';
+import { SingleBrewComponent } from '../brew/single-brew/single-brew.component';
 
 
 @NgModule({
   declarations: [
     BrewNavbarComponent,
-    ProgressComponent
+    ProgressComponent,
+    BrewsComponent,
+    SingleBrewComponent,
+    SeriesComponent
   ],
   imports: [
     BrowserModule,

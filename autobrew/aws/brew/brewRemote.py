@@ -11,6 +11,7 @@ class BrewRemote(Serializable):
         self.measurement_ids: List[str]
         self.remote_id: str
         self.start_time: datetime.datetime
+        self.current_stage: str
 
     def mandatory_attributes(self) -> dict:
-        return {"name": str, "active": bool, "remote_id": str}
+        return {"name": str, "active": bool, "remote_id": str, "current_stage": str}

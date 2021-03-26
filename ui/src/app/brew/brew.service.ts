@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Brew, MeasurementSeries } from './brew.models';
 
@@ -16,11 +17,11 @@ export class BrewService {
 
   getAllBrews(): Observable<Brew[]> {
     const url = environment.remote_url_base + this.BREW;
-    return this.http.get<Brew[]>(url);
+    return this.http.get<any[]>(url).pipe(map((brews: any[]) => brews.map((b) => new Brew(b))));
   }
 
   getMeasurementsForBrew(brew: Brew): Observable<MeasurementSeries[]> {
     const url = environment.remote_url_base + this.BREW + '/' +brew.remote_id + '/' + this.MEASUREMENTS;
-    return this.http.get<MeasurementSeries[]>(url);
+    return this.http.get<any[]>(url).pipe(map((series: any[]) => series.map((b) => new MeasurementSeries(b))));
   }
 }

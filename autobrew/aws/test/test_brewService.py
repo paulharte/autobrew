@@ -2,6 +2,7 @@ import json
 from unittest import TestCase
 from brew.brewServiceRemote import BrewServiceRemote
 from brew.brewRemote import BrewRemote
+from brew.stages import FERMENTING
 from test_utils.stubDynamo import StubDynamo
 
 
@@ -12,7 +13,7 @@ class TestBrewService(TestCase):
 
         brew = BrewRemote.from_json(
             json.dumps(
-                {"name": "brew2", "id": "2", "active": False, "remote_id": "xyz1"}
+                {"name": "brew2", "id": "2", "active": False, "remote_id": "xyz1", "current_stage": FERMENTING}
             )
         )
         service.create(brew)
@@ -33,7 +34,7 @@ class TestBrewService(TestCase):
 
         brew = BrewRemote.from_json(
             json.dumps(
-                {"name": "brew2", "id": "2", "active": False, "remote_id": "xyz1"}
+                {"name": "brew2", "id": "2", "active": False, "remote_id": "xyz1", "current_stage": FERMENTING}
             )
         )
         service.create(brew)

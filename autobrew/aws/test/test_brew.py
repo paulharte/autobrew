@@ -1,7 +1,8 @@
 import datetime
 from unittest import TestCase
 import json
-from autobrew.aws.brew.brewRemote import BrewRemote
+from brew.brewRemote import BrewRemote
+from brew.stages import FERMENTING
 
 
 class TestBrew(TestCase):
@@ -12,6 +13,7 @@ class TestBrew(TestCase):
                 "id": "1",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da674",
                 "active": True,
+                "current_stage": FERMENTING
             }
         )
         b = BrewRemote.from_json(incoming)
@@ -23,6 +25,7 @@ class TestBrew(TestCase):
                 "id": "2",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da675",
                 "active": False,
+                "current_stage": FERMENTING
             }
         )
         b2 = BrewRemote.from_json(incoming2)
@@ -37,7 +40,8 @@ class TestBrew(TestCase):
                 "id": "2",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da675",
                 "active": False,
-                "start_time": time_str
+                "start_time": time_str,
+                "current_stage": FERMENTING
             }
         )
         b2 = BrewRemote.from_json(incoming)
