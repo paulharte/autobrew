@@ -175,9 +175,32 @@ resources:
           - AttributeName: source_name
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
+    uiHostingBucket:
+      Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
+      Properties:
+        BucketName: autobrew-ui-${opt:stage, 'uat'}
+        WebsiteConfiguration:
+          ErrorDocument: index.html
+          IndexDocument: index.html
+        AccessControl: PublicRead
+        VersioningConfiguration:
+          Status: Disabled
+        MetricsConfigurations:
+          - Id: EntireBucket
 
 
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+  Outputs:
+    WebsiteURL:
+      Value: !GetAtt
+        - S3Bucket
+        - WebsiteURL
+      Description: URL for website hosted on S3
+    S3BucketSecureURL:
+      Value: !Join
+        - ''
+        - - 'https://'
+          - !GetAtt
+            - S3Bucket
+            - DomainName
+      Description: Name of S3 bucket to hold website content

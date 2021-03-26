@@ -120,7 +120,7 @@ def get_measurement_series_for_brew(event: dict, context, service=None):
         return handle_error(e)
     series = service.get_all_for_brew(brew_remote_id)
 
-    if not series:
+    if series is None:
         return {
             "statusCode": 404,
             "body": json.dumps({"error": "Measurement series does not exist"}),
