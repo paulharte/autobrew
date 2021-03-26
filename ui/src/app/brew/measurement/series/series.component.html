@@ -1,1 +1,12 @@
-<google-chart title={{series.getDisplayName()}} [type]="chartType" [data]="chartData"></google-chart>>
+<div *ngIf="chartData.length > 0" class="card text-center">
+    <div class="col p-5">
+        <google-chart 
+            title={{series.getDisplayName()}} 
+            [type]="chartType" 
+            [data]="chartData"
+            [columns]="columns"
+            [options]="options"
+            >
+        </google-chart>
+    </div>
+</div>

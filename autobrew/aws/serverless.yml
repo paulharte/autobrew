@@ -185,7 +185,7 @@ resources:
           IndexDocument: index.html
         AccessControl: PublicRead
         VersioningConfiguration:
-          Status: Disabled
+          Status: Suspended
         MetricsConfigurations:
           - Id: EntireBucket
 
@@ -193,7 +193,7 @@ resources:
   Outputs:
     WebsiteURL:
       Value: !GetAtt
-        - S3Bucket
+        - uiHostingBucket
         - WebsiteURL
       Description: URL for website hosted on S3
     S3BucketSecureURL:
@@ -201,6 +201,6 @@ resources:
         - ''
         - - 'https://'
           - !GetAtt
-            - S3Bucket
+            - uiHostingBucket
             - DomainName
       Description: Name of S3 bucket to hold website content
