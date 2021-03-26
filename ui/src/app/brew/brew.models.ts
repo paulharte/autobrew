@@ -13,7 +13,7 @@ export interface MeasurementSeries {
     measurements: Measurement[]
     brew_id: number
     brew_remote_id: string
-    nickname: string
+    nickname?: string
 }
 
 export interface Measurement {

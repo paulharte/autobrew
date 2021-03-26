@@ -4,18 +4,16 @@ import logging
 from decimal import Decimal
 from json import JSONDecodeError
 
+DECIMAL_PRECISION = 4
 
 class Serializable:
     def to_dict(self):
         attributes = self.__dict__
         attributes = _convert_attributes(attributes, 'time', lambda x: x.isoformat())
-        return _convert_attributes(attributes, 'amt', lambda x: Decimal(x))
+        return _convert_attributes(attributes, 'amt', lambda x: round(Decimal(str(x)), 4))
 
     def to_json(self):
-        d = self.to_dict()
-        return json.dumps(
-            d, default=lambda o: convert_to_json(o), sort_keys=True, indent=4
-        )
+        return json.dumps(self, default=lambda o: default_convert_to_json(o))
 
     @classmethod
     def from_json(cls, json_string):
@@ -50,11 +48,13 @@ class Serializable:
         return {}
 
 
-def convert_to_json(obj):
+def default_convert_to_json(obj):
     if isinstance(obj, (datetime.datetime, datetime.date)):
         return obj.isoformat()
     elif isinstance(obj, Decimal):
         return float(obj)
+    elif isinstance(obj, Serializable):
+        return obj.to_dict()
     else:
         return obj.__dict__
 

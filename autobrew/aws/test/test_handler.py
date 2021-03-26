@@ -15,8 +15,9 @@ class TestHandler(TestCase):
 
     def test_brew(self):
         remote_id = "d2e85707"
+        start = "2021-03-26T11:54:48.428632"
         event = make_event(
-            {"name": "brew1", "id": "1", "remote_id": remote_id, "active": True}
+            {"name": "brew1", "id": "1", "remote_id": remote_id, "active": True, "start_time": start}
         )
         resp = create_brew(event, None, self.brew_service)
         self.assertEqual(resp["statusCode"], 200)
@@ -27,6 +28,8 @@ class TestHandler(TestCase):
         resp = get_brews(get_event, remote_id, self.brew_service)
         self.assertEqual(resp["statusCode"], 200)
         self.assertEqual(len(json.loads(resp["body"])), 1)
+        ex = '[{"name": "brew1", "id": "1", "remote_id": "%s", "active": true, "start_time": "%s"}]' % (remote_id, start)
+        self.assertEqual(ex, resp["body"])
 
         put_event = make_event(
             {"name": "brew1new", "id": "1", "remote_id": remote_id, "active": True},

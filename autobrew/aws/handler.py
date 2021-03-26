@@ -7,6 +7,8 @@ from measurements.measurementServiceRemote import make_measurement_service
 from measurements.measurementSeriesRemote import MeasurementSeriesRemote
 import logging
 
+from storage.serializable import default_convert_to_json
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -25,7 +27,7 @@ def get_brews(event: dict, context, service=None):
     if not service:
         service = make_brew_service()
     brews = service.getAll()
-    return {"statusCode": 200, "body": json.dumps(brews, default=lambda o: o.to_json())}
+    return {"statusCode": 200, "body": json.dumps(brews, default=default_convert_to_json)}
 
 
 def get_brew(event: dict, context, service=None):
@@ -86,7 +88,7 @@ def get_all_measurement_series(event: dict, context, service=None):
     series = service.getAll()
     return {
         "statusCode": 200,
-        "body": json.dumps(series, default=lambda o: o.to_json()),
+        "body": json.dumps(series, default=default_convert_to_json)
     }
 
 
@@ -126,7 +128,7 @@ def get_measurement_series_for_brew(event: dict, context, service=None):
 
     return {
         "statusCode": 200,
-        "body": json.dumps(series, default=lambda o: o.to_json()),
+        "body": json.dumps(series, default=default_convert_to_json)
     }
 
 

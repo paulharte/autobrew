@@ -8,13 +8,15 @@ import { BrewNavbarComponent } from './brew-navbar/brew-navbar.component';
 import { ProgressComponent } from './brew/progress/progress.component';
 import { BrewsComponent } from './brew/brews/brews.component';
 import { BrewService } from './brew/brew.service';
+import { SingleBrewComponent } from './brew/single-brew/single-brew.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BrewNavbarComponent,
     ProgressComponent,
-    BrewsComponent
+    BrewsComponent,
+    SingleBrewComponent
   ],
   imports: [
     BrowserModule,

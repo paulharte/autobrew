@@ -1,0 +1,4 @@
+<div *ngIf="brew">
+    {{brew}}
+    <app-progress [startTime]="brew!.start_time" [endTime]="getEndTime(brew!.start_time)"></app-progress>
+</div>
