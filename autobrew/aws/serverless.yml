@@ -10,14 +10,14 @@ provider:
   lambdaHashingVersion: 20201221
   memorySize: 128
 
-  stage: ${opt:stage, 'uat'}
-  region: ${opt:region}
+  stage: ${opt:stage}
+  region: eu-west-1
   httpApi:
     cors: true
     authorizers:
       serviceAuthorizer:
         identitySource: $request.header.Authorization
-        issuerUrl: https://cognito-idp.#{AWS::Region}.amazonaws.com/eu-west-1_k4rFWLDKO
+        issuerUrl: https://cognito-idp.#{AWS::Region}.amazonaws.com/#{AWS::Region}_k4rFWLDKO
         audience:
           - 64k4n04qv28q032ma70e0shf4b
 
@@ -46,9 +46,9 @@ provider:
 
 # you can define service wide environment variables here
   environment:
-    BREW_TABLE: autobrew_brews_${opt:stage, 'uat'}
-    MEASUREMENT_TABLE: autobrew_measurement_series_${opt:stage, 'uat'}
-    STAGE: ${opt:stage, 'uat'}
+    BREW_TABLE: autobrew_brews_${opt:stage}
+    MEASUREMENT_TABLE: autobrew_measurement_series_${opt:stage}
+    STAGE: ${opt:stage}
 
 # you can add packaging information here
 package:
@@ -179,15 +179,31 @@ resources:
       Type: AWS::S3::Bucket
       DeletionPolicy: Retain
       Properties:
-        BucketName: autobrew-ui-${opt:stage, 'uat'}
+        BucketName: autobrew-ui-${opt:stage}
         WebsiteConfiguration:
-          ErrorDocument: index.html
+          ErrorDocument: error.html
           IndexDocument: index.html
         AccessControl: PublicRead
         VersioningConfiguration:
           Status: Suspended
         MetricsConfigurations:
           - Id: EntireBucket
+    uiBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref uiHostingBucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: !Join
+                - ''
+                - - 'arn:aws:s3:::'
+                  - !Ref uiHostingBucket
+                  - /*
+
 
 
   Outputs:
