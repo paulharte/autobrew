@@ -50,6 +50,12 @@ provider:
     MEASUREMENT_TABLE: autobrew_measurement_series_${opt:stage}
     STAGE: ${opt:stage}
 
+custom:
+  url:
+    uat: autobrew-uat.paulspetprojects.net
+    prod: autobrew.paulspetprojects.net
+
+
 # you can add packaging information here
 package:
   individually: false
@@ -179,7 +185,7 @@ resources:
       Type: AWS::S3::Bucket
       DeletionPolicy: Retain
       Properties:
-        BucketName: autobrew-ui-${opt:stage}
+        BucketName: ${self:custom.url.${opt:stage}}
         WebsiteConfiguration:
           ErrorDocument: error.html
           IndexDocument: index.html

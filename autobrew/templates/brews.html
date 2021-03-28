@@ -24,12 +24,12 @@
               </div>
               <div class="form-group row">
                 <label for="description" class="col-md-3 col-form-label">Description</label>
-                <div class="col-md-9">
+                <div class="col-md-7">
                   <input type="text" class="form-control" id="updated_description" name="updated_description" placeholder="None" value="{{ brew.description }}">
                 </div>
-              </div>
-              <div class="form-group row">
-                <input class="btn btn-primary" type="submit" value="Save" >
+                <div class="col-md-2">
+                    <input class="btn btn-primary" type="submit" value="Update" >
+                </div>
               </div>
             </form>
             <div class="row"><div class="col-md-3">Start time</div><div class="col-md-9">{{brew.start_time}}</div> </div>
@@ -55,13 +55,14 @@
               </div>
               <div class="form-group row">
                 <label for="description" class="col-md-3 col-form-label">Description</label>
-                <div class="col-md-9">
+                <div class="col-md-7">
                   <input type="text" class="form-control" id="description" name="description" placeholder="None">
                 </div>
+                <div class="col-md-2">
+                    <input class="btn btn-primary" type="submit" value="Create" >
+                </div>
               </div>
-              <div class="form-group row">
-                <input class="btn btn-primary" type="submit" value="Create" >
-              </div>
+
             </form>
           </div>
         </div>

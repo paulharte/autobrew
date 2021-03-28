@@ -11,11 +11,16 @@ export class BrewsComponent implements OnInit {
 
   activeBrew?: Brew;
   brews?: Brew[];
+  requestComplete = false;
+
   constructor(private service: BrewService) { }
 
   ngOnInit(): void {
     this.service.getAllBrews().subscribe(
-      brews => this.handleBrews(brews)
+      brews => { 
+        this.handleBrews(brews);
+        this.requestComplete = true;
+      }, () => this.requestComplete = true
     )
   }
 
