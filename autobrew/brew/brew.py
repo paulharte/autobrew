@@ -14,6 +14,7 @@ class Brew(Serializable):
         self.start_time = start_time
         self.remote_id: str
         self.current_stage = FERMENTING
+        self.description: str
 
     def get_display_name(self) -> str:
         return self.name if self.name else self.id

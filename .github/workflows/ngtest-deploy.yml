@@ -57,7 +57,7 @@ jobs:
         with:
           args: --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: autobrew-ui-uat
+          AWS_S3_BUCKET: autobrew-uat.paulspetprojects.net
       - name: Build Prod Application
         if: github.ref == 'refs/heads/master'
         run: npm run-script build:prod
@@ -67,4 +67,4 @@ jobs:
         with:
           args: --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: autobrew-ui-prod
+          AWS_S3_BUCKET: autobrew.paulspetprojects.net

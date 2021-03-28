@@ -2,6 +2,7 @@
     <div class="card">
         <h5 class="card-header">{{brew.name}}</h5>
         <div class="card-body">
+          <p class="card-text" *ngIf="brew.description">Description: {{ brew.description }}</p>
           <p class="card-text">Brew Phase: <span class="badge badge-primary">{{brew.current_stage}}</span></p>
           <p class="card-text">
               Active: 

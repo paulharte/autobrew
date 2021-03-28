@@ -4,6 +4,7 @@ export class Brew {
         this.name = json_obj.name;
         this.id = json_obj.id;
         this.remote_id = json_obj.remote_id;
+        this.description = json_obj.description;
         this.start_time = new Date(json_obj.start_time);
         this.measurement_ids = json_obj.measurement_ids;
         this.active = json_obj.active;
@@ -12,6 +13,7 @@ export class Brew {
     name: string
     id: number
     remote_id: string
+    description?: string
     active: boolean
     start_time: Date
     measurement_ids: string[]
