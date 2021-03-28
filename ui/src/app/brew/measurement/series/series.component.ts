@@ -14,10 +14,7 @@ export class SeriesComponent implements OnInit {
   public columns = ['Time', 'Measurements'];
   public chartType = ChartType.Line;
   public chartData: any[][] = [];
-  public options = {
-    width: 900,
-    height: 400};
-
+  public chartOptions = { legend: { position: 'bottom' }};
   constructor() { }
 
   ngOnInit(): void {

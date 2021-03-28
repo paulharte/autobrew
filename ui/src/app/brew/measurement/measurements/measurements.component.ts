@@ -12,6 +12,7 @@ export class MeasurementsComponent implements OnInit {
   @Input() brew?: Brew;
 
   measurementSeries:MeasurementSeries[] = []
+  requestComplete = false;
 
   constructor(private brewService: BrewService) { }
 
@@ -21,7 +22,10 @@ export class MeasurementsComponent implements OnInit {
   ngOnChanges(changes: SimpleChange) {
     if(this.brew) {
       this.brewService.getMeasurementsForBrew(this.brew).subscribe(
-        series => this.measurementSeries = series
+        series =>  {
+          this.measurementSeries = series;
+          this.requestComplete = true;
+        }, () => this.requestComplete = true
       )
     }
     

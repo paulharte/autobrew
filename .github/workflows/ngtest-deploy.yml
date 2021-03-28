@@ -32,28 +32,39 @@ jobs:
       run:
         working-directory: ui
     env:
-      AWS_S3_BUCKET_NAME: autobrew-ui-uat
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: "eu-west-1"
+      SOURCE_DIR: "ui/dist/autobrew-ui"
     strategy:
       matrix:
         node-version: [10.x]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') && github.event_name == 'push'
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm install
-      - name: Build Application
+      - name: Build UAT Application
+        if: github.ref == 'refs/heads/develop'
         run: npm run-script build
       - uses: jakejarvis/s3-sync-action@master
-        name: Upload App to S3 Bucket
+        name: Upload App to UAT S3 Bucket
+        if: github.ref == 'refs/heads/develop'
         with:
           args: --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: ${{ env.AWS_S3_BUCKET_NAME }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "eu-west-1"
-          SOURCE_DIR: "ui/dist/autobrew-ui"
+          AWS_S3_BUCKET: autobrew-uat.paulspetprojects.net
+      - name: Build Prod Application
+        if: github.ref == 'refs/heads/master'
+        run: npm run-script build:prod
+      - uses: jakejarvis/s3-sync-action@master
+        name: Upload App to Prod S3 Bucket
+        if: github.ref == 'refs/heads/master'
+        with:
+          args: --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: autobrew.paulspetprojects.net

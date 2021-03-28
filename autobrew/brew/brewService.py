@@ -14,10 +14,11 @@ class BrewService(object):
         self.storage = storage
         self.sync = sync
 
-    def new(self, name) -> Brew:
+    def new(self, name, description: str = None) -> Brew:
         brew = Brew(name, datetime.datetime.utcnow())
         brew.active = True
         brew.id = self.storage.generate_id()
+        brew.description = description
         brew.remote_id = self.storage.generate_remote_id()
         brew = self.save(brew)
         self._set_others_inactive(brew.id)
@@ -30,6 +31,9 @@ class BrewService(object):
 
     def get_all(self) -> List[Brew]:
         return self.storage.get_all()
+
+    def get_by_id(self, brew_id) -> Brew:
+        return self.storage.read(brew_id)
 
     def get_active(self) -> Brew:
         for brew in self.get_all():

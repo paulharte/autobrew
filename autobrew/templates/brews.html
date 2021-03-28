@@ -14,14 +14,21 @@
             {% endif %}
         </div>
         <div class="card-body">
-            <form action="{{ url_for('set_nickname') }}">
+            <form action="{{ url_for('brews.update_brew') }}">
               <div class="form-group row">
-                <label for="nickname" class="col-md-3 col-form-label">Name</label>
-                <div class="col-md-6">
-                  <input type="text" class="form-control" id="nickname" name="nickname" placeholder="None" value="{{ brew.name }}">
+                <label for="updated_name" class="col-md-3 col-form-label">Name</label>
+                <div class="col-md-9">
+                  <input id="brew_id" name="brew_id" type="hidden" value="{{ brew.id }}">
+                  <input type="text" class="form-control" id="updated_name" name="updated_name" placeholder="None" value="{{ brew.name }}">
                 </div>
-                  <div class="col-md-3">
-                  <input class="btn btn-primary" type="submit" value="Rename" >
+              </div>
+              <div class="form-group row">
+                <label for="description" class="col-md-3 col-form-label">Description</label>
+                <div class="col-md-7">
+                  <input type="text" class="form-control" id="updated_description" name="updated_description" placeholder="None" value="{{ brew.description }}">
+                </div>
+                <div class="col-md-2">
+                    <input class="btn btn-primary" type="submit" value="Update" >
                 </div>
               </div>
             </form>
@@ -42,13 +49,20 @@
             <form action="{{ url_for('brews.new_brew') }}">
               <div class="form-group row">
                 <label for="name" class="col-md-3 col-form-label">Name</label>
-                <div class="col-md-6">
+                <div class="col-md-9">
                   <input type="text" class="form-control" id="name" name="name">
                 </div>
-                <div class="col-md-3">
-                  <input class="btn btn-primary" type="submit" value="Create" >
+              </div>
+              <div class="form-group row">
+                <label for="description" class="col-md-3 col-form-label">Description</label>
+                <div class="col-md-7">
+                  <input type="text" class="form-control" id="description" name="description" placeholder="None">
+                </div>
+                <div class="col-md-2">
+                    <input class="btn btn-primary" type="submit" value="Create" >
                 </div>
               </div>
+
             </form>
           </div>
         </div>

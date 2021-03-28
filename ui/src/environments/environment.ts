@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-
+  app_name: 'Autobrew - UAT',
   remote_url_base : 'https://brew-uat.paulspetprojects.net/'
 };
 
