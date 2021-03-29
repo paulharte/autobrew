@@ -14,6 +14,7 @@ provider:
   region: eu-west-1
   httpApi:
     cors: true
+    name: ${opt:stage}-${self:service}
     authorizers:
       serviceAuthorizer:
         identitySource: $request.header.Authorization
@@ -183,7 +184,6 @@ resources:
         BillingMode: PAY_PER_REQUEST
     uiHostingBucket:
       Type: AWS::S3::Bucket
-      DeletionPolicy: Retain
       Properties:
         BucketName: ${self:custom.url.${opt:stage}}
         WebsiteConfiguration:
