@@ -14,10 +14,14 @@ export class SeriesComponent implements OnInit {
   public columns = ['Time', 'Measurements'];
   public chartType = ChartType.Line;
   public chartData: any[][] = [];
-  public chartOptions = { legend: { position: 'bottom' }};
+  public chartOptions: any = {}
+
   constructor() { }
 
   ngOnInit(): void {
+    this.chartOptions = { 
+      "legend": {"position": "none"}
+    };
   }
 
   ngOnChanges(changes: SimpleChange) {

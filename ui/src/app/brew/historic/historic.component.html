@@ -1,0 +1,28 @@
+<div *ngIf="requestComplete">
+    <div class="card">
+        <div *ngIf= "brews?.length == 0" class="card-body">
+          <p  class="card-text">No old brews right now</p>
+        </div>
+        <div *ngIf= "brews?.length !== 0" class="card-body">
+            <form>
+                <div class="form-group">
+                  <label for="brewselect">Older brews</label>
+                  <select class="form-control" id="brewselect" (change)="onSelectBrew($event)"> 
+                    <option disabled>Select Brew</option>
+                    <option *ngFor="let name of brewNames">{{name}}</option>
+                  </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div *ngIf="selectedBrew">
+    <app-single-brew [brew]="selectedBrew"></app-single-brew>
+    <app-measurements [brew]="selectedBrew"></app-measurements>
+</div>
+<div *ngIf="!requestComplete" class="d-flex justify-content-center">
+    <div class="spinner-border m-5" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+

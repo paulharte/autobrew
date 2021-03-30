@@ -58,6 +58,12 @@ jobs:
           args: --follow-symlinks --delete
         env:
           AWS_S3_BUCKET: autobrew-uat.paulspetprojects.net
+      - name: UAT CloudFront Cache Invalidation
+          if: github.ref == 'refs/heads/develop'
+          uses: chetan/invalidate-cloudfront-action@master
+          env:
+            DISTRIBUTION: EGDGMTEP3B3S6
+            PATHS: "/*"
       - name: Build Prod Application
         if: github.ref == 'refs/heads/master'
         run: npm run-script build:prod
@@ -68,3 +74,9 @@ jobs:
           args: --follow-symlinks --delete
         env:
           AWS_S3_BUCKET: autobrew.paulspetprojects.net
+      - name: Prod CloudFront Cache Invalidation
+        if: github.ref == 'refs/heads/master'
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: EZ5GUU9SRA78J
+          PATHS: "/*"
