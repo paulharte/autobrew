@@ -209,6 +209,59 @@ resources:
                 - - 'arn:aws:s3:::'
                   - !Ref uiHostingBucket
                   - /*
+    brewUiCloudFrontIdentity:
+      Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+      Properties:
+        CloudFrontOriginAccessIdentityConfig:
+          Comment: BrewCloudFrontOriginAccessIdentity-${opt:stage}
+    brewUiCloudFront:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Aliases:
+            - ${self:custom.url.${opt:stage}}
+          Comment: ${self:custom.url.${opt:stage}}
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - GET
+              - HEAD
+            CachedMethods:
+              - GET
+              - HEAD
+            # Required field
+            ForwardedValues:
+              QueryString: True
+            TargetOriginId: S3-origin-${self:custom.url.${opt:stage}}
+            ViewerProtocolPolicy: redirect-to-https
+          # This is required, even if not mentioned in the AWS documentation. For
+          # some reason, SPA will not work properly if CloudFront does not have a
+          # default entry point
+          DefaultRootObject: index.html
+          # Enabled CloudFront as soon as created
+          Enabled: True
+          HttpVersion: http2
+          IPV6Enabled: True
+          Origins:
+            - DomainName: !GetAtt uiHostingBucket.RegionalDomainName
+              Id: S3-origin-${self:custom.url.${opt:stage}}
+              S3OriginConfig:
+                OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${brewUiCloudFrontIdentity}"
+          PriceClass: PriceClass_100
+          ViewerCertificate:
+            AcmCertificateArn: arn:aws:acm:us-east-1:570149424171:certificate/52526eae-92d0-47ea-a909-3808735e8309
+            MinimumProtocolVersion: TLSv1.2_2018 # recommended value if there is no browser support issue
+            SslSupportMethod: sni-only
+    brewRoute53:
+      Type: AWS::Route53::RecordSet
+      Properties:
+        AliasTarget:
+          DNSName: !GetAtt brewUiCloudFront.DomainName
+          EvaluateTargetHealth: False
+          HostedZoneId: Z2FDTNDATAQYW2
+        Comment: Route53 for brewUi ${opt:stage}
+        HostedZoneName: paulspetprojects.net.
+        Name: ${self:custom.url.${opt:stage}}
+        Type: A
 
 
 
@@ -226,3 +279,6 @@ resources:
             - uiHostingBucket
             - DomainName
       Description: Name of S3 bucket to hold website content
+    CloudFrontURL:
+      Value:        !GetAtt brewUiCloudFront.DomainName
+      Description:  "brewUiCloudFront URL"
