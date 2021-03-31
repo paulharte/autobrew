@@ -11,6 +11,7 @@ class MeasurementSeriesRemote(Serializable):
         self.brew_id: str
         self.brew_remote_id: str
         self.nickname: str = None
+        self.type: str
 
     def mandatory_attributes(self) -> dict:
         return {"source_name": str, "brew_remote_id": str, "measurements": list}

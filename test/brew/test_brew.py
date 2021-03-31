@@ -1,4 +1,5 @@
 import datetime
+import json
 from unittest import TestCase
 
 from autobrew.brew.brew import Brew, sort_brews
@@ -30,6 +31,10 @@ class TestBrew(TestCase):
 
         self.assertTrue(brew1.to_json())
         self.assertTrue(brew2.to_json())
+
+        out = json.loads(brew1.to_json())
+        self.assertEqual(out['name'], "one")
+        self.assertEqual(out['current_stage'], 'FERMENTING')
 
     def test_from_json(self):
         before = datetime.datetime(2021, 2, 1, 18, 00)

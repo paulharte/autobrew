@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 from decimal import Decimal
+from enum import Enum
 from json import JSONDecodeError
 
 DECIMAL_PRECISION = 4
@@ -55,6 +56,8 @@ def default_convert_to_json(obj):
         return float(obj)
     elif isinstance(obj, Serializable):
         return obj.to_dict()
+    elif isinstance(obj, Enum):
+        return obj.value
     else:
         return obj.__dict__
 

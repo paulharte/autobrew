@@ -30,12 +30,14 @@ export class MeasurementSeries {
         this.brew_id = json_obj.brew_id;
         this.brew_remote_id = json_obj.brew_remote_id;
         this.nickname = json_obj.nickname;
+        this.type = json_obj.type;
     }
     source_name: string
     measurements: Measurement[]
     brew_id: number
     brew_remote_id: string
     nickname?: string
+    type: string // ALCOHOL or TEMPERATURE or HEATER
 
     public getDisplayName(): string {
         return this.nickname ? this.nickname : this.source_name

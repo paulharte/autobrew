@@ -1,6 +1,6 @@
 import datetime
 
-from autobrew.measurement.measurement import Measurement
+from autobrew.measurement.measurement import TemperatureMeasurement
 from autobrew.temperature.abstractSource import AbstractSource
 from autobrew.temperature.probeTempApi import ProbeApi
 
@@ -21,10 +21,10 @@ class TempSource(AbstractSource):
     def get_name(self):
         return PROBE_PREFIX + self._get_just_filename()
 
-    def get_temperature_measurement(self) -> Measurement:
+    def get_temperature_measurement(self) -> TemperatureMeasurement:
         temp = self._get_temperature()
         time = datetime.datetime.utcnow()
-        return Measurement(self.get_name(), time, temp)
+        return TemperatureMeasurement(self.get_name(), time, temp)
 
     def _get_just_filename(self):
         last_slash_index = self.device_file.rstrip("/").rfind("/")

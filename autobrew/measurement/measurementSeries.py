@@ -1,15 +1,18 @@
+
 from autobrew.measurement.measurement import Measurement
 from typing import List
 
 from autobrew.aws.storage.serializable import Serializable
+from autobrew.measurement.seriesType import SeriesType
 
 
 class MeasurementSeries(Serializable):
-    def __init__(self, source_name: str, brew_id: str):
+    def __init__(self, source_name: str, brew_id: str, type: SeriesType):
         self.source_name: str = source_name
         self.measurements: List[Measurement] = []
         self.brew_id: str = brew_id
         self.nickname: str = None
+        self.type: str = type
 
     @property
     def id(self) -> str:
@@ -42,3 +45,5 @@ class MeasurementSeries(Serializable):
             ):
                 best_measurement_amt = measurement.measurement_amt
         return best_measurement_amt
+
+

@@ -7,6 +7,7 @@ from autobrew.brew.brew import Brew
 from autobrew.measurement.measurement import Measurement
 from autobrew.measurement.measurementSeries import MeasurementSeries
 from autobrew.measurement.measurementStorage import MeasurementStorage
+from autobrew.measurement.seriesType import SeriesType
 
 
 class MeasurementService(object):
@@ -15,17 +16,17 @@ class MeasurementService(object):
         self.storage = storage
 
     def save_measurement(
-        self, measurement: Measurement, brew: Brew
-    ) -> MeasurementSeries:
+        self, measurement: Measurement, brew: Brew) -> MeasurementSeries:
         series = self.storage.read_by_source(measurement.source_name, brew.id)
         if not series:
-            series = self.new_series(brew, measurement.source_name)
+            series_type = measurement.get_series_type()
+            series = self.new_series(brew, measurement.source_name, series_type)
         series.append(measurement)
         self.save_series(series)
         return series
 
-    def new_series(self, brew: Brew, source_name: str) -> MeasurementSeries:
-        series = MeasurementSeries(source_name, brew.id)
+    def new_series(self, brew: Brew, source_name: str, series_type: SeriesType) -> MeasurementSeries:
+        series = MeasurementSeries(source_name, brew.id, series_type)
         self.storage.save(series)
         return series
 

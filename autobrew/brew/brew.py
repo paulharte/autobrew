@@ -3,6 +3,7 @@ from typing import List
 
 from autobrew.aws.storage.serializable import Serializable
 from autobrew.aws.brew.stages import FERMENTING
+from autobrew.brew.stages import Stage
 
 
 class Brew(Serializable):
@@ -13,7 +14,7 @@ class Brew(Serializable):
         self.active = False
         self.start_time = start_time
         self.remote_id: str
-        self.current_stage = FERMENTING
+        self.current_stage: Stage = Stage.FERMENTING
         self.description: str
 
     def get_display_name(self) -> str:
