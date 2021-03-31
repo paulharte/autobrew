@@ -1,5 +1,5 @@
-<div *ngIf="chartData.length > 0" class="card text-center p-1">
-    {{series.getDisplayName()}}
+<div *ngIf="chartData.length > 0" class="card text-center p-1" style="margin-bottom: 30px;">
+  <span>{{series.getDisplayName()}} <span class="badge badge-primary">{{series.type}}</span></span>
     <div class="col p-3">
         <google-chart
             [title]="series.getDisplayName()"
