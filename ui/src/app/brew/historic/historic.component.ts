@@ -28,7 +28,7 @@ export class HistoricComponent implements OnInit {
   handleBrews(brews: Brew[]) {
     this.brews = [];
     for (const brew of brews) {
-      if (!brew.active) {
+      if (! brew.active) {
         this.brews.push(brew)
         this.brewNames.push(brew.name)
       }
@@ -36,7 +36,17 @@ export class HistoricComponent implements OnInit {
   }
 
   onSelectBrew(event: any) {
-    console.log(event);
+    const brewName = event.target.value;
+    if (this.brews) {
+      for (const brew of this.brews) {
+        if (brew.name = brewName) {
+          this.selectedBrew = brew;
+          return
+        }
+
+      }
+    }
+    
   }
 
 }
