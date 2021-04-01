@@ -46,9 +46,11 @@ class TestMeasurementSeriesRemote(TestCase):
         meas.measurement_amt = 20.1
         series.measurements = [meas]
         d = series.to_dict()
-        self.assertEqual(str, type(d['measurements'][0]['time']))
+        self.assertEqual(str, type(d["measurements"][0]["time"]))
         series_out = MeasurementSeriesRemote.from_dict(d)
         self.assertEqual(meas.time, series_out.measurements[0].time)
-        self.assertEqual(meas.measurement_amt, series_out.measurements[0].measurement_amt)
+        self.assertEqual(
+            meas.measurement_amt, series_out.measurements[0].measurement_amt
+        )
         self.assertEqual(meas.source_name, series_out.measurements[0].source_name)
         self.assertEqual(series.brew_remote_id, series_out.brew_remote_id)

@@ -48,6 +48,7 @@ def configure_prod(binder):
 
 
 def configure_local(binder):
+    logger.info("Running against UAT aws instance")
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
     binder.bind(HardwareAlcoholSensor, to=StubAlcoholSensor, scope=singleton)
     binder.bind(HeatSwitcher, to=MockHeatSwitcher, scope=singleton)

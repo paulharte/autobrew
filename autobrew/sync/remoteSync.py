@@ -52,4 +52,8 @@ class RemoteSync(object):
 
 
 def _form_headers(token: str) -> dict:
-    return {"Authorization": "Bearer %s" % token, 'Content-type': 'application/json', 'Accept': 'text/plain'}
+    return {
+        "Authorization": "Bearer %s" % token,
+        "Content-type": "application/json",
+        "Accept": "text/plain",
+    }

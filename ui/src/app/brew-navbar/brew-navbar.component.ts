@@ -14,4 +14,12 @@ export class BrewNavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  displayMenu(event: any) {
+    console.log('click');
+    const obj = document.getElementById("navbarNav");
+    if (obj) {
+      obj.classList.toggle("show");
+    }
+}
+
 }
