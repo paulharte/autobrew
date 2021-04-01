@@ -20,7 +20,7 @@ provider:
         identitySource: $request.header.Authorization
         issuerUrl: https://cognito-idp.#{AWS::Region}.amazonaws.com/#{AWS::Region}_${self:custom.cognitopool.${opt:stage}}
         audience:
-          - 64k4n04qv28q032ma70e0shf4b
+          - ${self:custom.cognitoaudience.${opt:stage}}
 
   iam:
     role:
@@ -58,6 +58,9 @@ custom:
   cognitopool:
     uat: k4rFWLDKO
     prod: IVpSSq49y
+  cognitoaudience:
+    uat: 64k4n04qv28q032ma70e0shf4b
+    prod: 6p2sj0fhq7sdb112ccfi6hgnvr
 
 # you can add packaging information here
 package:
