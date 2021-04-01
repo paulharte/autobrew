@@ -6,7 +6,8 @@ class AwsConfig(object):
 
     TOKEN_ENDPOINTS = {
         "uat": "https://autobrew-uat.auth.eu-west-1.amazoncognito.com/token",
-        "prod": "https://autobrew-prod.auth.eu-west-1.amazoncognito.com/token",
+        # TODO: make seperate prod pool
+        "prod": "https://autobrew-uat.auth.eu-west-1.amazoncognito.com/token",
     }
 
     def __init__(self, env: str):
