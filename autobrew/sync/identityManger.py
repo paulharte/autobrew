@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 import requests
@@ -6,9 +7,12 @@ import requests
 import yaml
 from injector import inject
 
-from autobrew.brew_settings import ROOT_DIR
+from autobrew.brew_settings import ROOT_DIR, APP_LOGGING_NAME
 from autobrew.sync.awsConfig import AwsConfig
+from autobrew.sync.exceptions import SyncFailedError
 from autobrew.sync.identitySecrets import IdentitySecrets
+
+logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 class IdentityManager(object):
@@ -20,7 +24,7 @@ class IdentityManager(object):
         path = os.path.join(ROOT_DIR, "secrets.yaml")
         try:
             with open(path) as file:
-                return IdentitySecrets(yaml.safe_load(file))
+                return IdentitySecrets(self.config.env, yaml.safe_load(file))
         except FileNotFoundError:
             msg = (
                 "Please create a secrets.yaml file in the base of this project (%s)"
@@ -37,8 +41,11 @@ class IdentityManager(object):
             "client_secret": secrets.get_client_secret(),
             "scope": self._determine_scope(),
         }
-
-        response = requests.post(self.config.get_token_endpoint(), data=body)
+        url = self.config.get_token_endpoint()
+        response = requests.post(url, data=body)
+        if response.status_code != 200:
+            logger.warning("failed post to %s(%s)", url, response.status_code)
+            raise SyncFailedError(response.text)
         return json.loads(response.text)["access_token"]
 
     def _determine_scope(self):
