@@ -13,7 +13,7 @@ class TestMeasurementSeries(TestCase):
         self.assertTrue(series.get_name())
 
     def test_to_json(self):
-        series = MeasurementSeries("temp1", 1,  SeriesType.TEMPERATURE)
+        series = MeasurementSeries("temp1", 1, SeriesType.TEMPERATURE)
         meas = Measurement("temp1", datetime.datetime.now(), 1.0)
         meas2 = Measurement("temp2", datetime.datetime.now(), 1.1)
         series.append(meas)
@@ -21,5 +21,5 @@ class TestMeasurementSeries(TestCase):
         j = series.to_json()
         self.assertTrue(j)
         out = json.loads(j)
-        self.assertEqual(out['type'], 'TEMPERATURE')
-        self.assertEqual(out['source_name'], 'temp1')
+        self.assertEqual(out["type"], "TEMPERATURE")
+        self.assertEqual(out["source_name"], "temp1")

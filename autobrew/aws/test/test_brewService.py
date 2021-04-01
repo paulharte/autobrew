@@ -13,7 +13,13 @@ class TestBrewService(TestCase):
 
         brew = BrewRemote.from_json(
             json.dumps(
-                {"name": "brew2", "id": "2", "active": False, "remote_id": "xyz1", "current_stage": FERMENTING}
+                {
+                    "name": "brew2",
+                    "id": "2",
+                    "active": False,
+                    "remote_id": "xyz1",
+                    "current_stage": FERMENTING,
+                }
             )
         )
         service.create(brew)
@@ -34,7 +40,13 @@ class TestBrewService(TestCase):
 
         brew = BrewRemote.from_json(
             json.dumps(
-                {"name": "brew2", "id": "2", "active": False, "remote_id": "xyz1", "current_stage": FERMENTING}
+                {
+                    "name": "brew2",
+                    "id": "2",
+                    "active": False,
+                    "remote_id": "xyz1",
+                    "current_stage": FERMENTING,
+                }
             )
         )
         service.create(brew)

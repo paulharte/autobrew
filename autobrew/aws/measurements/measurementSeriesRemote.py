@@ -20,10 +20,12 @@ class MeasurementSeriesRemote(Serializable):
     def from_dict(cls, attributes: dict):
         obj = Serializable.from_dict(attributes)
         obj.__class__ = cls
-        obj.measurements = [MeasurementRemote.from_dict(meas) for meas in attributes['measurements']]
+        obj.measurements = [
+            MeasurementRemote.from_dict(meas) for meas in attributes["measurements"]
+        ]
         return obj
 
     def to_dict(self):
         d = super().to_dict()
-        d['measurements'] = [meas.to_dict() for meas in self.measurements]
+        d["measurements"] = [meas.to_dict() for meas in self.measurements]
         return d

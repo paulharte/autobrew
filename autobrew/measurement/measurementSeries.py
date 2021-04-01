@@ -1,4 +1,3 @@
-
 from autobrew.measurement.measurement import Measurement
 from typing import List
 
@@ -45,5 +44,3 @@ class MeasurementSeries(Serializable):
             ):
                 best_measurement_amt = measurement.measurement_amt
         return best_measurement_amt
-
-

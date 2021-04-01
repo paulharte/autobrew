@@ -1,11 +1,11 @@
 <div *ngIf="brew" class="col">
-    <div class="card">
+    <div class="card" style="margin-bottom: 30px;">
         <h5 class="card-header">{{brew.name}}</h5>
         <div class="card-body">
           <p class="card-text" *ngIf="brew.description">Description: {{ brew.description }}</p>
           <p class="card-text">Brew Phase: <span class="badge badge-primary">{{brew.current_stage}}</span></p>
           <p class="card-text">
-              Active: 
+              Active:
               <span *ngIf="brew.active" class="badge badge-success">Yes</span>
               <span *ngIf="!brew.active" class="badge badge-danger">No</span>
             </p>
@@ -13,5 +13,5 @@
             Progress: <app-progress [startTime]="brew.start_time" [endTime]="getEndTime(brew.start_time)"></app-progress>
         </div>
       </div>
-    
+
 </div>

@@ -16,7 +16,8 @@ class MeasurementService(object):
         self.storage = storage
 
     def save_measurement(
-        self, measurement: Measurement, brew: Brew) -> MeasurementSeries:
+        self, measurement: Measurement, brew: Brew
+    ) -> MeasurementSeries:
         series = self.storage.read_by_source(measurement.source_name, brew.id)
         if not series:
             series_type = measurement.get_series_type()
@@ -25,7 +26,9 @@ class MeasurementService(object):
         self.save_series(series)
         return series
 
-    def new_series(self, brew: Brew, source_name: str, series_type: SeriesType) -> MeasurementSeries:
+    def new_series(
+        self, brew: Brew, source_name: str, series_type: SeriesType
+    ) -> MeasurementSeries:
         series = MeasurementSeries(source_name, brew.id, series_type)
         self.storage.save(series)
         return series

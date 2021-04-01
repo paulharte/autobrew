@@ -23,6 +23,7 @@ class Measurement(Serializable):
             & (self.measurement_amt == other.measurement_amt)
         )
 
+
 class TemperatureMeasurement(Measurement):
     def get_series_type(self) -> SeriesType:
         return SeriesType.TEMPERATURE
@@ -31,6 +32,7 @@ class TemperatureMeasurement(Measurement):
 class AlcoholMeasurement(Measurement):
     def get_series_type(self) -> SeriesType:
         return SeriesType.ALCOHOL
+
 
 class HeaterMeasurement(Measurement):
     def get_series_type(self) -> SeriesType:
