@@ -18,7 +18,7 @@ provider:
     authorizers:
       serviceAuthorizer:
         identitySource: $request.header.Authorization
-        issuerUrl: https://cognito-idp.#{AWS::Region}.amazonaws.com/#{AWS::Region}_k4rFWLDKO
+        issuerUrl: https://cognito-idp.#{AWS::Region}.amazonaws.com/#{AWS::Region}_${self:custom.cognitopool.${opt:stage}}
         audience:
           - 64k4n04qv28q032ma70e0shf4b
 
@@ -55,7 +55,9 @@ custom:
   url:
     uat: autobrew-uat.paulspetprojects.net
     prod: autobrew.paulspetprojects.net
-
+  cognitopool:
+    uat: k4rFWLDKO
+    prod: IVpSSq49y
 
 # you can add packaging information here
 package:
