@@ -1,5 +1,6 @@
 from unittest import mock
 
+from autobrew.alerting.tweeter.secretsService import extract_secrets
 from autobrew.alerting.tweeter.twitterAlerts import TwitterAlerter
 from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.heating.heat_switcher import HeatSwitcher
@@ -44,6 +45,7 @@ def configure_prod(binder):
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
     binder.bind(ProbeApi, to=ProbeApi, scope=singleton)
     binder.bind(FileStorage, to=FileStorage, scope=singleton)
+    binder.bind(TwitterAlerter, to=TwitterAlerter(extract_secrets()), scope=singleton)
     binder.bind(AwsConfig, to=AwsConfig("prod"), scope=singleton)
 
 
