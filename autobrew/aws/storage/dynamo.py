@@ -19,6 +19,7 @@ class Dynamo(object):
         return table.scan().get("Items")
 
     def put(self, table_name: str, item: dict):
+        item = delete_nulls_from_dict(item)
         table = self.dynamo_db.Table(table_name)
         table.put_item(Item=item)
         logger.info("Item written  to Dynamo table: %s. Item: %s", table_name, item)
@@ -50,3 +51,13 @@ def _form_key(id_to_get, id_name):
         return key
     else:
         return {id_name: id_to_get}
+
+
+def delete_nulls_from_dict(d: dict) -> dict:
+    to_delete = []
+    for key, value in d.items():
+        if value is None:
+            to_delete.append(key)
+    for null_item in to_delete:
+        del d[null_item]
+    return d

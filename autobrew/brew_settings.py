@@ -8,10 +8,10 @@ ROOT_DIR = "".join(SRC_DIR.rsplit("autobrew", 1)).rstrip("\\/")
 # User defined
 APP_LOGGING_NAME = "autobrew"
 
-MAX_TEMP_C = 25
-MIN_TEMP_C = 23
+MAX_TEMP_C = 25.0
+MIN_TEMP_C = 23.0
 
-SAMPLE_INTERVAL_SECONDS = 150
+SAMPLE_INTERVAL_SECONDS = 180
 
 SMELLOSCOPE_OFFSET = 1.55
 

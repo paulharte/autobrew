@@ -2,6 +2,7 @@ from typing import List
 
 from measurements.measurementServiceRemote import MEASUREMENT_SERIES_DYNAMO_TABLE
 from brew.brewServiceRemote import BREWS_DYNAMO_TABLE, BREW_TABLE_ID
+from storage.dynamo import delete_nulls_from_dict
 
 
 class StubDynamo(object):
@@ -13,6 +14,7 @@ class StubDynamo(object):
         return list(table.values())
 
     def put(self, table_name: str, item: dict):
+        item = delete_nulls_from_dict(item)
         table: dict = self.dynamo_db.get(table_name)
         key = _get_key(table_name, item)
         table[key] = item
