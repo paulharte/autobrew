@@ -20,7 +20,7 @@ class MeasurementSeries(Serializable):
     def append(self, measurement: Measurement):
         self.measurements.append(measurement)
 
-    def get_name(self):
+    def get_display_name(self):
         return self.nickname if self.nickname else self.source_name
 
     def get_measurements(self) -> List[Measurement]:

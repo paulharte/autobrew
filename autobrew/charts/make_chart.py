@@ -10,7 +10,7 @@ flask_googlecharts.utils.prep_data = prep_data
 def make_chart(series: MeasurementSeries):
     options = _make_options(series)
 
-    chart = flask_googlecharts.MaterialLineChart(series.get_name(), options=options)
+    chart = flask_googlecharts.MaterialLineChart(series.source_name, options=options)
     chart.add_column("datetime", "Time")
     chart.add_column("number", "Measurement")
 
@@ -27,7 +27,7 @@ def _make_options(series: MeasurementSeries) -> dict:
     max_amt = series.get_max_amount() or 0.0
     vertical_padding = 3.0
     return {
-        "title": series.get_name(),
+        "title": series.get_display_name(),
         "legend": {"position": "none"},
         "height": 500,
         "chartArea": {"left": 5, "top": 20, "right": 20, "height": 500},

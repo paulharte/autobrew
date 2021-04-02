@@ -1,4 +1,5 @@
 import logging
+from typing import List
 
 from flask import Flask, render_template, request, jsonify, url_for
 import flask_googlecharts
@@ -9,12 +10,14 @@ from werkzeug.utils import redirect
 
 from autobrew.brew.brewEndpoints import brew_blueprint
 from autobrew.brew.brewService import BrewService
-from autobrew.brew_settings import APP_LOGGING_NAME, MAX_TEMP_C, MIN_TEMP_C
+from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.charts.make_chart import make_chart
 from autobrew.configuration import configure
-from autobrew.heating.heat_control import HeatControl
+from autobrew.heating.heat_endpoints import heat_blueprint
+from autobrew.measurement.measurementSeries import MeasurementSeries
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.smelloscope.smelloscopeFactory import SmelloscopeFactory
+from autobrew.temperature.abstractSource import AbstractSource
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
 from autobrew.utils.googlecharts_flask_patch_utils import prep_data
 
@@ -26,6 +29,7 @@ app = Flask(__name__)
 charts = flask_googlecharts.GoogleCharts(app)
 logger = logging.getLogger(APP_LOGGING_NAME)
 app.register_blueprint(brew_blueprint)
+app.register_blueprint(heat_blueprint)
 
 
 @app.route("/", methods=["GET"])
@@ -51,9 +55,12 @@ def temperature_monitor(
         return render_template("error.html", message="No active brew")
 
     # Pull from historical and turn into chart
-    for series in historical_service.get_all_series_for_brew(brew):
-        if series.get_name() in active_source_names:
+    active_series = historical_service.get_all_series_for_brew(brew)
+    for series in active_series:
+        if series.source_name in active_source_names:
             charts.register(make_chart(series))
+
+    add_nicknames_to_source(current_temp_sources, active_series)
 
     return render_template("temperature.html", temp_sources=current_temp_sources)
 
@@ -114,62 +121,50 @@ def alcohol_level(
         return render_template("error.html", message="No active brew")
 
     # Pull from historical and turn into chart
-    for series in historical_service.get_all_series_for_brew(brew):
-        if series.get_name() in active_source_names:
+    active_series = historical_service.get_all_series_for_brew(brew)
+    for series in active_series:
+        if series.source_name in active_source_names:
             charts.register(make_chart(series))
 
+    add_nicknames_to_source(current_sources, active_series)
     return render_template("alcohol.html", smell_sources=current_sources)
 
 
 @app.route("/nickname")
 @inject
 def set_nickname(
-    source_factory: TempSourceFactory, smelloscopeFactory: SmelloscopeFactory
+        measure_service: MeasurementService,
+        brew_service: BrewService
 ):
     if not request.args or "name" not in request.args or "nickname" not in request.args:
         abort(400)
     name = request.args.get("name")
     nickname = request.args.get("nickname")
 
-    source = source_factory.get_temp_source(name)
-    message = name + " successfully updated nickname to " + nickname
-
-    if source:
-        source.set_nickname(nickname)
-        logger.info(message)
-        return render_template("success.html", message=message)
-
-    smelloscope = smelloscopeFactory.get_source(name)
-    if smelloscope:
-        smelloscope.set_nickname(nickname)
-        logger.info(message)
+    series = measure_service.get_series_by_source(name, brew_service.get_active().id)
+    if series:
+        series.nickname = nickname
+        measure_service.save_series(series)
+        message = name + " successfully updated nickname to " + nickname
         return render_template("success.html", message=message)
 
     return render_template("error.html", message="Could not find probe named: " + name)
 
 
-@app.route("/heat_status", methods=["GET"])
-@inject
-def get_heat_status(heater: HeatControl, temp_factory: TempSourceFactory):
-    status = "ON" if heater.is_power_on() else "OFF"
-    primary_source = temp_factory.get_primary_source()
-    return render_template(
-        "heater_status.html",
-        status=status,
-        max=MAX_TEMP_C,
-        min=MIN_TEMP_C,
-        source=primary_source,
-    )
-
 
 @app.route("/config", methods=["GET"])
 @inject
-def config(source_factory: TempSourceFactory, smelloscopeFactory: SmelloscopeFactory):
+def config(source_factory: TempSourceFactory, smell_factory: SmelloscopeFactory, brew_service: BrewService, meas_service: MeasurementService):
+    active_series = meas_service.get_all_series_for_brew(brew_service.get_active())
+    smell_sources = smell_factory.get_all_sources()
+    temp_sources = source_factory.get_all_temp_sources()
+    add_nicknames_to_source(smell_sources, active_series)
+    add_nicknames_to_source(temp_sources, active_series)
 
     return render_template(
         "config.html",
-        smell_sources=smelloscopeFactory.get_all_sources(),
-        temp_sources=source_factory.get_all_temp_sources(),
+        smell_sources=smell_sources,
+        temp_sources=temp_sources
     )
 
 
@@ -202,6 +197,14 @@ def handle_exception(e):
     logger.exception(e)
 
     return render_template("error.html", e=str(e))
+
+
+def add_nicknames_to_source(sources: List[AbstractSource], active_series: List[MeasurementSeries]):
+    for source in sources:
+        for s in active_series:
+            if source.get_name() == s.source_name:
+                source.set_nickname(s.nickname)
+
 
 
 def run_webserver(injector: Injector, debug=False):

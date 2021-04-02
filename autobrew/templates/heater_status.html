@@ -15,6 +15,9 @@
             Heat control is not enabled! Please set a primary source for heat control in
             <a href="{{url_for('config')}}">configuration screen</a>
             {% endif %}
+            <br><br>
+            <a href="{{url_for('heat_status.turn_heat_on')}}">Force heater on</a><br>
+            <a href="{{url_for('heat_status.turn_heat_off')}}">Force heater off</a>
         </div>
     </div>
     <br><br>

@@ -10,7 +10,7 @@ from autobrew.measurement.seriesType import SeriesType
 class TestMeasurementSeries(TestCase):
     def test_get_name(self):
         series = MeasurementSeries("temp1", 1, SeriesType.ALCOHOL)
-        self.assertTrue(series.get_name())
+        self.assertTrue(series.get_display_name())
 
     def test_to_json(self):
         series = MeasurementSeries("temp1", 1, SeriesType.TEMPERATURE)

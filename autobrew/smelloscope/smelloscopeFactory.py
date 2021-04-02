@@ -24,4 +24,4 @@ class SmelloscopeFactory(object):
                 return source
 
     def remove_source(self, to_remove: Smelloscope):
-        self.temp_sources.remove(to_remove)
+        self.sources.remove(to_remove)

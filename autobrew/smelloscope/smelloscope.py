@@ -11,7 +11,6 @@ from autobrew.temperature.abstractSource import AbstractSource
 class Smelloscope(AbstractSource):
 
     NAME = "Alcohol_Smelloscope"
-    mcp = None
 
     @inject
     def __init__(self, alcohol_sensor: HardwareAlcoholSensor):
@@ -38,7 +37,7 @@ class Smelloscope(AbstractSource):
         return measurement
 
     def __eq__(self, other):
-        return self.get_name() == other.get_name()
+        return self.get_name() == other.get_display_name()
 
 
 class SmelloscopeNotAvailable(RuntimeError):

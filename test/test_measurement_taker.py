@@ -8,7 +8,7 @@ from autobrew.measurement.measurementService import MeasurementService
 from autobrew.measurement_taker import MeasurementTaker
 from autobrew.smelloscope.smelloscope import Smelloscope
 from autobrew.temperature.tempSource import PROBE_PREFIX
-from test.temperature.stubProbeApi import STUB_BREW_NAME, STUB_ROOM_NAME
+from test.temperature.stubProbeApi import STUB_BREW_TEMP_NAME, STUB_ROOM_TEMP_NAME
 
 
 class TestMeasurementTaker(TestCase):
@@ -35,11 +35,11 @@ class TestMeasurementTaker(TestCase):
         measure_service = self.injector.get(MeasurementService)
 
         brew_series = measure_service.get_series_by_source(
-            PROBE_PREFIX + STUB_BREW_NAME, self.brew.id
+            PROBE_PREFIX + STUB_BREW_TEMP_NAME, self.brew.id
         )
         self.assertEqual(len(brew_series.get_measurements()), 1)
 
         room_series = measure_service.get_series_by_source(
-            PROBE_PREFIX + STUB_ROOM_NAME, self.brew.id
+            PROBE_PREFIX + STUB_ROOM_TEMP_NAME, self.brew.id
         )
         self.assertEqual(len(room_series.get_measurements()), 1)
