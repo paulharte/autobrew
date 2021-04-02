@@ -132,10 +132,7 @@ def alcohol_level(
 
 @app.route("/nickname")
 @inject
-def set_nickname(
-        measure_service: MeasurementService,
-        brew_service: BrewService
-):
+def set_nickname(measure_service: MeasurementService, brew_service: BrewService):
     if not request.args or "name" not in request.args or "nickname" not in request.args:
         abort(400)
     name = request.args.get("name")
@@ -151,10 +148,14 @@ def set_nickname(
     return render_template("error.html", message="Could not find probe named: " + name)
 
 
-
 @app.route("/config", methods=["GET"])
 @inject
-def config(source_factory: TempSourceFactory, smell_factory: SmelloscopeFactory, brew_service: BrewService, meas_service: MeasurementService):
+def config(
+    source_factory: TempSourceFactory,
+    smell_factory: SmelloscopeFactory,
+    brew_service: BrewService,
+    meas_service: MeasurementService,
+):
     active_series = meas_service.get_all_series_for_brew(brew_service.get_active())
     smell_sources = smell_factory.get_all_sources()
     temp_sources = source_factory.get_all_temp_sources()
@@ -162,9 +163,7 @@ def config(source_factory: TempSourceFactory, smell_factory: SmelloscopeFactory,
     add_nicknames_to_source(temp_sources, active_series)
 
     return render_template(
-        "config.html",
-        smell_sources=smell_sources,
-        temp_sources=temp_sources
+        "config.html", smell_sources=smell_sources, temp_sources=temp_sources
     )
 
 
@@ -199,12 +198,13 @@ def handle_exception(e):
     return render_template("error.html", e=str(e))
 
 
-def add_nicknames_to_source(sources: List[AbstractSource], active_series: List[MeasurementSeries]):
+def add_nicknames_to_source(
+    sources: List[AbstractSource], active_series: List[MeasurementSeries]
+):
     for source in sources:
         for s in active_series:
             if source.get_name() == s.source_name:
                 source.set_nickname(s.nickname)
-
 
 
 def run_webserver(injector: Injector, debug=False):

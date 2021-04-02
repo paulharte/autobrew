@@ -33,6 +33,7 @@ class RemoteSync(object):
     def sync_measurements(self, brew: Brew, series: MeasurementSeries):
         token = self.identity_manager.get_access_token()
         url = self.formMeasurementUrl(brew.remote_id, series.source_name)
+        print("sync series: " + str(series.to_json()))
         resp = requests.put(url, series.to_json(), headers=_form_headers(token))
         if resp.status_code != 200:
             logger.warning("failed put to %s(%s)", url, resp.status_code)

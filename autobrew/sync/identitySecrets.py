@@ -2,7 +2,7 @@ APP_LOGIN = "cognito-app-login"
 
 
 class IdentitySecrets(object):
-    def __init__(self, env: str,  secrets: dict):
+    def __init__(self, env: str, secrets: dict):
         self.secrets = secrets
         self.env = env
 

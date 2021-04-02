@@ -8,6 +8,7 @@ from autobrew.temperature.tempSourceFactory import TempSourceFactory
 heat_blueprint = Blueprint("heat_status", __name__, url_prefix="/heat_status")
 
 
+@heat_blueprint.route("", methods=["GET"])
 @heat_blueprint.route("/", methods=["GET"])
 @inject
 def get_heat_status(heater: HeatControl, temp_factory: TempSourceFactory):
