@@ -1,7 +1,11 @@
+import logging
+
 from injector import inject
 
-from autobrew.brew_settings import MIN_TEMP_C, MAX_TEMP_C
+from autobrew.brew_settings import MIN_TEMP_C, MAX_TEMP_C, APP_LOGGING_NAME
 from autobrew.heating.heat_switcher import HeatSwitcher
+
+logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 class HeatControl(object):
@@ -24,11 +28,13 @@ class HeatControl(object):
         if self._power_is_on in [None, False]:
             self._switch_power(True)
             self._power_is_on = True
+            logger.info("Heating turned on")
 
     def turn_off(self):
         if self._power_is_on in [None, True]:
             self._switch_power(False)
             self._power_is_on = False
+            logger.info("Heating turned off")
 
     def is_power_on(self):
         # Assume on is default state for external purposes
