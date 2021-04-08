@@ -9,6 +9,7 @@
         <div class="card-header">{{ brew.get_display_name() }}
             {% if brew.active %}
                 <span class="badge badge-secondary">ACTIVE</span>
+            {{ three_dots.three_dots(url_for('brews.set_inactive', id=brew.id), 'Inactivate' ) }}
             {% else %}
                 {{ three_dots.three_dots(url_for('brews.set_active', id=brew.id), 'Make active brew' ) }}
             {% endif %}
