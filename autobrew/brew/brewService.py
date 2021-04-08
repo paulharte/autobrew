@@ -52,3 +52,8 @@ class BrewService(object):
         brew = self.save(brew)
         self._set_others_inactive(brew.id)
         return brew
+
+    def set_inactive(self, brew_id: str) -> Brew:
+        brew = self.storage.read(brew_id)
+        brew.active = False
+        return self.save(brew)

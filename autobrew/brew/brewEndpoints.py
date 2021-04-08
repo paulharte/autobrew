@@ -56,3 +56,14 @@ def set_active(brew_service: BrewService):
         "success.html",
         message='Brew "%s" successfully activated' % brew.get_display_name(),
     )
+
+@brew_blueprint.route("/set_inactive", methods=["GET"])
+def set_inactive(brew_service: BrewService):
+    if not request.args or "id" not in request.args:
+        return render_template("error.html", message="Invalid request")
+    brew_id = str(request.args.get("id"))
+    brew = brew_service.set_inactive(brew_id)
+    return render_template(
+        "success.html",
+        message='Brew "%s" successfully inactivated' % brew.get_display_name(),
+    )
