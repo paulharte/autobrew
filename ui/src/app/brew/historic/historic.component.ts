@@ -11,42 +11,43 @@ export class HistoricComponent implements OnInit {
 
   selectedBrew?: Brew;
   brews?: Brew[];
-  brewNames: string[] = [];
+  brewNames?: string[];
   requestComplete = false;
 
   constructor(private service: BrewService) { }
 
   ngOnInit(): void {
     this.service.getAllBrews().subscribe(
-      brews => { 
-        this.handleBrews(brews);
+      incomingBrews => {
+        this.handleBrews(incomingBrews);
         this.requestComplete = true;
       }, () => this.requestComplete = true
     )
   }
 
-  handleBrews(brews: Brew[]) {
-    this.brews = [];
-    for (const brew of brews) {
+  handleBrews(incomingBrews: Brew[]) {
+    const inactiveBrews = [];
+    const names = [];
+    for (const brew of incomingBrews) {
       if (! brew.active) {
-        this.brews.push(brew)
-        this.brewNames.push(brew.name)
+        inactiveBrews.push(brew)
+        names.push(brew.name)
       }
     }
+    this.brews = inactiveBrews;
+    this.brewNames = names;
   }
 
   onSelectBrew(event: any) {
     const brewName = event.target.value;
     if (this.brews) {
       for (const brew of this.brews) {
-        if (brew.name = brewName) {
+        if (brew.name === brewName) {
           this.selectedBrew = brew;
           return
         }
-
       }
     }
-    
   }
 
 }

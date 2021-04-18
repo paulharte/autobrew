@@ -9,7 +9,7 @@ import { BrewService } from '../brew.service';
 })
 export class BrewsComponent implements OnInit {
 
-  activeBrew?: Brew;
+  activeBrews?: Brew[];
   brews?: Brew[];
   requestComplete = false;
 
@@ -17,7 +17,7 @@ export class BrewsComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getAllBrews().subscribe(
-      brews => { 
+      brews => {
         this.handleBrews(brews);
         this.requestComplete = true;
       }, () => this.requestComplete = true
@@ -26,11 +26,13 @@ export class BrewsComponent implements OnInit {
 
   handleBrews(brews: Brew[]) {
     this.brews = brews;
+    const activeOnes = [];
     for (const brew of brews) {
       if (brew.active) {
-        this.activeBrew = brew;
+        activeOnes.push(brew);
       }
     }
+    this.activeBrews = activeOnes;
   }
 
 }

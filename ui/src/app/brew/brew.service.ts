@@ -17,11 +17,11 @@ export class BrewService {
 
   getAllBrews(): Observable<Brew[]> {
     const url = environment.remote_url_base + this.BREW;
-    return this.http.get<any[]>(url).pipe(map((brews: any[]) => brews.map((b) => new Brew(b))));
+    return this.http.get<any[]>(url).pipe(map((brews: any[]) => brews.map(b => new Brew(b))));
   }
 
   getMeasurementsForBrew(brew: Brew): Observable<MeasurementSeries[]> {
     const url = environment.remote_url_base + this.BREW + '/' +brew.remote_id + '/' + this.MEASUREMENTS;
-    return this.http.get<any[]>(url).pipe(map((series: any[]) => series.map((b) => new MeasurementSeries(b))));
+    return this.http.get<any[]>(url).pipe(map((series: any[]) => series.map(b => new MeasurementSeries(b))));
   }
 }
