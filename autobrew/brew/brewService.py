@@ -5,6 +5,7 @@ from injector import inject
 
 from autobrew.brew.brew import Brew
 from autobrew.brew.brewStorage import BrewStorage
+from autobrew.brew.stages import Stage
 from autobrew.sync.syncService import SyncService
 
 
@@ -57,3 +58,15 @@ class BrewService(object):
         brew = self.storage.read(brew_id)
         brew.active = False
         return self.save(brew)
+
+    def update_stage(self, brew_id: str, stage: Stage):
+        brew = self.get_by_id(brew_id)
+        brew.current_stage = stage
+        return self.save(brew)
+
+    def complete(self, brew_id: str):
+        brew = self.get_by_id(brew_id)
+        brew.current_stage = Stage.COMPLETE
+        brew.active = False
+        return self.save(brew)
+

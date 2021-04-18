@@ -4,7 +4,7 @@
 /.venv
 /.venv/*
 /.idea
-*_pycache_*
+*/__pycache__/*
 *.pyc
 *.log
 /.pytest_cache

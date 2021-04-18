@@ -3,6 +3,7 @@ from injector import inject
 
 from autobrew.brew.brew import sort_brews
 from autobrew.brew.brewService import BrewService
+from autobrew.brew.stages import Stage
 
 brew_blueprint = Blueprint("brews", __name__, url_prefix="/brews")
 
@@ -57,6 +58,7 @@ def set_active(brew_service: BrewService):
         message='Brew "%s" successfully activated' % brew.get_display_name(),
     )
 
+
 @brew_blueprint.route("/set_inactive", methods=["GET"])
 def set_inactive(brew_service: BrewService):
     if not request.args or "id" not in request.args:
@@ -66,4 +68,26 @@ def set_inactive(brew_service: BrewService):
     return render_template(
         "success.html",
         message='Brew "%s" successfully inactivated' % brew.get_display_name(),
+    )
+
+
+@brew_blueprint.route("<brew_id>/status", methods=["GET"])
+def change_status(brew_service: BrewService, brew_id: str):
+    stage: str = str(request.args.get("stage"))
+    if not brew_id or not stage:
+        return render_template("error.html", message="Invalid request")
+    brew = brew_service.update_stage(brew_id, Stage[stage])
+    return render_template(
+        "success.html",
+        message='Brew "%s" successfully updated' % brew.get_display_name(),
+    )
+
+@brew_blueprint.route("<brew_id>/complete", methods=["GET"])
+def complete(brew_service: BrewService, brew_id: str):
+    if not brew_id:
+        return render_template("error.html", message="Invalid request")
+    brew = brew_service.complete(brew_id)
+    return render_template(
+        "success.html",
+        message='Brew "%s" successfully completed' % brew.get_display_name(),
     )

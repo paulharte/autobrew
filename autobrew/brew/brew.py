@@ -2,7 +2,6 @@ import datetime
 from typing import List
 
 from autobrew.aws.storage.serializable import Serializable
-from autobrew.aws.brew.stages import FERMENTING
 from autobrew.brew.stages import Stage
 
 
