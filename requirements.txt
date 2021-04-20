@@ -28,7 +28,7 @@ more-itertools==8.5.0
 oauthlib==3.1.0
 packaging==20.4
 pluggy==0.13.1
-py==1.9.0
+py==1.10.0
 pyftdi==0.51.2
 pyparsing==2.4.7
 pyserial==3.4
