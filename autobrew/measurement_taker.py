@@ -84,3 +84,7 @@ class MeasurementTaker(object):
                 msg = "No alcohol measurement taken as smelloscope offline" + str(e)
                 logger.error(msg)
                 self.alerter.alert_owner(msg)
+
+    def check_for_end(self, brew: Brew):
+        # Not implemented yet
+        pass
