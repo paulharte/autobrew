@@ -1,10 +1,12 @@
-<div *ngIf="activeBrew">
-    <div class="row">
-        <div class="col-md-4 justify-content-center p-0">
-            <app-single-brew [brew]="activeBrew"></app-single-brew>
-        </div>
-        <div class="col-md-8 justify-content-center p-0">
-            <app-measurements [brew]="activeBrew"></app-measurements>
+<div *ngIf="activeBrews">
+    <div *ngFor="let activeBrew of activeBrews">
+        <div class="row">
+            <div class="col-md-4 justify-content-center p-0">
+                <app-single-brew [brew]="activeBrew"></app-single-brew>
+            </div>
+            <div class="col-md-8 justify-content-center p-0">
+                <app-measurements [brew]="activeBrew"></app-measurements>
+            </div>
         </div>
     </div>
 </div>
@@ -13,7 +15,7 @@
       <span class="sr-only">Loading...</span>
     </div>
 </div>
-<div *ngIf="requestComplete && activeBrew == null">
+<div *ngIf="requestComplete && activeBrews == null">
     <div class="card">
         <div class="card-body">
           <p class="card-text">No brews active at this time</p>
