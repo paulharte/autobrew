@@ -156,11 +156,13 @@ def config(
     brew_service: BrewService,
     meas_service: MeasurementService,
 ):
-    active_series = meas_service.get_all_series_for_brew(brew_service.get_active())
+    active_brew = brew_service.get_active()
     smell_sources = smell_factory.get_all_sources()
     temp_sources = source_factory.get_all_temp_sources()
-    add_nicknames_to_source(smell_sources, active_series)
-    add_nicknames_to_source(temp_sources, active_series)
+    if active_brew:
+        active_series = meas_service.get_all_series_for_brew(brew_service.get_active())
+        add_nicknames_to_source(smell_sources, active_series)
+        add_nicknames_to_source(temp_sources, active_series)
 
     return render_template(
         "config.html", smell_sources=smell_sources, temp_sources=temp_sources
