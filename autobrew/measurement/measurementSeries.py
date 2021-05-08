@@ -11,7 +11,7 @@ class MeasurementSeries(Serializable):
         self.measurements: List[Measurement] = []
         self.brew_id: str = brew_id
         self.nickname: str = None
-        self.type: str = type
+        self.type: SeriesType = type
 
     @property
     def id(self) -> str:
