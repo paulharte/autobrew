@@ -2,11 +2,11 @@ from injector import Injector
 
 from autobrew.brew.brew import Brew
 from autobrew.brew.brewService import BrewService
-from autobrew.configuration import configure_prod, configure_local
+from autobrew.configuration import configure_prod
 from autobrew.measurement.measurementService import MeasurementService
 from autobrew.measurement.seriesType import SeriesType
 
-injector = Injector([configure_local])
+injector = Injector([configure_prod])
 
 def remove_duff_temperature_measurements(brew: Brew):
     service = injector.get(MeasurementService)
@@ -29,5 +29,6 @@ def run():
         raise Exception('No active brew!')
 
     print("Done!")
+
 
 run()
