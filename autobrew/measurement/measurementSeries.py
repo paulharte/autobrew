@@ -10,6 +10,7 @@ class MeasurementSeries(Serializable):
         self.source_name: str = source_name
         self.measurements: List[Measurement] = []
         self.brew_id: str = brew_id
+        self.brew_remote_id: str = None
         self.nickname: str = None
         self.type: SeriesType = type
 

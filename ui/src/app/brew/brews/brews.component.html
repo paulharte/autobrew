@@ -1,21 +1,22 @@
-<div *ngIf="activeBrews">
-    <div *ngFor="let activeBrew of activeBrews">
-        <div class="row">
-            <div class="col-md-4 justify-content-center p-0">
-                <app-single-brew [brew]="activeBrew"></app-single-brew>
-            </div>
-            <div class="col-md-8 justify-content-center p-0">
-                <app-measurements [brew]="activeBrew"></app-measurements>
-            </div>
+
+<div *ngFor="let activeBrew of activeBrews">
+    <div class="row">
+        <div class="col-md-4 justify-content-center p-0">
+            <app-single-brew [brew]="activeBrew"></app-single-brew>
+            <app-stage [stage]="activeBrew.getCurrentStage()"></app-stage>
+        </div>
+        <div class="col-md-8 justify-content-center p-0" *ngIf="activeBrew.isFermenting()">
+            <app-measurements [brew]="activeBrew"></app-measurements>
         </div>
     </div>
 </div>
+
 <div *ngIf="!requestComplete" class="d-flex justify-content-center">
     <div class="spinner-border m-5" style="width: 3rem; height: 3rem;" role="status">
       <span class="sr-only">Loading...</span>
     </div>
 </div>
-<div *ngIf="requestComplete && activeBrews == null">
+<div *ngIf="requestComplete && activeBrews.length == 0">
     <div class="card">
         <div class="card-body">
           <p class="card-text">No brews active at this time</p>

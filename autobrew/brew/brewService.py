@@ -61,12 +61,12 @@ class BrewService(object):
 
     def update_stage(self, brew_id: str, stage: Stage):
         brew = self.get_by_id(brew_id)
-        brew.current_stage = stage
+        brew.start_new_stage(stage, datetime.datetime.utcnow())
         return self.save(brew)
 
     def complete(self, brew_id: str):
         brew = self.get_by_id(brew_id)
-        brew.current_stage = Stage.COMPLETE
+        brew.complete(datetime.datetime.utcnow())
         brew.active = False
         return self.save(brew)
 

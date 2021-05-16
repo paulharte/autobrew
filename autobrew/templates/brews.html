@@ -36,7 +36,7 @@
               </div>
             </form>
             <div class="row"><div class="col-md-3">Start time</div><div class="col-md-9">{{brew.start_time}}</div> </div>
-            <div class="row"><div class="col-md-3">Stage</div><div class="col-md-9"> {{brew.current_stage}} </div></div>
+            <div class="row"><div class="col-md-3">Stage</div><div class="col-md-9"> {{brew.get_current_stage_details().stage_name}} </div></div>
             <div class="row"><div class="col-md-3">Brew remote id</div><div class="col-md-9"> {{brew.remote_id}} </div></div>
         </div>
     </div>

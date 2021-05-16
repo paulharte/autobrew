@@ -9,11 +9,13 @@ import { BrewService } from '../brew.service';
 })
 export class BrewsComponent implements OnInit {
 
-  activeBrews?: Brew[];
+  activeBrews: Brew[];
   brews?: Brew[];
   requestComplete = false;
 
-  constructor(private service: BrewService) { }
+  constructor(private service: BrewService) { 
+    this.activeBrews = [];
+  }
 
   ngOnInit(): void {
     this.service.getAllBrews().subscribe(
@@ -28,7 +30,7 @@ export class BrewsComponent implements OnInit {
     this.brews = brews;
     const activeOnes = [];
     for (const brew of brews) {
-      if (brew.active) {
+      if (!brew.isComplete()) {
         activeOnes.push(brew);
       }
     }

@@ -9,6 +9,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 export class ProgressComponent implements OnInit {
 
   public progress_percent = 0.0;
+  public completed = false;
 
   constructor() { }
 
@@ -22,6 +23,7 @@ export class ProgressComponent implements OnInit {
     const total_time = this.endTime.getTime() - this.startTime.getTime();
     const time_elapsed = new Date().getTime() - this.startTime.getTime();
     this.progress_percent = this.getPercentage(total_time, time_elapsed);
+    this.completed = this.progress_percent >= 100.0;
   }
 
   private getPercentage(total: number, current: number): number {

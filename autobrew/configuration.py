@@ -32,18 +32,12 @@ from test.temperature.stubProbeApi import StubProbeApi
 logger = logging.getLogger(APP_LOGGING_NAME)
 
 
-def configure(binder):
-    if platform.system() == "Windows":
-        logger.info("Running on Windows, using mock temperature and smell sources")
-        configure_local(binder)
-    else:
-        logger.debug(
-            "Not Running on Windows, using Raspberry Pi smell and temperature sources"
-        )
-        configure_prod(binder)
-
-
 def configure_prod(binder):
+    if platform.system() == "Windows":
+        logger.info("Running on Windows, using local config instead (mock temperature and smell sources)")
+        configure_uat(binder)
+        return
+    logger.info("Running against PROD aws instance")
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
     binder.bind(ProbeApi, to=ProbeApi, scope=singleton)
     binder.bind(HardwareAlcoholSensor, to=HardwareAlcoholSensor, scope=singleton)
@@ -54,7 +48,7 @@ def configure_prod(binder):
     binder.bind(CachedIdentityManger, to=CachedIdentityManger, scope=singleton)
 
 
-def configure_local(binder):
+def configure_uat(binder):
     logger.info("Running against UAT aws instance")
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
     binder.bind(HardwareAlcoholSensor, to=StubAlcoholSensor, scope=singleton)
@@ -67,7 +61,13 @@ def configure_local(binder):
 
 
 def configure_test(binder):
-    configure_local(binder)
+    binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
+    binder.bind(HardwareAlcoholSensor, to=StubAlcoholSensor, scope=singleton)
+    binder.bind(HeatSwitcher, to=MockHeatSwitcher, scope=singleton)
+    binder.bind(HeatControl, to=HeatControl, scope=singleton)
+    binder.bind(ProbeApi, to=StubProbeApi, scope=singleton)
+    binder.bind(TwitterAlerter, to=StubTwitterAlerter, scope=singleton)
+    binder.bind(CachedIdentityManger, to=CachedIdentityManger, scope=singleton)
     binder.bind(FileStorage, to=StubFileStorage, scope=singleton)
     binder.bind(IdentityManager, to=StubIdentityManager, scope=singleton)
     binder.bind(AwsConfig, to=mock.Mock(), scope=singleton)

@@ -1,4 +1,5 @@
-<div class="progress">
+<div class="progress" *ngIf="!this.completed">
     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" 
         [attr.aria-valuenow]="progress_percent" aria-valuemin="0" aria-valuemax="100" [attr.style]="'width: ' + progress_percent +'%'"></div>
-  </div>
+</div>
+<span *ngIf="this.completed" id="completed-badge" class="badge badge-primary">Finished!</span>

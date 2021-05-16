@@ -13,6 +13,7 @@ import { SeriesComponent } from './brew/measurement/series/series.component';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { MeasurementsComponent } from './brew/measurement/measurements/measurements.component';
 import { HistoricComponent } from './brew/historic/historic.component';
+import { StageComponent } from './brew/stage/stage.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HistoricComponent } from './brew/historic/historic.component';
     SingleBrewComponent,
     SeriesComponent,
     MeasurementsComponent,
-    HistoricComponent
+    HistoricComponent,
+    StageComponent
   ],
   imports: [
     BrowserModule,
