@@ -29,7 +29,6 @@ export class Brew {
         return this.getCurrentStage().stage_name == 'COMPLETE';
     }
     isFermenting(): boolean {
-        console.log(this.getCurrentStage().stage_name )
         return this.getCurrentStage().stage_name == 'FERMENTING';
     }
 }
