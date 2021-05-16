@@ -14,6 +14,7 @@ from autobrew.smelloscope.smelloscopeFactory import SmelloscopeFactory
 from autobrew.sync.syncService import SyncService
 from autobrew.temperature.probeTempApi import InvalidTemperatureFileError
 from autobrew.temperature.tempSourceFactory import TempSourceFactory
+from autobrew.utils.migrate_brews import migrate_brews
 
 logger = logging.getLogger(APP_LOGGING_NAME)
 
@@ -40,6 +41,7 @@ class MeasurementTaker(object):
         self.sync = sync
 
     def run_measurements(self):
+        migrate_brews(self.brew_service, self.sync, self.measurement_service) # temporary migrations
         delay = SAMPLE_INTERVAL_SECONDS
         active_brew = self.brew_service.get_active()
         if active_brew:

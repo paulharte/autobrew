@@ -30,6 +30,7 @@ class MeasurementService(object):
         self, brew: Brew, source_name: str, series_type: SeriesType
     ) -> MeasurementSeries:
         series = MeasurementSeries(source_name, brew.id, series_type)
+        series.brew_remote_id = brew.remote_id
         self.storage.save(series)
         return series
 

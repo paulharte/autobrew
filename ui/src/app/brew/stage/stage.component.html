@@ -3,8 +3,9 @@
         <h6 class="card-header">Brew stage</h6>
         <div class="card-body">
           <p class="card-text">Stage: <span class="badge badge-primary">{{stage.stage_name}}</span></p>
-          <p class="card-text">Stage start time: {{stage.start_time | date:'d MMM y, h:mm:ss a'}}</p>
-          <p class="card-text">Estimated end time: {{stage.estimated_end_time | date:'d MMM y, h:mm:ss a'}}</p>
+          <p *ngIf="stage.stage_name != 'COMPLETE'" class="card-text">Stage start time: {{stage.start_time | date:'d MMM y, h:mm:ss a'}}</p>
+          <p *ngIf="stage.stage_name != 'COMPLETE'" class="card-text">Estimated end time: {{stage.estimated_end_time | date:'d MMM y, h:mm:ss a'}}</p>
+          <p *ngIf="stage.stage_name == 'COMPLETE'" class="card-text">End time: {{stage.estimated_end_time | date:'d MMM y, h:mm:ss a'}}</p>
           <p>
             Progress: <app-progress [startTime]="stage.start_time" [endTime]="stage.estimated_end_time"></app-progress>
           </p>
