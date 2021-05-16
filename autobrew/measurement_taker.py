@@ -6,6 +6,7 @@ from injector import inject, singleton
 from autobrew.alerting.alerter import Alerter
 from autobrew.brew.brew import Brew
 from autobrew.brew.brewService import BrewService
+from autobrew.brew.stages import Stage
 from autobrew.brew_settings import SAMPLE_INTERVAL_SECONDS, APP_LOGGING_NAME
 from autobrew.heating.heat_control import HeatControl
 from autobrew.measurement.measurementService import MeasurementService
@@ -48,7 +49,7 @@ class MeasurementTaker(object):
             self.sync.sync_brew(active_brew)
         while True:
             active_brew = self.brew_service.get_active()
-            if active_brew:
+            if active_brew and active_brew.current_stage == Stage.FERMENTING:
                 self.take_temperature_measurements(active_brew)
                 self.take_smell_measurements(active_brew)
             time.sleep(delay)
