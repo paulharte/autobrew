@@ -49,7 +49,7 @@ class MeasurementTaker(object):
             self.sync.sync_brew(active_brew)
         while True:
             active_brew = self.brew_service.get_active()
-            if active_brew and active_brew.current_stage == Stage.FERMENTING:
+            if active_brew and active_brew.get_current_stage_details().stage_name == Stage.FERMENTING:
                 self.take_temperature_measurements(active_brew)
                 self.take_smell_measurements(active_brew)
             time.sleep(delay)
