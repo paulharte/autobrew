@@ -13,7 +13,7 @@ class TestBrew(TestCase):
                 "id": "1",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da674",
                 "active": True,
-                "current_stage": FERMENTING,
+                "stages": [{"start_time": "2021-05-15T19:30:54.100701", "stage_name": "FERMENTING", "estimated_end_time": "2021-05-22T19:30:54.100701"}]
             }
         )
         b = BrewRemote.from_json(incoming)
@@ -25,12 +25,14 @@ class TestBrew(TestCase):
                 "id": "2",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da675",
                 "active": False,
-                "current_stage": FERMENTING,
+                "stages": [{"start_time": "2021-05-15T19:30:54.100701", "stage_name": "FERMENTING", "estimated_end_time": "2021-05-22T19:30:54.100701"}]
             }
         )
         b2 = BrewRemote.from_json(incoming2)
         self.assertEqual(b2.name, "brew2")
         self.assertEqual(b2.active, False)
+        self.assertEqual(b2.current_stage.stage_name, "FERMENTING")
+        self.assertEqual(type(b2.current_stage.estimated_end_time), datetime.datetime)
 
     def test_dict(self):
         time_str = "2021-03-25T17:24:10.829080"

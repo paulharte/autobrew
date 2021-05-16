@@ -7,6 +7,8 @@ from brew.brewServiceRemote import BrewServiceRemote
 from handler import *
 from test_utils.stubDynamo import StubDynamo
 
+TEST_FERMENT_STAGE = [{"start_time": "2021-05-15T19:30:54.100000", "stage_name": "FERMENTING",
+                       "estimated_end_time": "2021-05-22T19:30:54.100000"}]
 
 class TestHandler(TestCase):
     def setUp(self) -> None:
@@ -23,7 +25,7 @@ class TestHandler(TestCase):
                 "remote_id": remote_id,
                 "active": True,
                 "start_time": start,
-                "current_stage": FERMENTING,
+                "stages": TEST_FERMENT_STAGE,
             }
         )
         resp = create_brew(event, None, self.brew_service)
@@ -36,8 +38,8 @@ class TestHandler(TestCase):
         self.assertEqual(resp["statusCode"], 200)
         self.assertEqual(len(json.loads(resp["body"])), 1)
         ex = (
-            '[{"name": "brew1", "id": "1", "remote_id": "%s", "active": true, "start_time": "%s", "current_stage": '
-            '"FERMENTING"}]' % (remote_id, start)
+            '[{"name": "brew1", "id": "1", "remote_id": "%s", "active": true, "start_time": "%s", "stages": '
+            '%s}]' % (remote_id, start, str(TEST_FERMENT_STAGE).replace("\'", "\""))
         )
         self.assertEqual(ex, resp["body"])
 
@@ -47,7 +49,7 @@ class TestHandler(TestCase):
                 "id": "1",
                 "remote_id": remote_id,
                 "active": True,
-                "current_stage": FERMENTING,
+                "stages": TEST_FERMENT_STAGE,
             },
             remote_id,
         )

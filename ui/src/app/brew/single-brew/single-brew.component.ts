@@ -8,20 +8,12 @@ import { Brew } from '../brew.models';
 })
 export class SingleBrewComponent implements OnInit {
 
-  DAYS_TO_BREW = 7;
 
   @Input() brew!: Brew;
 
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  getEndTime(startTime: Date): Date {
-
-    var date = new Date(startTime.valueOf());
-    date.setDate(date.getDate() + this.DAYS_TO_BREW);
-    return date;
   }
 
 }

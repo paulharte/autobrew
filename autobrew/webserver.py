@@ -12,7 +12,7 @@ from autobrew.brew.brewEndpoints import brew_blueprint
 from autobrew.brew.brewService import BrewService
 from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.charts.make_chart import make_chart
-from autobrew.configuration import configure
+from autobrew.configuration import configure_test
 from autobrew.heating.heat_endpoints import heat_blueprint
 from autobrew.measurement.measurementSeries import MeasurementSeries
 from autobrew.measurement.measurementService import MeasurementService
@@ -218,4 +218,4 @@ def run_webserver(injector: Injector, debug=False):
 
 
 if __name__ == "__main__":
-    run_webserver(Injector([configure]), True)
+    run_webserver(Injector([configure_test]), True)

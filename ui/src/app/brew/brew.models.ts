@@ -8,7 +8,10 @@ export class Brew {
         this.start_time = new Date(json_obj.start_time);
         this.measurement_ids = json_obj.measurement_ids;
         this.active = json_obj.active;
-        this.current_stage = json_obj.current_stage;
+        this.stages = []
+        for (const measurement_json of json_obj.stages) {
+            this.stages.push(new Stage(measurement_json))
+        };
     }
     name: string
     id: number
@@ -17,7 +20,25 @@ export class Brew {
     active: boolean
     start_time: Date
     measurement_ids: string[]
-    current_stage: string
+    stages: Stage[]
+
+    getCurrentStage(): Stage {
+        return this.stages[this.stages.length-1];
+    }
+    isComplete(): boolean {
+        return this.getCurrentStage().stage_name == 'COMPLETE';
+    }
+}
+
+export class Stage {
+    constructor(json_obj: any) {
+        this.stage_name = json_obj.stage_name;
+        this.start_time = new Date(json_obj.start_time);
+        this.estimated_end_time = new Date(json_obj.estimated_end_time);
+    }
+    stage_name: string; // COMPLETE or BOTTLE_CONDITIONING or FERMENTING
+    start_time: Date;
+    estimated_end_time: Date;
 }
 
 export class MeasurementSeries {

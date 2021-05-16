@@ -23,6 +23,7 @@ class MeasurementSeriesRemote(Serializable):
         obj.measurements = [
             MeasurementRemote.from_dict(meas) for meas in attributes["measurements"]
         ]
+        obj.validate()
         return obj
 
     def to_dict(self):

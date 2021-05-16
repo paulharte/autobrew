@@ -28,7 +28,7 @@ export class BrewsComponent implements OnInit {
     this.brews = brews;
     const activeOnes = [];
     for (const brew of brews) {
-      if (brew.active) {
+      if (!brew.isComplete()) {
         activeOnes.push(brew);
       }
     }

@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-md-4 justify-content-center p-0">
                 <app-single-brew [brew]="activeBrew"></app-single-brew>
+                <app-stage [stage]="activeBrew.getCurrentStage()"></app-stage>
             </div>
             <div class="col-md-8 justify-content-center p-0">
                 <app-measurements [brew]="activeBrew"></app-measurements>

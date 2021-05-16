@@ -5,7 +5,7 @@ import logging
 from injector import Injector
 
 from autobrew.brew_settings import APP_LOGGING_NAME
-from autobrew.configuration import configure, configure_local
+from autobrew.configuration import configure_prod, configure_uat
 from autobrew.measurement_taker import MeasurementTaker
 from autobrew.webserver import run_webserver
 
@@ -21,10 +21,10 @@ def set_logging(level=logging.DEBUG):
 
 def main():
     set_logging()
-    if (len(sys.argv) > 1) and (sys.argv[1] == "uat"):
-        autobrew_injector = Injector([configure_local])
+    if (len(sys.argv) > 1) and (sys.argv[1] == "prod"):
+        autobrew_injector = Injector([configure_prod])
     else:
-        autobrew_injector = Injector([configure])
+        autobrew_injector = Injector([configure_uat])
     x = threading.Thread(
         target=run_webserver, args=(autobrew_injector, False), daemon=True
     )
