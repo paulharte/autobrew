@@ -126,6 +126,7 @@ functions:
           path: /brew/{brew_remote_id}/measurements/{source_name}
   getMeasurementForBrew:
     handler: handler.get_measurement_series_for_brew
+    timeout: 10 # this can be a longer function
     events:
       - httpApi:
           method: get
