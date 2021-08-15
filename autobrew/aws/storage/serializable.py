@@ -23,7 +23,7 @@ class Serializable:
                     pass
             if 'amt' in key:
                 try:
-                    attributes[key] = round(Decimal(str(val)), 4)
+                    attributes[key] = Decimal(str(val)).quantize(Decimal('.0001'))  # Round to 4 DP
                     continue
                 except (ValueError, AttributeError):
                     pass
