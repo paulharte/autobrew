@@ -11,10 +11,23 @@ DECIMAL_PRECISION = 4
 class Serializable:
     def to_dict(self):
         attributes = self.__dict__
-        attributes = _convert_attributes(attributes, "time", lambda x: x.isoformat())
-        return _convert_attributes(
-            attributes, "amt", lambda x: round(Decimal(str(x)), 4)
-        )
+        for (key, val) in attributes.items():
+            if hasattr(val, 'to_dict'):
+                attributes[key] = val.to_dict()
+                continue
+            if 'time' in key:
+                try:
+                    attributes[key] = val.isoformat()
+                    continue
+                except (ValueError, AttributeError):
+                    pass
+            if 'amt' in key:
+                try:
+                    attributes[key] = round(Decimal(str(val)), 4)
+                    continue
+                except (ValueError, AttributeError):
+                    pass
+        return attributes
 
     def to_json(self):
         return json.dumps(self, default=lambda o: default_convert_to_json(o))

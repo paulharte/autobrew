@@ -1,8 +1,11 @@
+import logging
+
 from injector import inject, singleton
 
 from autobrew.alerting.tweeter.twitterAlerts import TwitterAlerter
-from autobrew.brew_settings import TWITTER_USER_TO_ALERT
+from autobrew.brew_settings import TWITTER_USER_TO_ALERT, APP_LOGGING_NAME
 
+logger = logger = logging.getLogger(APP_LOGGING_NAME)
 
 class Alerter(object):
     @singleton
@@ -14,4 +17,12 @@ class Alerter(object):
         self.twitter_alerter.send_dm(TWITTER_USER_TO_ALERT, msg)
 
     def public_message(self, msg: str):
-        self.twitter_alerter.tweet(msg)
+        if len(msg) > 240:
+            msg = msg[0:239]
+        try:
+            self.twitter_alerter.tweet(msg)
+        except Exception as e:
+            msg = "Exception sending public message: %s" % e
+            logger.error(msg)
+            logger.exception(e)
+            self.alerter.alert_owner(msg)
