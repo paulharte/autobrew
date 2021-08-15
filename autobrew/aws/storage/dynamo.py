@@ -21,8 +21,12 @@ class Dynamo(object):
     def put(self, table_name: str, item: dict):
         item = delete_nulls_from_dict(item)
         table = self.dynamo_db.Table(table_name)
-        table.put_item(Item=item)
-        logger.info("Item written  to Dynamo table: %s. Item: %s", table_name, item)
+        try:
+            table.put_item(Item=item)
+            logger.info("Item written  to Dynamo table: %s. Item: %s", table_name, item)
+        except Exception as e:
+            logger.error("Could not write to Dynamo!. Payload:%s" % item)
+            raise e
 
     def get(self, table_name: str, id_to_get, id_name) -> dict:
         key = _form_key(id_to_get, id_name)
