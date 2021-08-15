@@ -3,6 +3,7 @@ from typing import List
 
 from injector import inject
 
+from autobrew.alerting.alerter import Alerter
 from autobrew.brew.brew import Brew
 from autobrew.brew.brewStorage import BrewStorage
 from autobrew.brew.stages import Stage
@@ -11,9 +12,10 @@ from autobrew.sync.syncService import SyncService
 
 class BrewService(object):
     @inject
-    def __init__(self, storage: BrewStorage, sync: SyncService):
+    def __init__(self, storage: BrewStorage, sync: SyncService, alerter: Alerter):
         self.storage = storage
         self.sync = sync
+        self.alerter = alerter
 
     def new(self, name, description: str = None) -> Brew:
         brew = Brew(name, datetime.datetime.utcnow())
@@ -23,6 +25,8 @@ class BrewService(object):
         brew.remote_id = self.storage.generate_remote_id()
         brew = self.save(brew)
         self._set_others_inactive(brew.id)
+        self.alerter.public_message("A new brew has started:%s autobrew.paulspetprojects.net" % brew.name)
+        self._update_stage(brew, Stage.FERMENTING)
         return brew
 
     def save(self, brew: Brew):
@@ -61,8 +65,14 @@ class BrewService(object):
 
     def update_stage(self, brew_id: str, stage: Stage):
         brew = self.get_by_id(brew_id)
+        return self._update_stage(brew, stage)
+
+    def _update_stage(self, brew: Brew, stage: Stage):
         brew.start_new_stage(stage, datetime.datetime.utcnow())
+        self.alerter.public_message(
+            "Brew '%s' has entered stage %s autobrew.paulspetprojects.net" % (brew.name, stage.name))
         return self.save(brew)
+
 
     def complete(self, brew_id: str):
         brew = self.get_by_id(brew_id)

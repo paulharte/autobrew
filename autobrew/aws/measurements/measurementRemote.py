@@ -14,12 +14,10 @@ class MeasurementRemote(Serializable):
         return {"measurement_amt": float, "time": datetime.datetime}
 
     def to_json(self):
-        return json.dumps(self.to_dict())
-
-    def to_dict(self):
-        return {'source_name': self.source_name,
+        return json.dumps({'source_name': self.source_name,
                            'time': self.time.isoformat(),
-                           "measurement_amt": self.measurement_amt}
+                           "measurement_amt": self.measurement_amt})
+
 
     @classmethod
     def from_dict(cls, attributes: dict):

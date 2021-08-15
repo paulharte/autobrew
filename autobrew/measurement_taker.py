@@ -65,10 +65,7 @@ class MeasurementTaker(object):
                     self.heat_control.adjust(measurement.measurement_amt)
 
             except (OSError, InvalidTemperatureFileError) as e:
-                msg = (
-                    "Could not take temperature measurement due to exception %s"
-                    % type(e)
-                )
+                msg = "Could not take temperature measurement due to exception %s" % type(e)
                 logger.error(msg)
                 logger.exception(e)
                 self.temp_factory.remove_temp_source(source)
