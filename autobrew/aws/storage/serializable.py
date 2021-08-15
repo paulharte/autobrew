@@ -10,7 +10,7 @@ DECIMAL_PRECISION = 4
 
 class Serializable:
     def to_dict(self):
-        attributes = self.__dict__
+        attributes = self.__dict__.copy()
         for (key, val) in attributes.items():
             if hasattr(val, 'to_dict'):
                 attributes[key] = val.to_dict()
@@ -48,6 +48,7 @@ class Serializable:
         if attributes is None:
             return
         obj = cls()
+        attributes = attributes.copy()
         attributes = _convert_attributes(
             attributes, "time", datetime.datetime.fromisoformat
         )
@@ -77,7 +78,7 @@ def default_convert_to_json(obj):
     elif isinstance(obj, Enum):
         return obj.value
     else:
-        return obj.__dict__
+        return obj.__dict__.copy()
 
 
 def _convert_attributes(attributes: dict, search: str, func) -> dict:
@@ -86,6 +87,6 @@ def _convert_attributes(attributes: dict, search: str, func) -> dict:
             try:
                 time = func(val)
                 attributes[key] = time
-            except (ValueError, AttributeError):
+            except (ValueError, AttributeError, TypeError):
                 pass
     return attributes
