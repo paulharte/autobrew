@@ -16,7 +16,7 @@ DateTime==4.3
 Flask==1.1.2
 Flask-GoogleCharts==0.1.0
 Flask-Injector==0.12.3
-future==0.18.2
+future==0.18.3
 idna==2.10
 iniconfig==1.0.1
 injector==0.18.3
