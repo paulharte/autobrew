@@ -22,29 +22,29 @@ export class HistoricComponent implements OnInit {
         this.handleBrews(incomingBrews);
         this.requestComplete = true;
       }, () => this.requestComplete = true
-    )
+    );
   }
 
-  handleBrews(incomingBrews: Brew[]) {
+  handleBrews(incomingBrews: Brew[]): void {
     const inactiveBrews = [];
     const names = [];
     for (const brew of incomingBrews) {
       if (brew.isComplete()) {
-        inactiveBrews.push(brew)
-        names.push(brew.name)
+        inactiveBrews.push(brew);
+        names.push(brew.name);
       }
     }
     this.brews = inactiveBrews;
     this.brewNames = names;
   }
 
-  onSelectBrew(event: any) {
+  onSelectBrew(event: any): void {
     const brewName = event.target.value;
     if (this.brews) {
       for (const brew of this.brews) {
         if (brew.name === brewName) {
           this.selectedBrew = brew;
-          return
+          return;
         }
       }
     }

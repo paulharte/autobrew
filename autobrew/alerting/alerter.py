@@ -25,4 +25,4 @@ class Alerter(object):
             msg = "Exception sending public message: %s" % e
             logger.error(msg)
             logger.exception(e)
-            self.alerter.alert_owner(msg)
+            self.alert_owner(msg)
