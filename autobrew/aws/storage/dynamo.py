@@ -48,7 +48,7 @@ class Dynamo(object):
 
 
 def _form_key(id_to_get, id_name):
-    if type(id_to_get) == list:
+    if isinstance(id_to_get, list):
         key = {}
         for id_single, name in zip(id_to_get, id_name):
             key[name] = id_single
