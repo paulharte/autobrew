@@ -3,11 +3,10 @@
         <h5 class="card-header">{{brew.name}}</h5>
         <div class="card-body">
           <p class="card-text" *ngIf="brew.description">Description: {{ brew.description }}</p>
-          <p class="card-text">Brew Phase: <span class="badge badge-primary">{{brew.getCurrentStage().stage_name}}</span></p>
           <p class="card-text">
               Active:
-              <span *ngIf="brew.isComplete()" class="badge badge-success">Yes</span>
-              <span *ngIf="!brew.isComplete()" class="badge badge-danger">No</span>
+              <span *ngIf="!brew.isComplete()" class="badge badge-success">Yes</span>
+              <span *ngIf="brew.isComplete()" class="badge badge-danger">No</span>
             </p>
             <p class="card-text">Brew start time: {{brew.start_time | date:'d MMM y, h:mm:ss a'}}</p>
         </div>

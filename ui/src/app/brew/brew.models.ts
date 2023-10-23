@@ -28,6 +28,9 @@ export class Brew {
     isComplete(): boolean {
         return this.getCurrentStage().stage_name == 'COMPLETE';
     }
+    isFermenting(): boolean {
+        return this.getCurrentStage().stage_name == 'FERMENTING';
+    }
 }
 
 export class Stage {

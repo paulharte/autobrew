@@ -16,7 +16,7 @@ class Brew(Serializable):
         self.remote_id: str
         self.description: str
         self.current_stage = Stage.FERMENTING  # DEPRECATED
-        self.stages: List = [StageDetails(start_time, Stage.FERMENTING)]
+        self.stages: List = []
 
     def get_display_name(self) -> str:
         return self.name if self.name else self.id

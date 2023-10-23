@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from brew.brewRemote import Serializable
 
@@ -11,3 +12,20 @@ class MeasurementRemote(Serializable):
 
     def mandatory_attributes(self) -> dict:
         return {"measurement_amt": float, "time": datetime.datetime}
+
+    def to_json(self):
+        return json.dumps({'source_name': self.source_name,
+                           'time': self.time.isoformat(),
+                           "measurement_amt": self.measurement_amt})
+
+
+    @classmethod
+    def from_dict(cls, attributes: dict):
+        obj = cls()
+        obj.source_name = attributes.get('source_name')
+        obj.time = datetime.datetime.fromisoformat(attributes['time'])
+        obj.measurement_amt = float(attributes.get('measurement_amt'))
+        obj.validate()
+        return obj
+
+
