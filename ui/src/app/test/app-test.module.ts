@@ -9,6 +9,8 @@ import { BrewService } from '../brew/brew.service';
 import { BrewsComponent } from '../brew/brews/brews.component';
 import { SeriesComponent } from '../brew/measurement/series/series.component';
 import { SingleBrewComponent } from '../brew/single-brew/single-brew.component';
+import { StageComponent } from '../brew/stage/stage.component';
+import { MeasurementsComponent } from '../brew/measurement/measurements/measurements.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { SingleBrewComponent } from '../brew/single-brew/single-brew.component';
     ProgressComponent,
     BrewsComponent,
     SingleBrewComponent,
-    SeriesComponent
+    SeriesComponent,
+    StageComponent,
+    MeasurementsComponent
   ],
   imports: [
     BrowserModule,

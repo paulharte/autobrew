@@ -29,7 +29,7 @@ export class HistoricComponent implements OnInit {
     const inactiveBrews = [];
     const names = [];
     for (const brew of incomingBrews) {
-      if (! brew.active) {
+      if (! brew.isComplete()) {
         inactiveBrews.push(brew)
         names.push(brew.name)
       }
