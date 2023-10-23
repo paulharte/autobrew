@@ -45,6 +45,6 @@ s3transfer==0.3.4
 six==1.15.0
 toml==0.10.1
 typing-extensions==3.7.4.3
-urllib3==1.26.5
+urllib3==1.26.18
 Werkzeug==1.0.1
 zope.interface==5.1.0
