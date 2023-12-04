@@ -42,14 +42,20 @@ class MeasurementTaker(object):
         self.sync = sync
 
     def run_measurements(self):
-        migrate_brews(self.brew_service, self.sync, self.measurement_service) # temporary migrations
+        migrate_brews(
+            self.brew_service, self.sync, self.measurement_service
+        )  # temporary migrations
         delay = SAMPLE_INTERVAL_SECONDS
         active_brew = self.brew_service.get_active()
         if active_brew:
             self.sync.sync_brew(active_brew)
         while True:
             active_brew = self.brew_service.get_active()
-            if active_brew and active_brew.get_current_stage_details().stage_name == Stage.FERMENTING:
+            if (
+                active_brew
+                and active_brew.get_current_stage_details().stage_name
+                == Stage.FERMENTING
+            ):
                 self.take_temperature_measurements(active_brew)
                 self.take_smell_measurements(active_brew)
             time.sleep(delay)
@@ -65,7 +71,10 @@ class MeasurementTaker(object):
                     self.heat_control.adjust(measurement.measurement_amt)
 
             except (OSError, InvalidTemperatureFileError) as e:
-                msg = "Could not take temperature measurement due to exception %s" % type(e)
+                msg = (
+                    "Could not take temperature measurement due to exception %s"
+                    % type(e)
+                )
                 logger.error(msg)
                 logger.exception(e)
                 self.temp_factory.remove_temp_source(source)

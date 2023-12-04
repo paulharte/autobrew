@@ -25,7 +25,9 @@ class BrewService(object):
         brew.remote_id = self.storage.generate_remote_id()
         brew = self.save(brew)
         self._set_others_inactive(brew.id)
-        self.alerter.public_message("A new brew has started:%s autobrew.paulspetprojects.net" % brew.name)
+        self.alerter.public_message(
+            "A new brew has started:%s autobrew.paulspetprojects.net" % brew.name
+        )
         self._update_stage(brew, Stage.FERMENTING)
         return brew
 
@@ -70,13 +72,13 @@ class BrewService(object):
     def _update_stage(self, brew: Brew, stage: Stage):
         brew.start_new_stage(stage, datetime.datetime.utcnow())
         self.alerter.public_message(
-            "Brew '%s' has entered stage %s autobrew.paulspetprojects.net" % (brew.name, stage.name))
+            "Brew '%s' has entered stage %s autobrew.paulspetprojects.net"
+            % (brew.name, stage.name)
+        )
         return self.save(brew)
-
 
     def complete(self, brew_id: str):
         brew = self.get_by_id(brew_id)
         brew.complete(datetime.datetime.utcnow())
         brew.active = False
         return self.save(brew)
-

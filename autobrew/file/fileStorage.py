@@ -9,7 +9,7 @@ FOLDER_PATH = os.path.dirname(os.path.abspath(__file__)).replace("file", FOLDER_
 
 
 class FileStorage(object):
-    """ Handles all file io"""
+    """Handles all file io"""
 
     def __init__(self):
         # Make folder if it is not already there
@@ -40,7 +40,7 @@ class FileStorage(object):
     def get_storage_files(
         self, suffix: str = None, sub_folder: str = None
     ) -> List[str]:
-        """ Returns just filenames, not paths"""
+        """Returns just filenames, not paths"""
         folder = os.path.join(FOLDER_PATH, sub_folder) if sub_folder else FOLDER_PATH
         try:
             files = os.listdir(folder)

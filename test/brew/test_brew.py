@@ -18,10 +18,12 @@ class TestBrew(TestCase):
 
         arr = sort_brews([brew1, brew2, brew3])
         self.assertEqual(
-            "two", arr[0].name,
+            "two",
+            arr[0].name,
         )
         self.assertEqual(
-            "three", arr[1].name,
+            "three",
+            arr[1].name,
         )
 
     def test_to_json(self):

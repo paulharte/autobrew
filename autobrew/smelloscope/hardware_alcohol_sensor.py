@@ -3,13 +3,16 @@ import digitalio
 import adafruit_mcp3xxx.mcp3008 as mcp3008
 from adafruit_mcp3xxx.analog_in import AnalogIn
 
+from autobrew.smelloscope.alcohol_sensor_base import AlcoholSensorBase
 
-class HardwareAlcoholSensor(object):
+
+class HardwareAlcoholSensor(AlcoholSensorBase):
 
     mcp = None
 
     def setup_mcp(self):
         import board
+
         # create the spi bus
         spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
 

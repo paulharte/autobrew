@@ -8,6 +8,7 @@ from autobrew.measurement.seriesType import SeriesType
 
 injector = Injector([configure_prod])
 
+
 def remove_duff_temperature_measurements(brew: Brew):
     service = injector.get(MeasurementService)
     series_array = service.get_all_series_for_brew(brew)
@@ -26,7 +27,7 @@ def run():
     if active:
         remove_duff_temperature_measurements(active)
     else:
-        raise Exception('No active brew!')
+        raise Exception("No active brew!")
 
     print("Done!")
 
