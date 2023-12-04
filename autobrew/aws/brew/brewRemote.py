@@ -29,9 +29,7 @@ class BrewRemote(Serializable):
         obj = Serializable.from_dict(attributes)
         obj.__class__ = cls
         stages = attributes.get("stages") or []
-        obj.stages = [
-            StageDetailsRemote.from_dict(stage) for stage in stages
-        ]
+        obj.stages = [StageDetailsRemote.from_dict(stage) for stage in stages]
         obj.validate()
         return obj
 

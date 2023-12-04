@@ -1,4 +1,3 @@
-
 from unittest import TestCase
 
 from flask_injector import FlaskInjector
@@ -30,5 +29,3 @@ class TestBrewWebserver(TestCase):
 
         response = client.get("/brews/")
         self.assertIn("COMPLETE", str(response.data))
-
-

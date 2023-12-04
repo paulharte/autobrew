@@ -34,7 +34,9 @@ class MeasurementServiceRemote(object):
 
     def get_all_for_brew(self, brew_remote_id: str):
         json_series = self.db.get_many(
-            MEASUREMENT_SERIES_DYNAMO_TABLE, brew_remote_id, MEASUREMENT_SERIES_KEY[0],
+            MEASUREMENT_SERIES_DYNAMO_TABLE,
+            brew_remote_id,
+            MEASUREMENT_SERIES_KEY[0],
         )
         return [MeasurementSeriesRemote.from_dict(json_s) for json_s in json_series]
 

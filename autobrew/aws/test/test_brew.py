@@ -13,7 +13,13 @@ class TestBrew(TestCase):
                 "id": "1",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da674",
                 "active": True,
-                "stages": [{"start_time": "2021-05-15T19:30:54.100701", "stage_name": "FERMENTING", "estimated_end_time": "2021-05-22T19:30:54.100701"}]
+                "stages": [
+                    {
+                        "start_time": "2021-05-15T19:30:54.100701",
+                        "stage_name": "FERMENTING",
+                        "estimated_end_time": "2021-05-22T19:30:54.100701",
+                    }
+                ],
             }
         )
         b = BrewRemote.from_json(incoming)
@@ -25,7 +31,13 @@ class TestBrew(TestCase):
                 "id": "2",
                 "remote_id": "d2e85707-9fcf-4ff3-9d1b-bdb2419da675",
                 "active": False,
-                "stages": [{"start_time": "2021-05-15T19:30:54.100701", "stage_name": "FERMENTING", "estimated_end_time": "2021-05-22T19:30:54.100701"}]
+                "stages": [
+                    {
+                        "start_time": "2021-05-15T19:30:54.100701",
+                        "stage_name": "FERMENTING",
+                        "estimated_end_time": "2021-05-22T19:30:54.100701",
+                    }
+                ],
             }
         )
         b2 = BrewRemote.from_json(incoming2)

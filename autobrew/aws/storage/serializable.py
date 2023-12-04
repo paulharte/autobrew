@@ -12,18 +12,20 @@ class Serializable:
     def to_dict(self):
         attributes = self.__dict__.copy()
         for (key, val) in attributes.items():
-            if hasattr(val, 'to_dict'):
+            if hasattr(val, "to_dict"):
                 attributes[key] = val.to_dict()
                 continue
-            if 'time' in key:
+            if "time" in key:
                 try:
                     attributes[key] = val.isoformat()
                     continue
                 except (ValueError, AttributeError):
                     pass
-            if 'amt' in key:
+            if "amt" in key:
                 try:
-                    attributes[key] = Decimal(str(val)).quantize(Decimal('.0001'))  # Round to 4 DP
+                    attributes[key] = Decimal(str(val)).quantize(
+                        Decimal(".0001")
+                    )  # Round to 4 DP
                     continue
                 except (ValueError, AttributeError):
                     pass

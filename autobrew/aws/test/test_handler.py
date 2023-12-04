@@ -7,8 +7,14 @@ from brew.brewServiceRemote import BrewServiceRemote
 from handler import *
 from test_utils.stubDynamo import StubDynamo
 
-TEST_FERMENT_STAGE = [{"start_time": "2021-05-15T19:30:54.100000", "stage_name": "FERMENTING",
-                       "estimated_end_time": "2021-05-22T19:30:54.100000"}]
+TEST_FERMENT_STAGE = [
+    {
+        "start_time": "2021-05-15T19:30:54.100000",
+        "stage_name": "FERMENTING",
+        "estimated_end_time": "2021-05-22T19:30:54.100000",
+    }
+]
+
 
 class TestHandler(TestCase):
     def setUp(self) -> None:
@@ -39,7 +45,7 @@ class TestHandler(TestCase):
         self.assertEqual(len(json.loads(resp["body"])), 1)
         ex = (
             '[{"name": "brew1", "id": "1", "remote_id": "%s", "active": true, "start_time": "%s", "stages": '
-            '%s}]' % (remote_id, start, str(TEST_FERMENT_STAGE).replace("\'", "\""))
+            "%s}]" % (remote_id, start, str(TEST_FERMENT_STAGE).replace("'", '"'))
         )
         self.assertEqual(ex, resp["body"])
 
@@ -80,7 +86,11 @@ class TestHandler(TestCase):
         remote_id = "d2e85707"
         temp_1 = "temperature1"
         event = make_series_event(
-            {"source_name": temp_1, "brew_remote_id": "1", "measurements": [],},
+            {
+                "source_name": temp_1,
+                "brew_remote_id": "1",
+                "measurements": [],
+            },
             remote_id,
         )
         resp = create_measurements(event, None, self.measurement_service)
