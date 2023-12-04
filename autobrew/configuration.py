@@ -6,7 +6,7 @@ from autobrew.brew_settings import APP_LOGGING_NAME
 from autobrew.heating.heat_control import HeatControl
 from autobrew.heating.heat_switcher import HeatSwitcher
 from autobrew.file.fileStorage import FileStorage
-from autobrew.smelloscope.hardware_alcohol_sensor import HardwareAlcoholSensor
+from autobrew.smelloscope.alcohol_sensor_base import AlcoholSensorBase
 from autobrew.sync.awsConfig import AwsConfig
 from autobrew.sync.cachedIdentityManager import CachedIdentityManger
 from autobrew.sync.identityManger import IdentityManager
@@ -33,14 +33,19 @@ logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 def configure_prod(binder):
+    # we import here to avoid importing these files in non-linux systems
+    from autobrew.smelloscope.hardware_alcohol_sensor import HardwareAlcoholSensor
+
     if platform.system() == "Windows":
-        logger.info("Running on Windows, using local config instead (mock temperature and smell sources)")
+        logger.info(
+            "Running on Windows, using local config instead (mock temperature and smell sources)"
+        )
         configure_uat(binder)
         return
     logger.info("Running against PROD aws instance")
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
     binder.bind(ProbeApi, to=ProbeApi, scope=singleton)
-    binder.bind(HardwareAlcoholSensor, to=HardwareAlcoholSensor, scope=singleton)
+    binder.bind(AlcoholSensorBase, to=HardwareAlcoholSensor, scope=singleton)
     binder.bind(HeatControl, to=HeatControl, scope=singleton)
     binder.bind(FileStorage, to=FileStorage, scope=singleton)
     binder.bind(TwitterAlerter, to=TwitterAlerter(extract_secrets()), scope=singleton)
@@ -51,7 +56,7 @@ def configure_prod(binder):
 def configure_uat(binder):
     logger.info("Running against UAT aws instance")
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
-    binder.bind(HardwareAlcoholSensor, to=StubAlcoholSensor, scope=singleton)
+    binder.bind(AlcoholSensorBase, to=StubAlcoholSensor, scope=singleton)
     binder.bind(HeatSwitcher, to=MockHeatSwitcher, scope=singleton)
     binder.bind(HeatControl, to=HeatControl, scope=singleton)
     binder.bind(ProbeApi, to=StubProbeApi, scope=singleton)
@@ -62,7 +67,7 @@ def configure_uat(binder):
 
 def configure_test(binder):
     binder.bind(TempSourceFactory, to=ProbeTempSourceFactory, scope=singleton)
-    binder.bind(HardwareAlcoholSensor, to=StubAlcoholSensor, scope=singleton)
+    binder.bind(AlcoholSensorBase, to=StubAlcoholSensor, scope=singleton)
     binder.bind(HeatSwitcher, to=MockHeatSwitcher, scope=singleton)
     binder.bind(HeatControl, to=HeatControl, scope=singleton)
     binder.bind(ProbeApi, to=StubProbeApi, scope=singleton)

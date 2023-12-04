@@ -5,7 +5,8 @@ from injector import inject, singleton
 from autobrew.alerting.tweeter.twitterAlerts import TwitterAlerter
 from autobrew.brew_settings import TWITTER_USER_TO_ALERT, APP_LOGGING_NAME
 
-logger = logger = logging.getLogger(APP_LOGGING_NAME)
+logger = logging.getLogger(APP_LOGGING_NAME)
+
 
 class Alerter(object):
     @singleton

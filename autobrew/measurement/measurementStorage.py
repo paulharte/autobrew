@@ -12,7 +12,7 @@ logger = logging.getLogger(APP_LOGGING_NAME)
 
 
 class MeasurementStorage(object):
-    """ Handles all file io for measurement series"""
+    """Handles all file io for measurement series"""
 
     SUB_FOLDER = "measurements"
     SUFFIX = ".txt"

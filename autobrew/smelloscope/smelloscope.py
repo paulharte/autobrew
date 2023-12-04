@@ -4,7 +4,7 @@ from injector import inject
 
 from autobrew.brew_settings import SMELLOSCOPE_OFFSET
 from autobrew.measurement.measurement import AlcoholMeasurement
-from autobrew.smelloscope.hardware_alcohol_sensor import HardwareAlcoholSensor
+from autobrew.smelloscope.alcohol_sensor_base import AlcoholSensorBase
 from autobrew.temperature.abstractSource import AbstractSource
 
 
@@ -13,7 +13,7 @@ class Smelloscope(AbstractSource):
     NAME = "Alcohol_Smelloscope"
 
     @inject
-    def __init__(self, alcohol_sensor: HardwareAlcoholSensor):
+    def __init__(self, alcohol_sensor: AlcoholSensorBase):
         super()
         self.alcohol_sensor = alcohol_sensor
         self.is_primary = True

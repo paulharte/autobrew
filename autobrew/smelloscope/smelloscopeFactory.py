@@ -2,13 +2,13 @@ from typing import List
 
 from injector import inject
 
-from autobrew.smelloscope.hardware_alcohol_sensor import HardwareAlcoholSensor
+from autobrew.smelloscope.alcohol_sensor_base import AlcoholSensorBase
 from autobrew.smelloscope.smelloscope import Smelloscope
 
 
 class SmelloscopeFactory(object):
     @inject
-    def __init__(self, alcohol_sensor: HardwareAlcoholSensor):
+    def __init__(self, alcohol_sensor: AlcoholSensorBase):
         self.sensor = alcohol_sensor
         self.sources = []
         self.get_all_sources()

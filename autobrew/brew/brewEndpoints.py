@@ -82,6 +82,7 @@ def change_status(brew_service: BrewService, brew_id: str):
         message='Brew "%s" successfully updated' % brew.get_display_name(),
     )
 
+
 @brew_blueprint.route("<brew_id>/complete", methods=["GET"])
 def complete(brew_service: BrewService, brew_id: str):
     if not brew_id:
