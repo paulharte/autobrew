@@ -17,7 +17,7 @@ Flask==1.1.2
 Flask-GoogleCharts==0.1.0
 Flask-Injector==0.12.3
 future==0.18.2
-idna==2.10
+idna==3.7
 iniconfig==1.0.1
 injector==0.21.0
 itsdangerous==1.1.0
